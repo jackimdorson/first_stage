@@ -1,12 +1,16 @@
 body {
   margin: 0;
-  font-size: 20px;
+  font-size: 1rem;
+  font-family: serif;
 }
 body a {
   text-decoration: none;
+  color: black;
 }
 body h1 {
-  font-size: 40px;
+  font-size: 1.75rem;
+  width: 100%;
+  text-align: center;
 }
 
 header {
@@ -23,8 +27,9 @@ header nav {
   width: 55%;
   height: 100vh;
   position: fixed;
+  padding-top: 10px;
   top: 0;
-  background-color: red;
+  background-color: white;
   right: -100%;
   z-index: 1;
   box-shadow: -3px 0px 3px dimgray;
@@ -73,27 +78,21 @@ header nav a {
   margin: auto;
 }
 
-#small_box {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0 10px;
-}
 #small_box .item {
   height: 50px;
+  margin-top: 30px;
   display: flex;
-  width: 100%;
   background-color: lightblue;
 }
 #small_box .item img {
+  width: 80px;
   -o-object-fit: cover;
      object-fit: cover;
-  width: 80px;
 }
 #small_box .item .promotion {
-  position: relative;
-  top: calc(50% + 10px);
-  transform: translate(0, -50%);
-  left: 10px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
 }
 
 .item {
@@ -103,7 +102,6 @@ header nav a {
 #big_box {
   display: flex;
   flex-wrap: wrap;
-  padding: 0 10px;
 }
 #big_box .item {
   height: 250px;
@@ -128,26 +126,44 @@ header nav a {
 #big_box .item .title {
   width: 100%;
   height: 40px;
-  text-align: center;
   background-color: rgba(255, 255, 255, 0.5);
   position: absolute;
   bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (min-width: 600px) {
+  body {
+    font-size: 20px;
+  }
+  body h1 {
+    font-size: 40px;
+  }
   #menu_btn > img {
     display: none;
   }
   header nav {
+    width: unset;
+    position: unset;
     display: flex;
-    align-items: center;
-    right: 0;
+    justify-content: right;
     height: 50px;
-    width: 40%;
-    box-shadow: none;
   }
   #small_box {
-    flex-wrap: nowrap;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  #small_box .item {
+    flex: 1 45%;
+  }
+  #big_box {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  #big_box .item {
+    flex: 1 20%;
   }
 }
 @media (min-width: 1200px) {
@@ -156,27 +172,15 @@ header nav a {
     margin: auto;
   }
   #small_box .item {
-    width: 30%;
+    flex: 1 30%;
   }
-  #small_box :nth-child(2), #small_box :nth-child(3) {
-    width: calc(30% + 20px);
-  }
-  #big_box {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0 10px;
+  #small_box > :nth-child(1) {
+    flex: 1 calc(30% - 20px);
   }
   #big_box .item {
-    height: 250px;
-    width: 15%;
+    flex: 1 15%;
   }
-  #big_box .item .bg_img {
-    width: 100%;
-    -o-object-fit: cover;
-       object-fit: cover;
-  }
-  #big_box :nth-child(1), #big_box :nth-child(6) {
-    height: 250px;
-    width: 30%;
+  #big_box > :nth-child(1), #big_box :nth-child(6) {
+    flex: 1 30%;
   }
 }/*# sourceMappingURL=styles.css.map */
