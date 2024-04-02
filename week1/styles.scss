@@ -23,10 +23,10 @@ header {
         left: 10px;
     }
     & nav {
-        width: 55%;
+        width: 50%;
         height: 100vh;
         position: fixed;
-        padding-top: 10px;
+        padding-top: 20px;
         top: 0;
         background-color: white;
         right: -100%;
@@ -36,7 +36,7 @@ header {
         text-align: center;
         & a {
             display: block;
-            padding: 10px 14px;
+            padding: 10px 16px;
         }
     }
 }
@@ -153,6 +153,7 @@ header {
         display: flex;
         justify-content: right;
         height: 50px;
+        padding: unset
     }
 
     #small_box {

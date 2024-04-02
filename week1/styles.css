@@ -24,10 +24,10 @@ header #nav_left {
   left: 10px;
 }
 header nav {
-  width: 55%;
+  width: 50%;
   height: 100vh;
   position: fixed;
-  padding-top: 10px;
+  padding-top: 20px;
   top: 0;
   background-color: white;
   right: -100%;
@@ -38,7 +38,7 @@ header nav {
 }
 header nav a {
   display: block;
-  padding: 10px 14px;
+  padding: 10px 16px;
 }
 
 #menu_btn > img {
@@ -150,6 +150,7 @@ header nav a {
     display: flex;
     justify-content: right;
     height: 50px;
+    padding: unset;
   }
   #small_box {
     display: flex;
