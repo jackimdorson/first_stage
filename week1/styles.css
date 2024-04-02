@@ -8,11 +8,6 @@ body a {
 body h1 {
   font-size: 40px;
 }
-body h1 img {
-  width: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-}
 
 header {
   height: 50px;
@@ -105,13 +100,32 @@ header nav a {
   margin: 10px;
 }
 
+#big_box {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 10px;
+}
 #big_box .item {
+  height: 250px;
+  width: 100%;
   position: relative;
 }
 #big_box .item img {
-  width: 100%;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 36px;
+  height: 36px;
+  opacity: 0.7;
 }
-#big_box .title {
+#big_box .item .bg_img {
+  width: 100%;
+  height: 100%;
+  background-image: url(./img/fighting.jpeg);
+  background-size: cover;
+  background-position: 70%;
+}
+#big_box .item .title {
   width: 100%;
   height: 40px;
   text-align: center;
@@ -156,7 +170,7 @@ header nav a {
     height: 250px;
     width: 15%;
   }
-  #big_box .item img {
+  #big_box .item .bg_img {
     width: 100%;
     -o-object-fit: cover;
        object-fit: cover;
