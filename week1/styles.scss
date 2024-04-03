@@ -169,8 +169,8 @@ footer {
 
 }
 
-// @media (1200px <= width <= 1920px){
-@media (min-width: 1200px) {
+// @media (min-width: 1200px) {
+@media (1200px < width <= 1920px){
     #item_sec {
         max-width: 1200px;
     }
