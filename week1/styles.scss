@@ -78,13 +78,13 @@ header {
 }
 
 .item {
-    margin: 10px;
+    padding: 10px;
 }
 
 #small_box {
+    padding-top: 10px;
     & .item {
         height: 50px;
-        margin-top: 30px;
         display: flex;
         & > img {
             width: 80px;
@@ -101,14 +101,14 @@ header {
 }
 
 #big_box {
-    margin-top:15px;
     & .item {
         position: relative;
         height: 200px;
+        text-align: center;
         & > img {
             position: absolute;
-            top: 5px;
-            right: 5px;
+            top: 15px;
+            right: 15px;
             width: 36px;
             height: 36px;
             opacity: 0.7;
@@ -125,9 +125,6 @@ header {
             height: 40px;
             background-color: rgba(255, 255, 255, 0.5);
             bottom: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
     }
 }
