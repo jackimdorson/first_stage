@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-size: 1rem;
+  font-size: 20px;
   font-family: serif;
 }
 body a {
@@ -8,7 +8,8 @@ body a {
   color: black;
 }
 body h1 {
-  font-size: 1.75rem;
+  font-size: 40px;
+  letter-spacing: -2px;
   width: 100%;
   text-align: center;
 }
@@ -17,18 +18,30 @@ header {
   height: 50px;
   position: relative;
 }
-header #nav_left {
+header > #nav_left {
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
-  left: 10px;
+  left: 2%;
 }
-header nav {
+header > #menu_btn > img {
+  width: 36px;
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  right: 2%;
+  z-index: 2;
+  cursor: pointer;
+}
+header > #hidden_checkbox {
+  display: none;
+}
+header > nav {
+  position: fixed;
+  top: 0;
   width: 50%;
   height: 100vh;
-  position: fixed;
   padding-top: 20px;
-  top: 0;
   background-color: white;
   right: -100%;
   z-index: 1;
@@ -36,23 +49,9 @@ header nav {
   transition: right 0.3s ease;
   text-align: center;
 }
-header nav a {
+header > nav > a {
   display: block;
   padding: 10px 16px;
-}
-
-#menu_btn > img {
-  width: 36px;
-  position: absolute;
-  top: 50%;
-  transform: translate(0, -50%);
-  right: 10px;
-  cursor: pointer;
-  z-index: 2;
-}
-
-#hidden_checkbox {
-  display: none;
 }
 
 #hidden_checkbox:checked + nav {
@@ -61,11 +60,11 @@ header nav a {
 
 #string_sec {
   height: 250px;
-  position: relative;
   width: 100%;
+  position: relative;
   background-color: lightblue;
 }
-#string_sec h1 {
+#string_sec > h1 {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -78,37 +77,36 @@ header nav a {
   margin: auto;
 }
 
-#small_box .item {
-  height: 50px;
-  margin-top: 30px;
-  display: flex;
-  background-color: lightblue;
-}
-#small_box .item img {
-  width: 80px;
-  -o-object-fit: cover;
-     object-fit: cover;
-}
-#small_box .item .promotion {
-  display: flex;
-  align-items: center;
-  padding-left: 10px;
-}
-
 .item {
   margin: 10px;
 }
 
-#big_box {
+#small_box .item {
+  height: 50px;
+  margin-top: 30px;
   display: flex;
-  flex-wrap: wrap;
+}
+#small_box .item > img {
+  width: 80px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+#small_box .item > .promotion {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  width: calc(100% - 90px);
+  background-color: lightblue;
+}
+
+#big_box {
+  margin-top: 15px;
 }
 #big_box .item {
-  height: 250px;
-  width: 100%;
   position: relative;
+  height: 200px;
 }
-#big_box .item img {
+#big_box .item > img {
   position: absolute;
   top: 5px;
   right: 5px;
@@ -116,41 +114,38 @@ header nav a {
   height: 36px;
   opacity: 0.7;
 }
-#big_box .item .bg_img {
-  width: 100%;
+#big_box .item > .bg_img {
   height: 100%;
   background-image: url(./img/fighting.jpeg);
   background-size: cover;
   background-position: 70%;
 }
-#big_box .item .title {
+#big_box .item > .title {
+  position: absolute;
   width: 100%;
   height: 40px;
   background-color: rgba(255, 255, 255, 0.5);
-  position: absolute;
   bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+footer {
+  text-align: center;
+}
+
 @media (min-width: 600px) {
-  body {
-    font-size: 20px;
-  }
-  body h1 {
-    font-size: 40px;
-  }
-  #menu_btn > img {
+  header > #menu_btn > img {
     display: none;
   }
-  header nav {
-    width: unset;
+  header > nav {
     position: unset;
+    width: unset;
+    height: unset;
+    padding: unset;
     display: flex;
     justify-content: right;
-    height: 50px;
-    padding: unset;
   }
   #small_box {
     display: flex;
@@ -170,13 +165,12 @@ header nav a {
 @media (min-width: 1200px) {
   #item_sec {
     max-width: 1200px;
-    margin: auto;
   }
   #small_box .item {
     flex: 1 30%;
   }
   #small_box > :nth-child(1) {
-    flex: 1 calc(30% - 20px);
+    flex: 1 calc(30% - 23px);
   }
   #big_box .item {
     flex: 1 15%;
