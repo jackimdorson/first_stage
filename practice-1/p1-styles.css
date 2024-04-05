@@ -1,0 +1,9 @@
+:root {
+  background: #E8E6DC;
+  color: #3D3D3D;
+}
+
+[data-theme=dark] {
+  background: #171923;
+  color: #c5cddb;
+}/*# sourceMappingURL=p1-styles.css.map */
