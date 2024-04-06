@@ -1,0 +1,66 @@
+:root {
+    --light-bg-color: lightgrey;
+    --light-font-color: black;
+    --dark-bg-color: dimgrey;
+    --dark-font-color: white;
+  }
+
+  [data-theme="dark"] {
+    background-color: var(--dark-bg-color);
+    color: var(--dark-font-color);
+    font: var(--dark-font-color);
+    & a {
+        color: green;
+    }
+
+  }
+
+html {
+    background-color: var(--light-bg-color);
+    color: var(--light-font-color);
+}
+
+// h1 {
+//     background-color: white;
+//     color: black;
+// }
+
+// h1[data-theme="dark"] {
+//     background-color: black;
+//     color: white;
+// }
+
+// @media (prefers-color-scheme: dark) {
+//     h1 {
+//         background-color: black;
+//         color: white;
+//     }
+// }
+
+// @media (prefers-color-scheme: light) {
+//     h1 {
+//         background-color: white;
+//         color: black;
+//     }
+// }
+
+
+
+
+
+
+
+// :root {
+//     --text-color: blue;
+// }
+
+
+// @media (prefers-color-scheme: dark) {
+//     :root {
+//         --text-color:red;
+//     }
+// }
+
+// body {
+//     color: var(--text-color);
+// }
