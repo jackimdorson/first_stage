@@ -1,9 +1,20 @@
 :root {
-  background: #E8E6DC;
-  color: #3D3D3D;
+  --light-bg-color: lightgrey;
+  --light-font-color: black;
+  --dark-bg-color: dimgrey;
+  --dark-font-color: white;
 }
 
 [data-theme=dark] {
-  background: #171923;
-  color: #c5cddb;
+  background-color: var(--dark-bg-color);
+  color: var(--dark-font-color);
+  font: var(--dark-font-color);
+}
+[data-theme=dark] a {
+  color: green;
+}
+
+html {
+  background-color: var(--light-bg-color);
+  color: var(--light-font-color);
 }/*# sourceMappingURL=p1-styles.css.map */
