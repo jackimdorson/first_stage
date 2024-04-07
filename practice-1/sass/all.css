@@ -1,0 +1,71 @@
+@charset "UTF-8";
+/* Foundation
+   --------------------------------------------------------- */
+[data-theme=dark] {
+  background-color: black;
+  color: white;
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: serif;
+  line-height: 1;
+  background-color: lightgray;
+  color: black;
+  font-size: 20px;
+}
+
+/* layout
+   --------------------------------------------------------- */
+header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  background-color: dimgray;
+}
+header a {
+  text-decoration: none;
+  color: unset;
+}
+
+#c-form__btn-hidden {
+  display: none;
+}
+
+#burger-now {
+  position: relative;
+  z-index: 2;
+}
+
+.p-nav {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  height: 100vh;
+  right: -200px;
+  width: 200px;
+  background-color: red;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s 0s ease-in-out;
+}
+
+#c-form__btn-hidden:checked + .p-nav {
+  right: 0;
+}
+
+main a {
+  -webkit-text-decoration: underline dotted dimgray;
+          text-decoration: underline dotted dimgray;
+}
+
+/* Object - Component
+   --------------------------------------------------------- */
+/* Object - Project
+   ---------------------------------------------------------
+   名前空間を一意にすることで、エラーを回避し、異なるディレクトリにあるモジュールを正しく読み込むことができます。*//*# sourceMappingURL=all.css.map */

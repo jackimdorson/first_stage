@@ -1,0 +1,7 @@
+@use "../foundation/mixin" as *;
+
+main {
+    & a {
+      text-decoration: underline dotted $dim-gray;
+    }
+  }

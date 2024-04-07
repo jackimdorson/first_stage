@@ -1,0 +1,51 @@
+@use "../foundation/mixin" as *;
+
+header {
+    position: relative;
+    a {
+        text-decoration: none;
+        color: unset;
+    }
+    display: flex;
+    justify-content: space-between;
+    background-color: $dim-gray;
+}
+
+
+#c-form__btn-hidden {
+    display: none;
+}
+
+.p-container__left {
+}
+
+.p-container__center {
+}
+
+.p-container__right {
+    
+}
+
+#burger-now {
+    position: relative;
+    z-index: 2;
+}
+
+.p-nav {
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    height: 100vh;
+    right: -200px;
+    width: 200px;
+    background-color: red;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s 0s ease-in-out;
+}
+
+#c-form__btn-hidden:checked + .p-nav {
+    right: 0;
+}
+
+

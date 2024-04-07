@@ -1,9 +1,31 @@
-const ajaxbtn = document.getElementById("btn-ajax");
-ajaxbtn.addEventListener("click", function(){
+// change-humburger
+const burgerNow = document.getElementById("burger-now");
+
+burgerNow.addEventListener("click", function(){
+    const burgerOpen = "./img/burger-menu.webp";
+    const burgerClose = "./img/x.webp";
+    burgerNow.src = burgerNow.src.includes("x.webp") ? burgerOpen : burgerClose;
+});
+
+
+// darkMode
+const btnDark = document.querySelector(".c-form__btn-darkmode");
+
+btnDark.addEventListener("click", () => {
+    const modeNow = document.documentElement.getAttribute("data-theme");
+    const updatedMode = modeNow === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", updatedMode);
+});
+
+
+
+// fetch
+const btnAjax = document.querySelector(".c-form__btn-ajax");
+btnAjax.addEventListener("click", function(){
     fetch("https://www.jma.go.jp/bosai/forecast/data/forecast/130000.json").then(function(response){
         return response.json();
     }).then(function(data){
-        let result = document.querySelector("#result");
+        let result = document.querySelector(".c-form__btn__result");
         let content = "";
         let datetime ="";
         let count = 0;
@@ -24,23 +46,7 @@ ajaxbtn.addEventListener("click", function(){
     })
 })
 
-
-// darkMode
-const btnDark = document.getElementById("btn-dark");
-
-btnDark.addEventListener("click", () => {
-    const currentMode = document.documentElement.getAttribute("data-theme");
-    const newMode = currentMode === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", newMode);
-});
-
-// darkMode
-
-
-
-
-
-
+// proxy
 
 let data = {
     price: 100, 
@@ -60,6 +66,6 @@ let total = function () {
     return data.price * data.count;
 }
 
-
 console.log(total());
 console.log(proxy.total)
+// proxy

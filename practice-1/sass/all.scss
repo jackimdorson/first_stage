@@ -1,26 +1,25 @@
 /* Foundation
    --------------------------------------------------------- */
 @use "./foundation/base";
+@use "./foundation/mixin";
 
 /* layout
    --------------------------------------------------------- */
-@use "./layout/footer";
 @use "./layout/header";
 @use "./layout/main";
-@use "./layout/wrapper";
+@use "./layout/footer";
 
 /* Object - Component
    --------------------------------------------------------- */
-@use "./object/component/button";
 @use "./object/component/form";
+@use "./object/component/item";
 @use "./object/component/grid";
 
 /* Object - Project
-   --------------------------------------------------------- */
-@use "./object/project/footer";
-@use "./object/project/header";
-@use "./object/project/main";
-@use "./object/project/nav"
+   ---------------------------------------------------------
+   名前空間を一意にすることで、エラーを回避し、異なるディレクトリにあるモジュールを正しく読み込むことができます。*/
 
-/* Project
-   --------------------------------------------------------- */
+@use "./object/project/container";
+@use "./object/project/nav";
+
+
