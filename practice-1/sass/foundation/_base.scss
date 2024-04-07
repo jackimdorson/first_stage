@@ -1,66 +1,23 @@
-:root {
-    --light-bg-color: lightgrey;
-    --light-font-color: black;
-    --dark-bg-color: dimgrey;
-    --dark-font-color: white;
-  }
+@use "./mixin" as * ;
 
-  [data-theme="dark"] {
-    background-color: var(--dark-bg-color);
-    color: var(--dark-font-color);
-    font: var(--dark-font-color);
-    & a {
-        color: green;
-    }
-
-  }
-
-html {
-    background-color: var(--light-bg-color);
-    color: var(--light-font-color);
+[data-theme="dark"] {
+  background-color: $black;
+  color: $white;
 }
 
-// h1 {
-//     background-color: white;
-//     color: black;
-// }
+// original css_reset
 
-// h1[data-theme="dark"] {
-//     background-color: black;
-//     color: white;
-// }
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-// @media (prefers-color-scheme: dark) {
-//     h1 {
-//         background-color: black;
-//         color: white;
-//     }
-// }
+html {
+  font-family: serif;
+  line-height: 1.0;
+  background-color: $light-gray;
+  color: $black;
+  font-size: 20px;
+}
 
-// @media (prefers-color-scheme: light) {
-//     h1 {
-//         background-color: white;
-//         color: black;
-//     }
-// }
-
-
-
-
-
-
-
-// :root {
-//     --text-color: blue;
-// }
-
-
-// @media (prefers-color-scheme: dark) {
-//     :root {
-//         --text-color:red;
-//     }
-// }
-
-// body {
-//     color: var(--text-color);
-// }

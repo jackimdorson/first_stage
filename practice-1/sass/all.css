@@ -1,0 +1,157 @@
+@charset "UTF-8";
+/* Foundation
+   --------------------------------------------------------- */
+[data-theme=dark] {
+  background-color: black;
+  color: white;
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: serif;
+  line-height: 1;
+  background-color: lightgray;
+  color: black;
+  font-size: 20px;
+}
+
+/* layout
+   --------------------------------------------------------- */
+header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: dimgray;
+  padding: 0 1.5%;
+}
+header a {
+  text-decoration: none;
+  color: unset;
+}
+
+#c-form__btn-hidden {
+  display: none;
+}
+
+#burger-now {
+  position: relative;
+  z-index: 2;
+}
+
+.p-nav {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  height: 100vh;
+  right: -200px;
+  width: 200px;
+  background-color: dimgray;
+  transition: all 0.3s 0s ease-in-out;
+  text-align: center;
+  padding-top: 10%;
+}
+.p-nav a {
+  display: inline-block;
+  width: 50%;
+  margin: 0 auto;
+  height: 100px;
+}
+
+#c-form__btn-hidden:checked + .p-nav {
+  right: 0;
+}
+
+.l-main {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.p-container__top {
+  height: 250px;
+  text-align: center;
+  position: relative;
+  background-color: lightblue;
+}
+.p-container__top h1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.p-container__small {
+  padding: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.p-container__small .c-item {
+  width: 100%;
+  display: flex;
+}
+.p-container__small .c-item img {
+  flex: 1 50px;
+  width: 80px;
+  height: 50px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.p-container__small .c-item .c-item__promo {
+  background-color: lightblue;
+  flex: 8 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.p-container__large {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.p-container__large .c-item {
+  position: relative;
+  width: 100%;
+  height: 250px;
+}
+.p-container__large .c-item:nth-child(1) {
+  position: absolute;
+  display: inline-block;
+  width: 100%;
+  height: 250px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  z-index: 2;
+}
+.p-container__large .c-item:nth-child(2) {
+  display: inline-block;
+  position: absolute;
+  z-index: 3;
+  width: 16px;
+  height: 16px;
+  top: 0;
+  right: 0;
+}
+.p-container__large .c-item .c-item__title {
+  position: absolute;
+  bottom: 0;
+  z-index: 3;
+}
+
+main a {
+  -webkit-text-decoration: underline dotted dimgray;
+          text-decoration: underline dotted dimgray;
+}
+
+/* Object - Component
+   --------------------------------------------------------- */
+/* Object - Project
+   ---------------------------------------------------------
+   名前空間を一意にすることで、エラーを回避し、異なるディレクトリにあるモジュールを正しく読み込むことができます。*//*# sourceMappingURL=all.css.map */
