@@ -28,11 +28,18 @@ html img {
 
 /* layout
    --------------------------------------------------------- */
+main a {
+  -webkit-text-decoration: underline dotted dimgray;
+          text-decoration: underline dotted dimgray;
+}
+
+/* Object - Component
+   --------------------------------------------------------- */
 header {
   position: relative;
   height: 60px;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto auto 40%;
   align-items: center;
   background-color: darkgray;
   padding: 0 1.5%;
@@ -40,6 +47,10 @@ header {
 header a {
   text-decoration: none;
   color: unset;
+}
+
+.p-container__right {
+  justify-self: right;
 }
 
 #c-form__btn-hidden {
@@ -96,34 +107,39 @@ header a {
 
 .p-container__small {
   padding: 20px 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  display: grid;
+  row-gap: 20px;
 }
 .p-container__small .c-item {
+  position: relative;
   width: 100%;
-  display: flex;
+  height: 50px;
 }
 .p-container__small .c-item img {
-  flex: 1 50px;
-  max-width: 80px;
-  max-height: 50px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 80px;
+  height: 50px;
   -o-object-fit: cover;
      object-fit: cover;
 }
 .p-container__small .c-item .c-item__promo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 50px;
+  width: calc(100% - 80px);
   background-color: lightblue;
-  flex: 8 50px;
-  display: flex;
-  align-items: center;
   padding-left: 10px;
+  display: grid;
+  align-items: center;
 }
 
 .p-container__large {
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  display: grid;
+  row-gap: 20px;
 }
 .p-container__large .c-item {
   position: relative;
@@ -151,27 +167,32 @@ header a {
   background-color: rgba(255, 255, 255, 0.5);
   width: 100%;
   height: 40px;
-  display: flex;
+  display: grid;
   align-items: center;
-  justify-content: center;
+  justify-items: center;
 }
 
 footer {
   height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 @media (min-width: 600px) {
-  .p-container__small .c-item:nth-child(-n+2) {
-    width: calc(50% - 10px);
+  .p-container__small {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-areas: "figure figure" "full full";
   }
-  .p-container__large .c-item {
-    width: calc(25% - 15px);
+  .p-container__small .c-item:nth-child(3) {
+    grid-area: full;
   }
-  .p-container__large .c-item:nth-last-child(-n+2) {
-    width: calc(50% - 10px);
+  .p-container__large {
+    grid-template-areas: "figure figure figure figure" "figure figure figure figure" "half half half2 half2";
+  }
+  .p-container__large .c-item:nth-last-child(1) {
+    grid-area: half;
+  }
+  .p-container__large .c-item:nth-last-child(2) {
+    grid-area: half2;
   }
   #burger-now {
     display: none;
@@ -183,9 +204,6 @@ footer {
     width: unset;
     height: unset;
     position: unset;
-    display: flex;
-    justify-content: right;
-    align-items: center;
     padding-top: unset;
   }
   .p-nav a {
@@ -194,28 +212,9 @@ footer {
 }
 @media (min-width: 1200px) {
   .p-container__small {
-    flex-wrap: unset;
-  }
-  .p-container__small .c-item {
-    flex: 1 30%;
-  }
-  .p-container__small .c-item:nth-child(1) {
-    flex: 1 calc(30% - 20px);
-  }
-  .p-container__large .c-item {
-    flex: 1 15%;
-  }
-  .p-container__large .c-item:nth-child(5n+1) {
-    flex: 2 30%;
+    grid-template-areas: none;
   }
 }
-main a {
-  -webkit-text-decoration: underline dotted dimgray;
-          text-decoration: underline dotted dimgray;
-}
-
-/* Object - Component
-   --------------------------------------------------------- */
 /* Object - Project
    ---------------------------------------------------------
    名前空間を一意にすることで、エラーを回避し、異なるディレクトリにあるモジュールを正しく読み込むことができます。*//*# sourceMappingURL=all.css.map */
