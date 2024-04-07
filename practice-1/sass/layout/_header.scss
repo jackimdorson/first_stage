@@ -2,6 +2,7 @@
 
 header {
     position: relative;
+    height: 60px;
     a {
         text-decoration: none;
         color: unset;
@@ -9,7 +10,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: $dim-gray;
+    background-color: $dark-gray;
     padding: 0 1.5%;
 }
 
@@ -19,17 +20,17 @@ header {
 
 #burger-now {
     position: relative;
-    z-index: 2;
+    z-index: 10;
 }
 
 .p-nav {
     position: fixed;
     top: 0;
-    z-index: 1;
+    z-index: 5;
     height: 100vh;
     right: -200px;
     width: 200px;
-    background-color: $dim-gray;
+    background-color: $dark-gray;
     transition: all 0.3s 0s ease-in-out;
     text-align: center;
     padding-top: 10%;
@@ -46,13 +47,15 @@ header {
 }
 
 
-.l-main {
+.p-container {
     width: 90%;
     margin: 0 auto;
+    max-width: 1200px;
 }
 
 .p-container__top {
     height: 250px;
+    width: 100%;
     text-align: center;
     position: relative;
     background-color: lightblue;
@@ -74,8 +77,8 @@ header {
         display: flex;
         & img {
             flex: 1 50px;
-            width: 80px;
-            height: 50px;
+            max-width: 80px;
+            max-height: 50px;
             object-fit: cover;
         }
         & .c-item__promo {
@@ -96,28 +99,99 @@ header {
     & .c-item {
         position: relative;
         width: 100%;
-        height: 250px;
-        &:nth-child(1) {
+        height: 200px;
+        & img:nth-child(1) {
             position: absolute;
-            display: inline-block;
             width: 100%;
-            height: 250px;
-            object-fit: cover;
-            z-index: 2;
+            height: 200px;
+            z-index: 1;
         }
-        &:nth-child(2) {
-            display: inline-block;
+        & img:nth-child(2) {
             position: absolute;
-            z-index: 3;
-            width: 16px;
-            height: 16px;
+            z-index: 2;
+            width: 36px;
+            height: 36px;
             top: 0;
             right: 0;
         }
         & .c-item__title {
             position: absolute;
             bottom: 0;
-            z-index: 3;
+            z-index: 2;
+            background-color: rgba(255, 255, 255, 0.5);
+            width: 100%;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
 }
+
+
+
+footer {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+@media (min-width: 600px) {
+    .p-container__small {
+        & .c-item:nth-child(-n+2) {
+            width: calc(50% - 10px);
+        }
+    }
+
+    .p-container__large {
+        .c-item {
+            width: calc(25% - 15px);
+        }
+        & .c-item:nth-last-child(-n+2) {
+            width: calc(50% - 10px);
+        }
+    }
+    #burger-now {
+        display: none;
+    }
+    .p-container__right {
+        width: 35%;
+    }
+    .p-nav {
+        width: unset;
+        height: unset;
+        position: unset;
+        display: flex;
+        justify-content: right;
+        align-items: center;
+        padding-top: unset;
+        & a {
+            height: unset;
+        }
+    }
+}
+@media (min-width: 1200px) {
+    .p-container__small {
+        flex-wrap: unset;
+        .c-item {
+            flex: 1 30%;
+        }
+        .c-item:nth-child(1) {
+            flex: 1 calc(30% - 20px);
+        }
+    }
+    .p-container__large {
+        & .c-item {
+            flex: 1 15%;
+        }
+        & .c-item:nth-child(5n + 1){
+            flex: 2 30%;
+        }
+    }
+}
+
+
+
