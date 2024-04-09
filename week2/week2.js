@@ -86,6 +86,7 @@ function func(...data){
 // 重複の有り無しが混ざった要素の中で、全ての重複を無くす方法
 //     let ab = arr.filter((item, index) => arr.indexOf(item) === index);
 //     let ac = Array.from(new Set(arr));
+
 // 重複の有り無しが混ざった要素の中で、重複の無い要素を取得する方法
 //     const ad = arr.filter(x => arr.indexOf(x) === arr.lastIndexOf(x))
 
