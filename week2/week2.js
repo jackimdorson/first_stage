@@ -57,25 +57,38 @@ function book(consultants, hour, duration, criteria){
 
 function func(...data){
     // your code here
-      const result = [];
+    //   const result = [];
     //   for (const eachData of data) {
     //         const middleNum = Math.trunc(eachData.length / 2);
     //         const middleStr = eachData.charAt(middleNum);
     //         middleStrSum += middleStr;
-
-        for (let i = 0; i < data.length; i++) {
-            const middleNum = Math.trunc(data[i].length / 2);
-            const middleStr = data[i].charAt(middleNum);
-            result.push(middleStr);
+    const fullName = Array.from(data);
+    const middleChar = fullName.map(function(name){
+        const order = Number.parseInt(name.length / 2);
+        const char = name[order]
+        return char;
+    })
+    const uniqChar = middleChar.filter(char => middleChar.indexOf(char) === middleChar.lastIndexOf(char));
+    const result = fullName.find(function(name){
+        for (let i = 0; i < uniqChar.length; i++){
+            name[i].includes(uniqChar[i]);
         }
-        const abc = result.filter(res => result.indexOf(res) === result.lastIndexOf(res));
-        const bdf = abc.toString();
-        let index ="";
-        for (let i = 0; i < data.length; i++) {
-            index = data[0].indexOf(bdf);
-        }
-        console.log(data[index]);
-    }
+    })
+    console.log(result);
+}
+    //     for (let i = 0; i < data.length; i++) {
+    //         const middleNum = Math.trunc(data[i].length / 2);
+    //         const middleStr = data[i].charAt(middleNum);
+    //         result.push(middleStr);
+    //     }
+    //     const abc = result.filter(res => result.indexOf(res) === result.lastIndexOf(res));
+    //     const bdf = abc.toString();
+    //     let index ="";
+    //     for (let i = 0; i < data.length; i++) {
+    //         index = data[0].indexOf(bdf);
+    //     }
+    //     console.log(data[index]);
+    // }
 
     func("彭大牆", "陳王明雅", "吳明"); // print 彭大牆
     func("郭靜雅", "王立強", "郭林靜宜", "郭立恆", "林花花"); // print 林花花
