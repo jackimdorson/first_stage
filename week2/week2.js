@@ -35,9 +35,49 @@ function findAndPrint(messages, currentStation){
 // Task2
 
 // your code here, maybe
+let aDay = [];
+let total = 0;
+for (let i =1; i <= 24; i++) {
+    total += 1;
+    aDay.push(total);
+}
+
 function book(consultants, hour, duration, criteria){
     // your code here
+    consultants.forEach(consultant => {
+        consultant["time"]= aDay;
+    })
+
+    if (criteria === "price") {
+        const sortedConsul = [...consultants].sort((m, n) => m.price - n.price);
+        const endTime = hour + duration -1
+        let needTime = [];
+        for (let i = hour; i <= endTime; i++) {
+            needTime.push(i);
+        }
+        const checkTime = needTime.every(neTime => sortedConsul[0].time.includes(neTime));
+
+        if (checkTime) {
+            // console.log(sortedConsul[0].name);
+            const test = sortedConsul[0].time.toSpliced(hour-1,duration);
+
+            // priceを選択　→ 時間がある　→
+            console.log(needTime);
+            console.log(test);
+
+        } else {
+            console.log("noooooo");
+        }
+
+    } else {
+        const sortedConsul = [...consultants].sort((m, n) => n.rate - m.rate);
+        // sortedConsul[0]
+        // console.log(sortedConsul);
     }
+
+
+
+}
     const consultants=[
     {"name":"John", "rate":4.5, "price":1000},
     {"name":"Bob", "rate":3, "price":1200},
@@ -57,11 +97,6 @@ function book(consultants, hour, duration, criteria){
 
 function func(...data){
     // your code here
-    //   const result = [];
-    //   for (const eachData of data) {
-    //         const middleNum = Math.trunc(eachData.length / 2);
-    //         const middleStr = eachData.charAt(middleNum);
-    //         middleStrSum += middleStr;
     const fullName = Array.from(data);
     const middleChar = fullName.map(function(name){
         const order = Number.parseInt(name.length / 2);
@@ -69,39 +104,18 @@ function func(...data){
         return char;
     })
     const uniqChar = middleChar.filter(char => middleChar.indexOf(char) === middleChar.lastIndexOf(char));
-    const result = fullName.find(function(name){
-        for (let i = 0; i < uniqChar.length; i++){
-            name[i].includes(uniqChar[i]);
-        }
-    })
-    console.log(result);
+    const result = fullName.find(word => word.includes(uniqChar));
+    if (uniqChar.length === 0) {
+        console.log("沒有")
+    } else {
+        console.log(result)
+    }
 }
-    //     for (let i = 0; i < data.length; i++) {
-    //         const middleNum = Math.trunc(data[i].length / 2);
-    //         const middleStr = data[i].charAt(middleNum);
-    //         result.push(middleStr);
-    //     }
-    //     const abc = result.filter(res => result.indexOf(res) === result.lastIndexOf(res));
-    //     const bdf = abc.toString();
-    //     let index ="";
-    //     for (let i = 0; i < data.length; i++) {
-    //         index = data[0].indexOf(bdf);
-    //     }
-    //     console.log(data[index]);
-    // }
-
     func("彭大牆", "陳王明雅", "吳明"); // print 彭大牆
     func("郭靜雅", "王立強", "郭林靜宜", "郭立恆", "林花花"); // print 林花花
     func("郭宣雅", "林靜宜", "郭宣恆", "林靜花"); // print 沒有
     func("郭宣雅", "夏曼藍波安", "郭宣恆"); // print 夏曼藍波安
 
-
-// 重複の有り無しが混ざった要素の中で、全ての重複を無くす方法
-//     let ab = arr.filter((item, index) => arr.indexOf(item) === index);
-//     let ac = Array.from(new Set(arr));
-
-// 重複の有り無しが混ざった要素の中で、重複の無い要素を取得する方法
-//     const ad = arr.filter(x => arr.indexOf(x) === arr.lastIndexOf(x))
 
 // Task4
 
