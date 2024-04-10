@@ -35,9 +35,49 @@ function findAndPrint(messages, currentStation){
 // Task2
 
 // your code here, maybe
+let aDay = [];
+let total = 0;
+for (let i =1; i <= 24; i++) {
+    total += 1;
+    aDay.push(total);
+}
+
 function book(consultants, hour, duration, criteria){
     // your code here
+    consultants.forEach(consultant => {
+        consultant["time"]= aDay;
+    })
+
+    if (criteria === "price") {
+        const sortedConsul = [...consultants].sort((m, n) => m.price - n.price);
+        const endTime = hour + duration -1
+        let needTime = [];
+        for (let i = hour; i <= endTime; i++) {
+            needTime.push(i);
+        }
+        const checkTime = needTime.every(neTime => sortedConsul[0].time.includes(neTime));
+
+        if (checkTime) {
+            // console.log(sortedConsul[0].name);
+            const test = sortedConsul[0].time.toSpliced(hour-1,duration);
+
+            // priceを選択　→ 時間がある　→
+            console.log(needTime);
+            console.log(test);
+
+        } else {
+            console.log("noooooo");
+        }
+
+    } else {
+        const sortedConsul = [...consultants].sort((m, n) => n.rate - m.rate);
+        // sortedConsul[0]
+        // console.log(sortedConsul);
     }
+
+
+
+}
     const consultants=[
     {"name":"John", "rate":4.5, "price":1000},
     {"name":"Bob", "rate":3, "price":1200},
