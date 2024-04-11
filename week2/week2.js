@@ -32,51 +32,157 @@ function findAndPrint(messages, currentStation){
 
 
 
+// // Task2
+
+// // your code here, maybe
+// let aDay = [];
+// let total = 0;
+// for (let i =1; i <= 24; i++) {
+//     total += 1;
+//     aDay.push(total);
+// }
+
+// let finishedConsul = [];
+// for (let i = 0; i < 3; i ++) {
+//     finishedConsul.push([...aDay]);
+// }
+
+// function book(consultants, hour, duration, criteria){
+//     // your code here
+//     const originalConsul = [...consultants];
+
+//     for (let i = 0; i < originalConsul.length; i ++) {
+//         originalConsul[i]["time"] = finishedConsul[i];
+//     }
+
+//     const finishedConsulFunc = function(index) {
+//         finishedConsul[index] = originalConsul[index].time.toSpliced(hour-1, duration);
+//         return finishedConsul;
+//     }
+//     // consultants.forEach(consultant => {
+//     //     consultant["time"]= finishedConsul;
+//     // })
+//     const endTime = hour + duration -1
+//     const needTime = [];
+//     for (let i = hour; i <= endTime; i++) {
+//         needTime.push(i);
+//     }
+
+//     const hasTime = function(index) {
+//         return needTime.every(neTime => originalConsul[index].time.includes(neTime));
+//     }
+
+//     if (criteria === "price") {
+//         const sortedConsul = originalConsul.sort((m, n) => m.price - n.price);
+//         console.log(sortedConsul);
+//         if (hasTime(0)) {
+//             finishedConsulFunc(0);
+//             console.log(finishedConsul[0]);
+//             console.log("nooo1");
+
+//         } else if (hasTime(1)) {
+//             finishedConsulFunc(1);
+//             console.log(sortedConsul[1]);
+//             console.log("nooo2");
+
+//         } else {
+//             finishedConsulFunc(2);
+//             console.log(sortedConsul[2]);
+//             console.log("nooo3");
+//         }
+
+//     } else {
+//         const sortedConsul2 = originalConsul.sort((m, n) => n.rate - m.rate);
+
+//     }
+
+
+
+// }
+//     const consultants=[
+//     {"name":"John", "rate":4.5, "price":1000},
+//     {"name":"Bob", "rate":3, "price":1200},
+//     {"name":"Jenny", "rate":3.8, "price":800}
+//     ];
+//     book(consultants, 15, 1, "price"); // Jenny
+//     book(consultants, 11, 2, "price"); // Jenny
+//     book(consultants, 10, 2, "price"); // John
+//     // book(consultants, 20, 2, "rate"); // John
+//     // book(consultants, 11, 1, "rate"); // Bob
+//     // book(consultants, 11, 2, "rate"); // No Service
+//     // book(consultants, 14, 3, "price"); // John
+
+
+
 // Task2
 
 // your code here, maybe
 let aDay = [];
-let total = 0;
-for (let i =1; i <= 24; i++) {
-    total += 1;
-    aDay.push(total);
+for (let i = 1; i <= 24; i++) {
+    aDay.push(i);
+}
+let finishedConsul = [];
+for (let i = 0; i < 3; i ++) {
+    finishedConsul.push([...aDay]);
 }
 
 function book(consultants, hour, duration, criteria){
-    // your code here
-    consultants.forEach(consultant => {
-        consultant["time"]= aDay;
-    })
 
-    if (criteria === "price") {
-        const sortedConsul = [...consultants].sort((m, n) => m.price - n.price);
-        const endTime = hour + duration -1
-        let needTime = [];
-        for (let i = hour; i <= endTime; i++) {
-            needTime.push(i);
-        }
-        const checkTime = needTime.every(neTime => sortedConsul[0].time.includes(neTime));
-
-        if (checkTime) {
-            // console.log(sortedConsul[0].name);
-            const test = sortedConsul[0].time.toSpliced(hour-1,duration);
-
-            // priceを選択　→ 時間がある　→
-            console.log(needTime);
-            console.log(test);
-
-        } else {
-            console.log("noooooo");
-        }
-
-    } else {
-        const sortedConsul = [...consultants].sort((m, n) => n.rate - m.rate);
-        // sortedConsul[0]
-        // console.log(sortedConsul);
+    const originalConsul = [...consultants];
+    // ↓ ↓ ↓ ↓ ↓ 　設定『時間』property　↓ ↓ ↓ ↓ ↓
+    for (let i = 0; i < originalConsul.length; i ++) {
+        originalConsul[i]["time"] = finishedConsul[i];
+    }
+    // ↓ ↓ ↓ ↓ ↓ 　需要的總時間　↓ ↓ ↓ ↓ ↓
+    const endTime = hour + duration -1;
+    const needTime = [];
+    for (let i = hour; i <= endTime; i++) {
+        needTime.push(i);
     }
 
-
-
+    if (criteria === "price") {
+        const sortedConsul = originalConsul.toSorted((m, n) => m.price - n.price);
+        // ↓ ↓ ↓ ↓ ↓ 　check能否預約　↓ ↓ ↓ ↓ ↓
+        const hasTime = function(index) {
+            return needTime.every(neTime => sortedConsul[index].time.includes(neTime));
+        }
+        // ↓ ↓ ↓ ↓ ↓ 　能預約 -> 刪除時間　↓ ↓ ↓ ↓ ↓
+        const finishedConsulFunc = function(index) {
+            sortedConsul[index].time.splice(hour-1, duration);
+        }
+        if (hasTime(0)) {
+            finishedConsulFunc(0);
+            console.log(sortedConsul[0].name);
+        } else if (hasTime(1)) {
+            finishedConsulFunc(1);
+            console.log(sortedConsul[1].name);
+        } else if (hasTime(2)) {
+            finishedConsulFunc(2);
+            console.log(sortedConsul[2].name);
+        } else {
+            console.log("No Service");
+        }
+    } else {
+        const sortedConsul2 = originalConsul.toSorted((m, n) => n.rate - m.rate);
+        const hasTime2 = function(index) {
+            return needTime.every(neTime => sortedConsul2[index].time.includes(neTime));
+        }
+        const finishedConsulFunc2 = function(index) {
+            sortedConsul2[index].time.splice(hour-1, duration);
+        }
+        if (hasTime2(0)) {
+            finishedConsulFunc2(0);
+            console.log(sortedConsul2[0].name);
+        } else if (hasTime2(1)) {
+            finishedConsulFunc2(1);
+            console.log(sortedConsul2[1].name);
+        } else if (hasTime2(2)) {
+            finishedConsulFunc2(2);
+            console.log(sortedConsul2[2].name);
+        } else {
+            console.log("No Service");
+        }
+    }
 }
     const consultants=[
     {"name":"John", "rate":4.5, "price":1000},
