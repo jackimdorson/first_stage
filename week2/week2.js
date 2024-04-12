@@ -1,21 +1,37 @@
 // Task1
 function findAndPrint(messages, currentStation){
-    // ↓ ↓ ↓ ↓ ↓ 以下是我寫的Code ↓ ↓ ↓ ↓ ↓ 
-    const propArray = Object.keys(messages);
-    if (currentStation === "Wanlong") {
-        console.log(propArray[1]);
-    } else if (currentStation === "Songshan") {
-        console.log(propArray[2]);
-    } else if (currentStation === "Qizhang") {
-        console.log(propArray[3]);
-    } else if (currentStation === "Ximen") {
-        console.log(propArray[0]);
-    } else if (currentStation === "Xindian City Hall") {
-        console.log(propArray[4]);
-    } else {
-        console.log("No Data")
+    const greenLine = ["Songshan", "NanjingSanmin", "Taipei Arena", "Nanjing Fuxing", "Songjiang Nanjing", "Zhongshan", "Beimen", "Ximen", "Xiaonanmen", "Chiang Kai-Shek Memorial Hall", "Guting", "Taipower Building", "Gongguan", "Wanlong", "Jingmei", "Dapinglin", "Qizhang", "Xiaobitan", "Qizhang", "Xindian City Hall", "Xindian"]
+        // [2, "Songshan"], [4, "NanjingSanmin"], [6, "Taipei Arena"], [8, "Nanjing Fuxing"], [10, "Songjiang Nanjing"],
+        // [12, "Zhongshan"], [14, "Beimen"], [16, "Ximen"], [18, "Xiaonanmen"], [20, "Chiang Kai-Shek Memorial Hall"],
+        // [22, "Guting"], [24, "Taipower Building"], [26, "Gongguan"], [28, "Wanlong"], [30, "Jingmei"],
+        // [32, "Dapinglin"], [34, "Qizhang"], [35, "Xiaobitan"], [36, "Xindian City Hall"], [38, "Xindian"]
+    const text = Object.values(messages);
+
+    let  messageSpotArr= [];
+    for (let i = 0; i < text.length; i ++) {
+        let friend = greenLine.findIndex(function(station){
+            return text[i].includes(station);
+        });
+        messageSpotArr.push(friend);
     }
-    // ↑ ↑ ↑ ↑ ↑以上是我寫的Code↑ ↑ ↑ ↑ ↑
+
+    const currentSpot = greenLine.findIndex(function(station){
+        return currentStation.includes(station)
+    })
+
+    // distance與messageSpotArr排列順序相同
+    let distance = [];
+    for (let i = 0; i < messageSpotArr.length; i ++) {
+        const decrease = messageSpotArr[i] - currentSpot
+        const printSpot = Math.abs(decrease);
+        distance.push(printSpot);
+    }
+
+    const sortedDis = distance.toSorted((m, n) => m - n );
+    const indexNum = distance.indexOf(sortedDis[0])
+    const finished = Object.keys(messages)[indexNum];
+    console.log(finished)
+
     }
     const messages={
     "Bob":"I'm at Ximen MRT station.",
