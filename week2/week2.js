@@ -72,8 +72,8 @@ function book(consultants, hour, duration, criteria){
         for (let i = 1; i <= 24; i++) {
             aDayOfnumArr.push(i);
         }
-        const dayRtobjArr = consultants.map(consultant => ({ ...consultant, time: [...aDayOfnumArr] }));
-        consulOfobjArr.push(...dayRtobjArr);
+        const dayOfobjArr = consultants.map(consultant => ({ ...consultant, time: [...aDayOfnumArr] }));
+        consulOfobjArr.push(...dayOfobjArr);
     }
     if (consulOfobjArr.length === 0){
         makeDayRtobjArr();
@@ -86,14 +86,6 @@ function book(consultants, hour, duration, criteria){
             needTimeOfnumArr.push(i);
         }
         return needTimeOfnumArr;
-    }
-
-    if (criteria === "price") {
-        const priceSortOfobjArr = consulOfobjArr.toSorted((m, n) => m.price - n.price);
-        commonRtnon(priceSortOfobjArr);
-    } else {
-        const rateSortOfobjArr = consulOfobjArr.toSorted((m, n) => n.rate - m.rate);
-        commonRtnon(rateSortOfobjArr);
     }
 
     function commonRtnon(sortOfobjArr) {
@@ -115,6 +107,14 @@ function book(consultants, hour, duration, criteria){
         } else {
             console.log("No Service");
         }
+    }
+
+    if (criteria === "price") {
+        const priceSortOfobjArr = consulOfobjArr.toSorted((m, n) => m.price - n.price);
+        commonRtnon(priceSortOfobjArr);
+    } else {
+        const rateSortOfobjArr = consulOfobjArr.toSorted((m, n) => n.rate - m.rate);
+        commonRtnon(rateSortOfobjArr);
     }
 }
 const consultants=[
