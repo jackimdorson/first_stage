@@ -1,7 +1,16 @@
 # Task1
 
 def find_and_print(messages, current_station):
-# your code here
+    station_strls = ["Songshan", "NanjingSanmin", "Taipei Arena", "Nanjing Fuxing", "Songjiang Nanjing", "Zhongshan", "Beimen", "Ximen", "Xiaonanmen", "Chiang Kai-Shek Memorial Hall", "Guting", "Taipower Building", "Gongguan", "Wanlong", "Jingmei", "Dapinglin", "Qizhang", "Xiaobitan", "Qizhang", "Xindian City Hall", "Xindian"]
+    msvalue_strls = list(messages.values())
+    def find_stnidx_rt_num(arg_str):
+        return next((stn_idx_int for stn_idx_int, station_str in enumerate(station_strls) if station_str in arg_str), None)
+    msvalue_idx_intls = list(map(find_stnidx_rt_num, msvalue_strls))
+    current_stnidx_int = find_stnidx_rt_num(current_station)
+    gap_idx_intls = [abs(msvalue_idx_int - current_stnidx_int) for msvalue_idx_int in msvalue_idx_intls]
+    name_idx_int = gap_idx_intls.index(sorted(gap_idx_intls)[0])
+    return print(list(messages.keys())[name_idx_int])
+
 messages={
 "Leslie":"I'm at home near Xiaobitan station.",
 "Bob":"I'm at Ximen MRT station.",
@@ -18,9 +27,56 @@ find_and_print(messages, "Xindian City Hall") # print Vivian
 
 # Task2
 
+consul_objls = []
 # your code here, maybe
 def book(consultants, hour, duration, criteria):
-# your code here
+
+    def make_day_rt_objls ():
+        aday_intls = []
+        i = 1
+        while (i <= 24):
+            aday_intls.append(i)
+            i += 1
+        day_rt_objls = [{"name": consultant["name"], "rate": consultant["rate"], "price": consultant["price"], "time": aday_intls.copy()} for consultant in consultants]
+        consul_objls.append(day_rt_objls)
+    if (len(consul_objls) == 0):
+        make_day_rt_objls()
+
+    def make_needtime_rt_intls():
+        end_time_int = hour + duration -1
+        need_time_intls = []
+        i = 1
+        while (i < end_time_int):
+            need_time_intls.append(i)
+            i += 1
+        return need_time_intls
+
+
+    def common_rt_non(sort_objls):
+            def has_time_rt_bool(idx_int):
+                return all(time_int in sort_objls[idx_int]["time"] for time_int in make_needtime_rt_intls())
+            def booked_rt_objls(idx_int):
+                sort_objls[idx_int] = sort_objls[idx_int]["time"][hour-1:hour-1+duration]
+
+            if (criteria == "price"):
+                price_sort_objls = sorted(consul_objls, key=lambda x: x[2])
+                common_rt_non(price_sort_objls)
+            else:
+                rate_sort_objls = sorted(consul_objls, key=lambda x: x[1], reverse = True)
+                common_rt_non(rate_sort_objls)
+
+            if (has_time_rt_bool(0)):
+                booked_rt_objls(0)
+                print(sort_objls[0].name)
+            elif (has_time_rt_bool(1)):
+                booked_rt_objls(1)
+                print(sort_objls(1).name)
+            elif(has_time_rt_bool(2)):
+                booked_rt_objls(2)
+                print(sort_objls(2).name)
+            else:
+                print("No Service")
+
 consultants=[
 {"name":"John", "rate":4.5, "price":1000},
 {"name":"Bob", "rate":3, "price":1200},
@@ -38,6 +94,15 @@ book(consultants, 14, 3, "price") # John
 # Task3
 
 def func(*data):
+    data_strls = list(data)
+    data_elm_strls = [data_str[len(data_str) // 2] for data_str in data_strls]
+    uniq_strls = [data_elm_str for data_elm_str in data_elm_strls if data_elm_strls.count(data_elm_str) == 1]
+    uniq_dt_str = next((data_str for data_str in data_strls if ''.join(uniq_strls) in data_str), None)
+    if len(uniq_strls) == 0:
+        return print("沒有")
+    else:
+        return print(uniq_dt_str)
+
 # your code here
 func("彭大牆", "陳王明雅", "吳明") # print 彭大牆
 func("郭靜雅", "王立強", "郭林靜宜", "郭立恆", "林花花") # print 林花花
@@ -49,6 +114,17 @@ func("郭宣雅", "夏曼藍波安", "郭宣恆") # print 夏曼藍波安
 
 def get_number(index):
 # your code here
+    ls_intls = [0]
+    ls_int = 0
+    i = 1
+    while (i <= index):
+        if (i % 3 == 0):
+            ls_int -= 1
+        else:
+            ls_int += 4
+        ls_intls.append(ls_int)
+        i += 1
+    return print(ls_intls[index])
 get_number(1) # print 4
 get_number(5) # print 15
 get_number(10) # print 25
@@ -58,6 +134,7 @@ get_number(30) # print 70
 # Task5
 
 def find(spaces, stat, n):
+    pass
 # your code here
 find([3, 1, 5, 4, 3, 2], [0, 1, 0, 1, 1, 1], 2) # print 5
 find([1, 0, 5, 1, 3], [0, 1, 0, 1, 1], 4) # print -1
