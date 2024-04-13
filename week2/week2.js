@@ -245,8 +245,20 @@ function getNumber(index){
 
 // Task5
 
+//===========還沒完成===========
+
 function find(spaces, stat, n){
     // your code here
+    const statOfnumArr = stat.map((staOfnum, idx) => {
+        if (staOfnum === 1) {
+            return idx;
+        }
+    }).filter( e => e !== undefined)
+
+    // cosnt spaceOfnum = spaces.filter((staceOfnum, idx) => {
+
+
+    console.log(statOfnumArr)
     }
     find([3, 1, 5, 4, 3, 2], [0, 1, 0, 1, 1, 1], 2); // print 5
     find([1, 0, 5, 1, 3], [0, 1, 0, 1, 1], 4); // print -1
