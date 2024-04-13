@@ -37,45 +37,52 @@ def book(consultants, hour, duration, criteria):
         while (i <= 24):
             aday_intls.append(i)
             i += 1
-        day_rt_objls = [{"name": consultant["name"], "rate": consultant["rate"], "price": consultant["price"], "time": aday_intls.copy()} for consultant in consultants]
-        consul_objls.append(day_rt_objls)
+        day_objls = [{"name": consultant["name"], "rate": consultant["rate"], "price": consultant["price"], "time": aday_intls.copy()} for consultant in consultants]
+        i = 0
+        while (i < len(day_objls)):
+            consul_objls.append(day_objls[i])
+            i += 1
+
     if (len(consul_objls) == 0):
         make_day_rt_objls()
 
     def make_needtime_rt_intls():
         end_time_int = hour + duration -1
         need_time_intls = []
-        i = 1
-        while (i < end_time_int):
+        i = hour
+        while (i <= end_time_int):
             need_time_intls.append(i)
             i += 1
         return need_time_intls
 
-
     def common_rt_non(sort_objls):
-            def has_time_rt_bool(idx_int):
-                return all(time_int in sort_objls[idx_int]["time"] for time_int in make_needtime_rt_intls())
-            def booked_rt_objls(idx_int):
-                sort_objls[idx_int] = sort_objls[idx_int]["time"][hour-1:hour-1+duration]
+        def has_time_rt_bool(idx_int):
+            return all(time_int in sort_objls[idx_int]["time"] for time_int in make_needtime_rt_intls())
 
-            if (criteria == "price"):
-                price_sort_objls = sorted(consul_objls, key=lambda x: x[2])
-                common_rt_non(price_sort_objls)
-            else:
-                rate_sort_objls = sorted(consul_objls, key=lambda x: x[1], reverse = True)
-                common_rt_non(rate_sort_objls)
+        def booked_rt_objls(idx_int):
 
-            if (has_time_rt_bool(0)):
-                booked_rt_objls(0)
-                print(sort_objls[0].name)
-            elif (has_time_rt_bool(1)):
-                booked_rt_objls(1)
-                print(sort_objls(1).name)
-            elif(has_time_rt_bool(2)):
-                booked_rt_objls(2)
-                print(sort_objls(2).name)
-            else:
-                print("No Service")
+            del sort_objls[idx_int]["time"][hour-1:hour-1+duration]
+
+        if (has_time_rt_bool(0)):
+            booked_rt_objls(0)
+            print(sort_objls[0]["name"])
+
+        elif (has_time_rt_bool(1)):
+            booked_rt_objls(1)
+            print(sort_objls[1]["name"])
+
+        elif (has_time_rt_bool(2)):
+            booked_rt_objls(2)
+            print(sort_objls[2]["name"])
+        else:
+            print("No Service")
+
+    if (criteria == "price"):
+        price_sort_objls = sorted(consul_objls, key=lambda x: x["price"])
+        common_rt_non(price_sort_objls)
+    else:
+        rate_sort_objls = sorted(consul_objls, key=lambda x: x["rate"], reverse=True)
+        common_rt_non(rate_sort_objls)
 
 consultants=[
 {"name":"John", "rate":4.5, "price":1000},

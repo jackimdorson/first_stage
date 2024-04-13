@@ -72,8 +72,8 @@ function book(consultants, hour, duration, criteria){
         for (let i = 1; i <= 24; i++) {
             aDayOfnumArr.push(i);
         }
-        const dayRtobjArr = consultants.map(consultant => ({ ...consultant, time: [...aDayOfnumArr] }));
-        consulOfobjArr.push(...dayRtobjArr);
+        const dayOfobjArr = consultants.map(consultant => ({ ...consultant, time: [...aDayOfnumArr] }));
+        consulOfobjArr.push(...dayOfobjArr);
     }
     if (consulOfobjArr.length === 0){
         makeDayRtobjArr();
@@ -86,14 +86,6 @@ function book(consultants, hour, duration, criteria){
             needTimeOfnumArr.push(i);
         }
         return needTimeOfnumArr;
-    }
-
-    if (criteria === "price") {
-        const priceSortOfobjArr = consulOfobjArr.toSorted((m, n) => m.price - n.price);
-        commonRtnon(priceSortOfobjArr);
-    } else {
-        const rateSortOfobjArr = consulOfobjArr.toSorted((m, n) => n.rate - m.rate);
-        commonRtnon(rateSortOfobjArr);
     }
 
     function commonRtnon(sortOfobjArr) {
@@ -115,6 +107,14 @@ function book(consultants, hour, duration, criteria){
         } else {
             console.log("No Service");
         }
+    }
+
+    if (criteria === "price") {
+        const priceSortOfobjArr = consulOfobjArr.toSorted((m, n) => m.price - n.price);
+        commonRtnon(priceSortOfobjArr);
+    } else {
+        const rateSortOfobjArr = consulOfobjArr.toSorted((m, n) => n.rate - m.rate);
+        commonRtnon(rateSortOfobjArr);
     }
 }
 const consultants=[
@@ -245,8 +245,20 @@ function getNumber(index){
 
 // Task5
 
+//===========還沒完成===========
+
 function find(spaces, stat, n){
     // your code here
+    const statOfnumArr = stat.map((staOfnum, idx) => {
+        if (staOfnum === 1) {
+            return idx;
+        }
+    }).filter( e => e !== undefined)
+
+    // cosnt spaceOfnum = spaces.filter((staceOfnum, idx) => {
+
+
+    console.log(statOfnumArr)
     }
     find([3, 1, 5, 4, 3, 2], [0, 1, 0, 1, 1, 1], 2); // print 5
     find([1, 0, 5, 1, 3], [0, 1, 0, 1, 1], 4); // print -1
