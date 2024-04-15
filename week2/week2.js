@@ -6,10 +6,10 @@ function findAndPrint(messages, currentStation){
     const stationOfstrArr= ["Songshan", "NanjingSanmin", "Taipei Arena", "Nanjing Fuxing", "Songjiang Nanjing", "Zhongshan", "Beimen", "Ximen", "Xiaonanmen", "Chiang Kai-Shek Memorial Hall", "Guting", "Taipower Building", "Gongguan", "Wanlong", "Jingmei", "Dapinglin", "Qizhang", "Xiaobitan", "Qizhang", "Xindian City Hall", "Xindian"]
     const msValueOfstrArr = Object.values(messages);
     const findStnIdxRtnum = function(argOfstr){
-        return stationOfstrArr.findIndex(stationOfstr=>argOfstr.includes(stationOfstr))
+        return stationOfstrArr.findIndex(stationOfstr=>argOfstr.includes(stationOfstr));
     }
     const msValIdxOfnumArr = msValueOfstrArr.map(msValOfstr=>{
-        return findStnIdxRtnum(msValOfstr)
+        return findStnIdxRtnum(msValOfstr);
     })
     const currentStnIdxOfnum = findStnIdxRtnum(currentStation);
 
@@ -18,7 +18,7 @@ function findAndPrint(messages, currentStation){
     })
 
     const nameIdxOfnum = gapIdxOfnumArr.indexOf(gapIdxOfnumArr.toSorted((m,n)=>m - n)[0]);
-    return console.log(Object.keys(messages)[nameIdxOfnum])
+    return console.log(Object.keys(messages)[nameIdxOfnum]);
 
 // 第一次完成時code, 留紀念用
     // let  messageSpotArr= [];
@@ -46,19 +46,19 @@ function findAndPrint(messages, currentStation){
     // const finished = Object.keys(messages)[indexNum];
     // console.log(finished)
 
-    }
-    const messages={
-    "Bob":"I'm at Ximen MRT station.",
-    "Mary":"I have a drink near Jingmei MRT station.",
-    "Copper":"I just saw a concert at Taipei Arena.",
-    "Leslie":"I'm at home near Xiaobitan station.",
-    "Vivian":"I'm at Xindian station waiting for you."
-    };
-    findAndPrint(messages, "Wanlong"); // print Mary
-    findAndPrint(messages, "Songshan"); // print Copper
-    findAndPrint(messages, "Qizhang"); // print Leslie
-    findAndPrint(messages, "Ximen"); // print Bob
-    findAndPrint(messages, "Xindian City Hall"); // print Vivian
+}
+const messages={
+"Bob":"I'm at Ximen MRT station.",
+"Mary":"I have a drink near Jingmei MRT station.",
+"Copper":"I just saw a concert at Taipei Arena.",
+"Leslie":"I'm at home near Xiaobitan station.",
+"Vivian":"I'm at Xindian station waiting for you."
+};
+findAndPrint(messages, "Wanlong"); // print Mary
+findAndPrint(messages, "Songshan"); // print Copper
+findAndPrint(messages, "Qizhang"); // print Leslie
+findAndPrint(messages, "Ximen"); // print Bob
+findAndPrint(messages, "Xindian City Hall"); // print Vivian
 
 
 // Task2
@@ -213,10 +213,10 @@ function func(...data){
         return console.log(uniqDtOfstr)
     }
 }
-    func("彭大牆", "陳王明雅", "吳明"); // print 彭大牆
-    func("郭靜雅", "王立強", "郭林靜宜", "郭立恆", "林花花"); // print 林花花
-    func("郭宣雅", "林靜宜", "郭宣恆", "林靜花"); // print 沒有
-    func("郭宣雅", "夏曼藍波安", "郭宣恆"); // print 夏曼藍波安
+func("彭大牆", "陳王明雅", "吳明"); // print 彭大牆
+func("郭靜雅", "王立強", "郭林靜宜", "郭立恆", "林花花"); // print 林花花
+func("郭宣雅", "林靜宜", "郭宣恆", "林靜花"); // print 沒有
+func("郭宣雅", "夏曼藍波安", "郭宣恆"); // print 夏曼藍波安
 
 
 // Task4
@@ -236,10 +236,10 @@ function getNumber(index){
     return console.log(arrOfnumArr[index]);
 
  }
-    getNumber(1); // print 4
-    getNumber(5); // print 15
-    getNumber(10); // print 25
-    getNumber(30); // print 70
+getNumber(1); // print 4
+getNumber(5); // print 15
+getNumber(10); // print 25
+getNumber(30); // print 70
 
 
 
@@ -255,13 +255,13 @@ function find(spaces, stat, n){
         }
     }).filter( e => e !== undefined)
 
-    // cosnt spaceOfnum = spaces.filter((staceOfnum, idx) => {
-
-
+    const spaceOfnum = spaces.filter((staceOfnum, idx) => {
+        return spaces.(staceOfnum[idx])
+    })
     console.log(statOfnumArr)
     }
-    find([3, 1, 5, 4, 3, 2], [0, 1, 0, 1, 1, 1], 2); // print 5
-    find([1, 0, 5, 1, 3], [0, 1, 0, 1, 1], 4); // print -1
-    find([4, 6, 5, 8], [0, 1, 1, 1], 4); // print 2
+find([3, 1, 5, 4, 3, 2], [0, 1, 0, 1, 1, 1], 2); // print 5
+find([1, 0, 5, 1, 3], [0, 1, 0, 1, 1], 4); // print -1
+find([4, 6, 5, 8], [0, 1, 1, 1], 4); // print 2
 
 
