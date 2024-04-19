@@ -96,19 +96,15 @@ header a {
   gap: 20px;
 }
 .p-container__small .c-item {
+  background-color: lightblue;
   width: 100%;
   display: flex;
 }
 .p-container__small .c-item img {
-  flex: 1 50px;
-  max-width: 80px;
-  max-height: 50px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  width: 80px;
+  height: 50px;
 }
 .p-container__small .c-item .c-item__promo {
-  background-color: lightblue;
-  flex: 8 50px;
   display: flex;
   align-items: center;
   padding-left: 10px;
@@ -131,14 +127,6 @@ header a {
   height: 200px;
   z-index: 1;
 }
-.p-container__large .c-item img:nth-child(2) {
-  position: absolute;
-  z-index: 2;
-  width: 36px;
-  height: 36px;
-  top: 0;
-  right: 0;
-}
 .p-container__large .c-item .c-item__title {
   position: absolute;
   bottom: 0;
@@ -149,6 +137,35 @@ header a {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0 4%;
+}
+.p-container__large .c-item .c-item__title span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.p-container__large .c-item img:nth-child(3) {
+  position: absolute;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  top: 0;
+  right: 0;
+}
+
+#load-more {
+  margin-top: 20px;
+}
+#load-more span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: gray;
+  color: white;
+  width: 120px;
+  height: 50px;
+  margin: 0 auto;
+  border-radius: 6px;
 }
 
 footer {

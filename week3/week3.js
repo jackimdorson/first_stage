@@ -1,19 +1,9 @@
-// fetch().then(function(response){
-//     return response.text();
-// }).then(function(data){
-//     console.log(data);
-// });
-
-// change-humburger
 const burgerNow = document.getElementById("burger-now");
-
 burgerNow.addEventListener("click", function(){
     const burgerOpen = "./img/burger-menu.webp";
     const burgerClose = "./img/x.webp";
     burgerNow.src = burgerNow.src.includes("x.webp") ? burgerOpen : burgerClose;
 });
-
-
 // darkMode
 const btnDark = document.querySelector(".c-form__btn-darkmode");
 
@@ -23,53 +13,135 @@ btnDark.addEventListener("click", () => {
     document.documentElement.setAttribute("data-theme", updatedMode);
 });
 
-// jsonDataの取得
+// 取得json資料
 async function fetchData(){
     const response = await fetch("https://padax.github.io/taipei-day-trip-resources/taipei-attractions-assignment-1");
     const data = await response.json();
     return data;
 }
-
 async function makeSmall() {
     const dataJson = await fetchData();
     const resultsOfobjArr = dataJson.data.results;
 
     // stitle, fileObjの作成　　{ stitle: ["spot1", "spot2", "spot3"] }
-    let stitleOfobj = {"stitle": []};
-    let fileOfobj = {"filelist": []};
+    const stitleOfobj = {"stitle": []};
+    const fileOfobj = {"filelist": []};
     for (let resultsOfobj of resultsOfobjArr) {
         stitleOfobj["stitle"].push(resultsOfobj.stitle);
-
         const fileOfstr = resultsOfobj["filelist"];
         const regex = /https:\/\/.*?(?=https:\/\/|$)/g;
         const fileMatchOfstr = fileOfstr.match(regex);
-        fileOfobj["filelist"].push(fileMatchOfstr)
+        fileOfobj["filelist"].push(fileMatchOfstr);
     }
-
 
     // htmlの作成
-    const container = document.querySelector(".p-container__small");
+    const containerSm = document.querySelector(".p-container__small");
+    const containerBg = document.querySelector(".p-container__large");
+    const loadMoreBtn = document.getElementById("load-more");
 
-    for(let i = 0; i <= 2; i++) {
-
-        const figure = document.createElement('figure');
-        figure.classList.add('c-item');
-
-        const img = document.createElement('img');
-        // for (let eachFile of fileOfobj["filelist"]){
-            let eachFile = fileOfobj["filelist"][i][0]
+    let currentIndex = 0;
+    function loadMoreItems(arg="noInit"){
+        const totalItems = resultsOfobjArr.length;
+        const itemsPerLoad = 10;
+        // 計算顯示範圍
+        const start = currentIndex;
+        let end = Math.min(currentIndex + itemsPerLoad, totalItems);
+        if(arg==="init"){
+            end = 13;
+        }
+        for (let i = start; i < end; i++) {
+            const figure = document.createElement('figure');
+            figure.classList.add('c-item');
+            const img = document.createElement('img');
+            const eachFile = fileOfobj["filelist"][i][0];
             img.src = eachFile;
-            img.alt = "加油圖"
+            img.alt = "美麗景點";
+            figure.appendChild(img);
+            const figcaption = document.createElement('figcaption');
+            const span = document.createElement('span');
+            span.textContent = stitleOfobj["stitle"][i];
+            figcaption.appendChild(span);
+            figure.appendChild(figcaption);
+            if (i < 3 && arg==="init") {
+                figcaption.classList.add('c-item__promo');
+                containerSm.appendChild(figure);
+            } else {
+                figcaption.classList.add('c-item__title');
+                const star = document.createElement('img');
+                star.src = "./img/star.webp";
+                star.alt = "星星";
+                figure.appendChild(star);
+                containerBg.appendChild(figure);
+            }
+        }
+        currentIndex = end;
 
-        figure.appendChild(img);
+        if(currentIndex >= totalItems) {
+            loadMoreBtn.style.display = 'none';
+        }
 
-        const figcaption = document.createElement('figcaption');
-        figcaption.classList.add('c-item__promo');
-        figcaption.textContent = stitleOfobj["stitle"][i];
-        figure.appendChild(figcaption);
-
-        container.appendChild(figure);
     }
+    let loadSpan = document.createElement('span');
+    loadSpan.textContent = "Load More";
+    loadMoreBtn.appendChild(loadSpan);
+    const lfooter = document.querySelector(".l-footer");
+    let ptag = document.createElement('p');
+    ptag.textContent = "&copy; copyright 2024 by Jack";
+    lfooter.appendChild(ptag);
+
+
+
+    // function makeContainer (small, big) {
+    //     const needItems = small + big;
+    //     for(let i=0; i < needItems; i++) {
+    //         const figure = document.createElement('figure');
+    //         figure.classList.add('c-item');
+    //         const img = document.createElement('img');
+    //         const eachFile = fileOfobj["filelist"][i][0];
+    //         img.src = eachFile;
+    //         img.alt = "美麗景點";
+    //         figure.appendChild(img);
+    //         const figcaption = document.createElement('figcaption');
+    //         const span = document.createElement('span');
+    //         span.textContent = stitleOfobj["stitle"][i];
+    //         figcaption.appendChild(span);
+    //         figure.appendChild(figcaption);
+    //         if (i < 3) {
+    //             figcaption.classList.add('c-item__promo');
+    //             containerSm.appendChild(figure);
+    //         } else {
+    //             figcaption.classList.add('c-item__title');
+    //             const star = document.createElement('img');
+    //             star.src = "./img/star.webp";
+    //             star.alt = "星星";
+    //             figure.appendChild(star);
+    //             containerBg.appendChild(figure);
+    //         }
+    //     }
+    // }
+    // makeContainer(3, 10)  // 3つ必要
+
+    // function loadMoreItems(){
+    //     const totalItems = resultsOfobjArr.length;
+    //     const itemsPerLoad = 10;
+    //     // 計算顯示範圍
+    //     const start = currentIndex;
+    //     const end = Math.min(currentIndex + itemsPerLoad, totalItems);
+
+    //     for (let i = start; i < end; i++) {
+
+    //     }
+    //     currentIndex = end;
+
+    //     if(currentIndex >= totalItems) {
+    //         loadMoreBtn.style.display = 'none';
+    //     }
+
+    // }
+    loadMoreItems("init");
+
+    loadMoreBtn.addEventListener('click', loadMoreItems);
+
 }
 window.addEventListener('load', makeSmall);
 
