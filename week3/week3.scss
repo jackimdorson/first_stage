@@ -1,6 +1,5 @@
 @use "../practice/p-week1/sass/foundation/base" as *;
 @use "../practice/p-week1/sass/foundation/mixin" as *;
-
 header {
     position: relative;
     height: 60px;
@@ -162,13 +161,21 @@ footer {
             width: calc(50% - 10px);
         }
     }
-
     .p-container__large {
-        .c-item {
+        & .c-item {
             width: calc(25% - 15px);
         }
         & .c-item:nth-last-child(-n+2) {
             width: calc(50% - 10px);
+        }
+        & .c-item:nth-last-child(1):nth-child(odd) {
+            width: 100%;
+        }
+        & .c-item:nth-last-child(2):nth-child(even) {
+            width: calc(75% - 5px);
+        }
+        & .c-item:nth-child(19), .c-item:nth-child(20), .c-item:nth-child(39), .c-item:nth-child(40){
+            width: calc(25% - 15px);
         }
     }
     #burger-now {
@@ -193,10 +200,10 @@ footer {
 @media (min-width: 1200px) {
     .p-container__small {
         flex-wrap: unset;
-        .c-item {
+        & .c-item {
             flex: 1 30%;
         }
-        .c-item:nth-child(1) {
+        & .c-item:nth-child(1) {
             flex: 1 calc(30% - 20px);
         }
     }
