@@ -185,6 +185,15 @@ footer {
   .p-container__large .c-item:nth-last-child(-n+2) {
     width: calc(50% - 10px);
   }
+  .p-container__large .c-item:nth-last-child(1):nth-child(odd) {
+    width: 100%;
+  }
+  .p-container__large .c-item:nth-last-child(2):nth-child(even) {
+    width: calc(75% - 5px);
+  }
+  .p-container__large .c-item:nth-child(19), .p-container__large .c-item:nth-child(20), .p-container__large .c-item:nth-child(39), .p-container__large .c-item:nth-child(40) {
+    width: calc(25% - 15px);
+  }
   #burger-now {
     display: none;
   }
