@@ -36,8 +36,8 @@ with open("spot.csv", "w", encoding="utf-8") as spot_csv:
                        f"{results_spot_obj["longitude"]},"
                        f"{results_spot_obj["latitude"]},"
                        f"{filelist_ls[0]}\n")
+
 with open("mrt.csv", "w", encoding="utf-8") as mrt_csv:
-    for data_mrt_obj in data_mrt_objls:
-        mrt = data_mrt_obj["MRT"]
-        mrt_csv.write(f"{mrt},"
-                      f"{','.join(mrt_dic[mrt])}\n")
+    for key, items in mrt_dic.items():
+        items_str = ','.join(items)
+        mrt_csv.write(f"{key},{items_str}\n")
