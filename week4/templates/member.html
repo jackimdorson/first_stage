@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <title>Member Deetails</title>
+        <link rel="stylesheet" href="{{ url_for('static', path='/week4.css') }}"> <!-- statiffileをimportしていると、自動的にそこで設定したdirを返す為、url_forはstaticにする必要あり-->
+    </body>
+    </head>
+    <body>
+        <h1>Member Details</h1>
+        <p>Member ID: {{ session_value }}</p>
+        <h2><a href="{{ url_for('read_user', user_id='bob') }}">session ID: {{ id }}</a></h2>  <!-- 第一引数は関数を、第二引数は関数の引数を呼び出し-->
+
+        <form action="{{ url_for('read_show') }}">
+            姓名<input type="text" name="name">
+            <button>送出</button>
+        </form>
+        <hr>
+        <form action="{{ url_for('read_calc')}}", method="POST">
+            數字<input type="number" name="max">
+            <button>送出</button>
+        </form>
+        <hr>
+        <img src="../static/fg.jpeg" alt="ないです">
+
+    </body>
+</html>
+
