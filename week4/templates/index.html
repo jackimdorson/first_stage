@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入系統</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='week4.css') }}">
+</head>
+<body>
+    <h2>歡迎光臨，請輸入帳號密碼</h2>
+    <h3>登入系統</h3>
+    <form action="/signin", method="POST" id="form">
+        <div class="form-group">
+            <label for="account">帳號</label>
+            <input type="text" name="account" id="account">
+        </div>
+        <div class="form-group">
+            <label for="password">密碼</label>
+            <input type="password" name="password" id="password">
+        </div>
+
+        <div class="form-group">
+            <label for="check">同意條款</label>
+            <input type="checkbox" name="check" id="check">
+        </div>
+        <button type="submit">登入</button>
+    </form>
+    <script src="{{ url_for('static', path='week4.js') }}"></script>
+</body>
+</html>
