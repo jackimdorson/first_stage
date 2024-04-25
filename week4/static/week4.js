@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function(){
     })
 })
 
-
 function change2HalfChar(input){
     input.addEventListener("input", function(){
         input.value = input.value.replace(/[０-９]/g, function(str){
@@ -31,11 +30,8 @@ function showPsw(){
             psw.type = "password";
         }
     })
-
 }
 showPsw();
-
-
 
 
 document.addEventListener("DOMContentLoaded", function(){
@@ -49,3 +45,11 @@ document.addEventListener("DOMContentLoaded", function(){
     })
 })
 
+const visible = document.getElementById("show-psw");
+visible.addEventListener("click", function(){
+    if (visible.src.includes("invisible")){
+        visible.src = "../static/img/visible.webp";
+    } else {
+        visible.src = "../static/img/invisible.webp";
+    }
+})
