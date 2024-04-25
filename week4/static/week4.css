@@ -1,20 +1,19 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: serif;
 }
 
 header {
     height: 60px;
     color: white;
-    background-color: rgb(40, 30, 87);
+    background-color: rgb(40, 30, 90);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 section {
-    max-width: 220px;
+    max-width: 230px;
     margin: 0 auto;
 }
 
@@ -29,6 +28,9 @@ h3 {
 
 .form-check {
     text-align: center;
+}
+#check {
+    vertical-align: middle;
 }
 
 button {
@@ -52,4 +54,9 @@ img {
     width: 24px;
     height: 24px;
     vertical-align: middle;
+}
+
+.link-box {
+    padding-top: 15px;
+    text-align: center;
 }

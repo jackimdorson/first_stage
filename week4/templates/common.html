@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ h2 }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='week4.css') }}">
+</head>
+<body>
+    <header>
+        <h2>{{ h2 }}</h2>
+    </header>
+    <main>
+        <section>
+            <h3>{{ message }}</h3>
+            {% if link_url %}
+                <div class="link-box">
+                    <a href="{{ url_for(link_url) }}">{{ link_text }}</a>
+                </div>
+            {% else %}
+                    <form action="/signin" method="POST" id="form">
+                        <div class="form-group">
+                            <label for="account">帳號</label>
+                            <input type="text" name="account" id="account">
+                        </div>
+                        <div class="form-group">
+                            <label for="psw">密碼</label>
+                            <input type="password" name="psw" id="psw">
+                            <img src="../static/img/invisible.webp" alt="invisible" id="show-psw">
+                        </div>
+                        <div class="form-group form-check">
+                            <label for="check">同意條款</label>
+                            <input type="checkbox" name="check" id="check">
+                        </div>
+                        <button type="submit">登入</button>
+                    </form>
+                </section>
+                <hr>
+                <section>
+                    <h3>計算正整數的平方</h3>
+                    <form action="/square" id="square-form">
+                        <div class="form-group">
+                            <label for="square">正整數</label>
+                            <input type="number" name="square" id="square">
+                        </div>
+                        <button type="submit">計算</button>
+                    </form>
+            {% endif %}
+        </section>
+    </main>
+    <script src="{{ url_for('static', path='week4.js') }}"></script>
+</body>
+</html>
