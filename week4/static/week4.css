@@ -1,13 +1,10 @@
 * {
     margin: 0;
     padding: 0;
+    font-family: serif;
 }
 
-body {
-    text-align: center;
-}
-
-h2 {
+header {
     height: 60px;
     color: white;
     background-color: rgb(40, 30, 87);
@@ -16,16 +13,43 @@ h2 {
     align-items: center;
 }
 
-h3 {
-    margin-top: 20px;
-    margin-bottom: 5px;
+section {
+    max-width: 220px;
+    margin: 0 auto;
 }
 
-div {
+h3 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.form-group {
     padding: 4px;
 }
 
-button {
-    padding: 4px 8px;
+.form-check {
+    text-align: center;
 }
 
+button {
+    padding: 3px 8px;
+    border-radius: 3px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 5px;
+}
+
+hr {
+    margin: 30px 0;
+}
+
+input {
+    padding-left: 3px;
+    height: 20px;
+}
+
+img {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+}

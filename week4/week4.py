@@ -33,6 +33,7 @@ def root(request:Request):
 @app.post("/signin", response_class=HTMLResponse)
 def signin(request:Request, account:str=Form(None), password:str=Form(None)):     # Form(...)...如果空,自動使用fastAPI的error, Form(None)如果空,使用自己設定的error
     if account == "test" and password == "test":
+        request.session["SIGNED-IN"]="TRUE"
         return RedirectResponse(url = "/member", status_code=303) #303=改成GETmethod(預設307)
     else:
         if not account or not password:
@@ -45,10 +46,33 @@ def signin(request:Request, account:str=Form(None), password:str=Form(None)):   
 
 @app.get("/error", response_class=HTMLResponse)
 def error_page(request:Request, message:str):
+    session_value = request.session["SIGNED-IN"]
     return templates.TemplateResponse("error.html", {"request":request, "message":message})
 
 
 @app.get("/member", response_class=HTMLResponse)
 def success_page(request:Request):
-    message = "恭喜您，成功登入系統"
-    return templates.TemplateResponse("member.html", {"request":request, "message":message})
+    session_value = request.session["SIGNED-IN"]
+    if session_value == "TRUE":
+        message = "恭喜您，成功登入系統"
+        return templates.TemplateResponse("member.html", {"request":request, "message":message})
+    return RedirectResponse(url ="/")
+
+@app.get("/signout", response_class=HTMLResponse)
+def signout(request:Request):
+    request.session["SIGNED-IN"]="FALSE"
+    return RedirectResponse(url = "/")
+
+
+
+
+
+@app.get("/square/{square}", response_class=HTMLResponse)
+def square_page(request:Request, square:str):
+    total = int(square)**2
+    return templates.TemplateResponse("square.html", {"request":request, "total":total})
+
+
+@app.get("/square")
+def square_page(request:Request, square:str):
+    return RedirectResponse(url = f"/square/{square}")
