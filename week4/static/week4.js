@@ -8,3 +8,44 @@ document.addEventListener("DOMContentLoaded", function(){
         }
     })
 })
+
+
+function change2HalfChar(input){
+    input.addEventListener("input", function(){
+        input.value = input.value.replace(/[０-９]/g, function(str){
+            return String.fromCharCode(str.charCodeAt(0) - 0xFEE0);
+        })
+    })
+}
+const squareOfelemObj = document.getElementById("square");
+change2HalfChar(squareOfelemObj);
+
+
+function showPsw(){
+    const psw = document.getElementById("psw");
+    const showPsw = document.getElementById("show-psw");
+    showPsw.addEventListener("click", function(){
+        if (psw.type === "password") {
+            psw.type = "text";
+        } else {
+            psw.type = "password";
+        }
+    })
+
+}
+showPsw();
+
+
+
+
+document.addEventListener("DOMContentLoaded", function(){
+    const squareForm = document.getElementById("square-form");
+    squareForm.addEventListener("submit", function(event){
+        const squareOfnum = Number(squareOfelemObj.value)
+        if (squareOfnum <= 0){
+            event.preventDefault();
+            alert("Please enter a positive number");
+        }
+    })
+})
+
