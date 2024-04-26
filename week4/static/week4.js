@@ -37,10 +37,13 @@ showPsw();
 document.addEventListener("DOMContentLoaded", function(){
     const squareForm = document.getElementById("square-form");
     squareForm.addEventListener("submit", function(event){
+        event.preventDefault() //フォームの送信を防ぐ
         const squareOfnum = Number(squareOfelemObj.value)
         if (squareOfnum <= 0){
-            event.preventDefault();
             alert("Please enter a positive number");
+        } else {
+            const redirectUrl = `/square/${squareOfnum}`;
+            window.location.href = redirectUrl;
         }
     })
 })
@@ -53,3 +56,6 @@ visible.addEventListener("click", function(){
         visible.src = "../static/img/invisible.webp";
     }
 })
+
+// 不需考慮安全性=》前端redirect
+// 需要考慮安全性=》後段redirect

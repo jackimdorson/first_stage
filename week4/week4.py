@@ -46,12 +46,12 @@ def signout(request:Request):
     request.session["SIGNED-IN"]="FALSE"
     return RedirectResponse(url="/")
 
-@app.get("/square/{square}", response_class=HTMLResponse)
-def square_page(request:Request, square:str):
-    message = int(square)**2
+@app.get("/square/{input}", response_class=HTMLResponse)
+def square_page(request:Request, input:int):
+    message = input**2
     h2 = "正整數平方計算結果"
     return templates.TemplateResponse("common.html", {"request":request, "message":message, "h2":h2, "link_url":"root", "link_text":"返回首頁"})
 
-@app.get("/square")
-def square_page(request:Request, square:str):
-    return RedirectResponse(url=f"/square/{square}")
+# @app.get("/square")
+# def square_page(request:Request, square:str):
+#     return RedirectResponse(url=f"/square/{square}")
