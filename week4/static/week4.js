@@ -56,3 +56,6 @@ visible.addEventListener("click", function(){
         visible.src = "../static/img/invisible.webp";
     }
 })
+
+// 不需考慮安全性=》前端redirect
+// 需要考慮安全性=》後段redirect
