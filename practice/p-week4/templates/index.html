@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <title>Member Deetails</title>
+        <link rel="stylesheet" href="{{ url_for('static', path='/p-week4.css') }}"> <!-- statiffileをimportしていると、自動的にそこで設定したdirを返す為、url_forはstaticにする必要あり-->
+    </body>
+    </head>
+    <body>
+        <div class="container">
+            <div class="item">item 1</div>
+            <div class="item">item 2</div>
+            <div class="item">item 3</div>
+            <div class="item">item 4</div>
+            <div class="item">item 5</div>
+            <div class="item">item 6</div>
+        </div>
+        <!-- <img src="../static/img/fg.jpeg" alt="ないです"> -->
+        <img src='{{ url_for("static", path="/img/fg.jpeg") }}' alt="ないです">
+    </body>
+</html>
+
