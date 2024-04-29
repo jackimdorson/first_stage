@@ -1,0 +1,23 @@
+@mixin item-box($bgcolor, $color){
+  background-color: $bgcolor;
+  color: $color;
+  padding: 10px;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    & .item:nth-of-type(n+5){
+      grid-column: span 2;
+    }
+    & .item:nth-of-type(5n){
+      grid-column: 1 / 5;     /* アイテムを2列目の開始から3列目の開始まで配置 */
+    }
+  }
+
+.item {
+  @include item-box(#0bd, white);
+}
+
+
