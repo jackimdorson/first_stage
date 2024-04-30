@@ -14,6 +14,12 @@
     & .item:nth-of-type(5n){
       grid-column: 1 / 5;     /* アイテムを2列目の開始から3列目の開始まで配置 */
     }
+    & .item:nth-of-type(6){
+      grid-column: span 4;
+    }
+    & .item:nth-of-type(n+8):nth-of-type(-n+9){
+      grid-column: span 1;
+    }
   }
 
 .item {
