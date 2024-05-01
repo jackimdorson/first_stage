@@ -5,15 +5,16 @@ from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 from urllib.parse import urlencode
 
+
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 app.add_middleware(SessionMiddleware, secret_key="arigatou")
 templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)     #FastAPIのdefaultはJSONResponseを返す。jinjaでHTMLResponseをしたい場合は記入すると良い。
-def root(request:Request):   #Requestクラスをrequestとしてインスタンス化
+def root(request: Request):   #Requestクラスをrequestとしてインスタンス化
     h2 = "歡迎光臨，請輸入帳號密碼"
-    return templates.TemplateResponse("common.html", {"request":request, "message":"登入系統", "h2":h2})  #requestObjがrequestというkeyでテンプレに渡される(必須)
+    return templates.TemplateResponse("common.html", {"request": request, "message": "登入系統", "h2": h2})  #requestObjがrequestというkeyでテンプレに渡される(必須)
 
 @app.post("/signin")
 def signin(request:Request, account:str=Form(None), psw:str=Form(None)):   # Form(...)如果空,自動使用fastAPI的error, Form(None)如果空,使用自己設定的error
