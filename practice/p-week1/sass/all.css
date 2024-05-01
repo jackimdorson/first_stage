@@ -89,6 +89,8 @@ header a {
   width: 90%;
   margin: 0 auto;
   max-width: 1200px;
+  display: grid;
+  grid-gap: 20px;
 }
 
 .p-container__top {
@@ -96,7 +98,7 @@ header a {
   width: 100%;
   text-align: center;
   position: relative;
-  background-color: lightblue;
+  background-color: darks;
 }
 .p-container__top h1 {
   position: absolute;
@@ -106,9 +108,8 @@ header a {
 }
 
 .p-container__small {
-  padding: 20px 0;
   display: grid;
-  row-gap: 20px;
+  grid-gap: 20px;
 }
 .p-container__small .c-item {
   position: relative;
@@ -176,23 +177,19 @@ footer {
   height: 50px;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 600px) and (max-width: 1199px) {
   .p-container__small {
-    display: grid;
-    grid-gap: 20px;
-    grid-template-areas: "figure figure" "full full";
+    grid-template-columns: repeat(2, 1fr);
   }
   .p-container__small .c-item:nth-child(3) {
-    grid-area: full;
+    grid-column: span 2;
   }
   .p-container__large {
-    grid-template-areas: "figure figure figure figure" "figure figure figure figure" "half half half2 half2";
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
   }
-  .p-container__large .c-item:nth-last-child(1) {
-    grid-area: half;
-  }
-  .p-container__large .c-item:nth-last-child(2) {
-    grid-area: half2;
+  .p-container__large .c-item:nth-child(n+9):nth-child(-n+10) {
+    grid-column: span 2;
   }
   #burger-now {
     display: none;
@@ -212,7 +209,17 @@ footer {
 }
 @media (min-width: 1200px) {
   .p-container__small {
-    grid-template-areas: none;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .p-container__small .c-item:nth-child(3) {
+    grid-column: span 1;
+  }
+  .p-container__large {
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 20px;
+  }
+  .p-container__large .c-item:nth-child(1), .p-container__large .c-item:nth-child(6) {
+    grid-column: span 2;
   }
 }
 /* Object - Project
