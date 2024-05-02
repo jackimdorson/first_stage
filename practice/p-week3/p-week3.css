@@ -1,1 +1,224 @@
-/*# sourceMappingURL=p-week3.css.map */
+[data-theme=dark] {
+  background-color: black;
+  color: white;
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: serif;
+  line-height: 1;
+  background-color: lightgray;
+  color: black;
+  font-size: 20px;
+}
+html img {
+  max-width: 100%;
+  max-height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+header {
+  position: relative;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: darkgray;
+  padding: 0 1.5%;
+}
+header a {
+  text-decoration: none;
+  color: unset;
+}
+
+#c-form__btn-hidden {
+  display: none;
+}
+
+#burger-now {
+  position: relative;
+  z-index: 10;
+}
+
+.p-nav {
+  position: fixed;
+  top: 0;
+  z-index: 5;
+  height: 100vh;
+  right: -200px;
+  width: 200px;
+  background-color: darkgray;
+  transition: all 0.3s 0s ease-in-out;
+  text-align: center;
+  padding-top: 10%;
+}
+.p-nav a {
+  display: inline-block;
+  width: 50%;
+  margin: 0 auto;
+  height: 100px;
+}
+
+#c-form__btn-hidden:checked + .p-nav {
+  right: 0;
+}
+
+.p-container {
+  width: 90%;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.p-container__top {
+  height: 250px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  background-color: lightblue;
+}
+.p-container__top h1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.p-container__small {
+  padding: 20px 0;
+  display: grid;
+  grid-gap: 20px;
+}
+.p-container__small .c-item {
+  background-color: lightblue;
+  width: 100%;
+  display: flex;
+}
+.p-container__small .c-item img {
+  width: 80px;
+  height: 50px;
+}
+.p-container__small .c-item .c-item__promo {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.p-container__large {
+  width: 100%;
+  display: grid;
+  grid-gap: 20px;
+}
+.p-container__large .c-item {
+  position: relative;
+  width: 100%;
+  height: 200px;
+}
+.p-container__large .c-item img:nth-of-type(1) {
+  position: absolute;
+  width: 100%;
+  height: 200px;
+  z-index: 1;
+}
+.p-container__large .c-item img:nth-of-type(2) {
+  position: absolute;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  top: 0;
+  right: 0;
+}
+.p-container__large .c-item .c-item__title {
+  position: absolute;
+  bottom: 0;
+  z-index: 2;
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4%;
+}
+.p-container__large .c-item .c-item__title span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#load-more {
+  margin-top: 20px;
+}
+#load-more span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: gray;
+  color: white;
+  width: 120px;
+  height: 50px;
+  margin: 0 auto;
+  border-radius: 6px;
+}
+
+footer {
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (min-width: 500px) and (max-width: 999px) {
+  .p-container__small {
+    grid-template-columns: 1fr 1fr;
+  }
+  .p-container__small .c-item:nth-of-type(3) {
+    grid-column: span 2;
+  }
+  .p-container__large {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .p-container__large .c-item:nth-of-type(9) {
+    grid-column: span 2;
+  }
+  .p-container__large .c-item:nth-of-type(10n) {
+    grid-column: span 2;
+  }
+  .p-container__large .c-item:nth-of-type(10n+9) {
+    grid-column: span 2;
+  }
+  .p-container__large .c-item:nth-of-type(n+55):last-of-type {
+    grid-column: span 4;
+  }
+  #burger-now {
+    display: none;
+  }
+  .p-container__right {
+    width: 35%;
+  }
+  .p-nav {
+    width: unset;
+    height: unset;
+    position: unset;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding-top: unset;
+  }
+  .p-nav a {
+    height: unset;
+  }
+}
+@media (min-width: 1000px) {
+  .p-container__small {
+    grid-template-columns: calc(33% - 22px) repeat(2, 1fr);
+  }
+  .p-container__large {
+    grid-template-columns: 2fr repeat(4, 1fr);
+  }
+}/*# sourceMappingURL=p-week3.css.map */
