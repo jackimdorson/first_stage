@@ -106,8 +106,9 @@ header {
             z-index: 2;
             width: 36px;
             height: 36px;
-            top: 0;
-            right: 0;
+            top: 6px;
+            right: 6px;
+            opacity: 0.8;
         }
         & .c-item__title {
             position: absolute;
