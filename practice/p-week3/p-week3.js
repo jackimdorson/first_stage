@@ -1,3 +1,28 @@
+function addNumberFactory(num){
+    function addNumber(value){
+        return num + value;
+    }
+    return addNumber;
+}
+const add5 = addNumberFactory(5);
+add5(4);
+
+(function(){
+    console.log('即時関数の練習です')
+})();
+debugger;
+
+function test(){
+    let a = 0;
+    let b = 1;
+    return { a, b };
+  }
+
+  const bb = test();
+  console.log(bb.b);
+
+
+// 必要code
 const burgerNow = document.getElementById("burger-now");
 burgerNow.addEventListener("click", function(){
     const burgerOpen = "./img/burger-menu.webp";
@@ -90,4 +115,5 @@ async function makeSmall() {
     loadMoreBtn.addEventListener('click', loadMoreItems);
 }
 window.addEventListener('load', makeSmall);
+
 
