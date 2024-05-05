@@ -10,16 +10,82 @@ add5(4);
 (function(){
     console.log('即時関数の練習です')
 })();
+
+
+
+class Person {
+    constructor(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+    hello() {
+        console.log('hello' + this.name);
+    }
+}
+
+class Japanese extends Person {                  // extendsでclassの継承
+    constructor(name, age, gender) {
+        super(name, age);                       // superでconstructorを実行(必ず1つ目に記述): super=継承元の関数の呼び出し
+        this.gender = gender;
+    }
+    hello(){
+        console.log('Konnichiwa' + this.name);
+    }
+    bye(){
+        console.log('Sayonara' + this.name);
+    }
+}
+
+const taro = new Japanese('taro', 23, 'man')
+console.log(taro);
 debugger;
 
+//promiseの場合
+function delayedAdd(n1, n2, delayTime){
+    return new Promise(function(resolve, reject){
+        window.setTimeout(function(){
+            resolve(n1+n2);                // resolveとthenが対応、引数が引き渡される。
+        }, delayTime);
+    });
+}
 function test(){
-    let a = 0;
-    let b = 1;
-    return { a, b };
-  }
+    let promise = delayedAdd(3, 4, 2000);
+    promise.then(function(result){
+        console.log(result);
+    });
+}
 
-  const bb = test();
-  console.log(bb.b);
+//async awaitの場合
+function delayedAdd(n1, n2, delayTime){    // return Promiseの部分はpromiseと同じ。
+    return new Promise(function(resolve, reject){
+        window.setTimeout(function(){
+            resolve(n1+n2);
+        }, delayTime);
+    });
+}
+async function test(){                             // ここに違いが現れる。
+    let result = await delayedAdd(3, 4, 2000);     //  resolve() or reject() の引数がreturnのイメージ
+        console.log(result);
+}
+
+
+
+
+new Promise(function(resolve, reject){
+    resolve('hello');                    //   resolve呼出 -> thenメソッドの中のcbを実行 resolveの引数をcbの引数に代入
+}).then(function(data){
+    console.log(data);                    //   'hello'
+    return data;                          // 　次の処理then, finallyなどにも引数を渡すにはreturnを使う。
+    throw new Error();                    //   throw new Errorを投げることでerrorを出し、catchに移行させる
+
+}).catch(function(){
+    console.log('catch');
+}
+
+).finally(function() {                  //  finallyでは引数が渡ってこない。
+
+});
+
 
 
 // 必要code
