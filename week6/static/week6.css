@@ -1,0 +1,61 @@
+@charset "UTF-8";
+body {
+  margin: 0;
+  padding: 0;
+}
+body header {
+  height: 60px;
+  color: white;
+  background-color: rgb(40, 30, 90);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+body footer {
+  text-align: center;
+}
+body section {
+  max-width: 230px;
+  margin: 0 auto;
+}
+body section h3 {
+  text-align: center;
+  margin-top: 20px;
+}
+
+form .form-group {
+  padding: 4px;
+}
+form input {
+  padding-left: 3px;
+  height: 20px;
+}
+form button {
+  padding: 3px 8px;
+  border-radius: 3px;
+  display: block;
+  margin: 0 auto;
+  margin-top: 5px;
+  margin-bottom: 30px;
+}
+form img {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}
+
+.psw-rule {
+  display: none;
+}
+
+.open {
+  display: block;
+}
+
+.active {
+  background-color: blue;
+  color: white;
+}
+.active::after {
+  content: "▬";
+}/*# sourceMappingURL=week6.css.map */

@@ -1,0 +1,72 @@
+$base-color: rgb(40, 30, 90);
+@mixin flex-set{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+        margin: 0;
+        padding: 0;
+    & header {
+        height: 60px;
+        color: white;
+        background-color: $base-color;
+        @include flex-set;
+    }
+    & footer {
+        text-align: center;
+    }
+    & section {
+        max-width: 230px;
+        margin: 0 auto;
+        & h3 {
+            text-align: center;
+            margin-top: 20px;
+        }
+    }
+}
+
+form {
+    & .form-group {
+        padding: 4px;
+    }
+    & input {
+        padding-left: 3px;
+        height: 20px;
+    }
+    & button {
+        padding: 3px 8px;
+        border-radius: 3px;
+        display: block;
+        margin: 0 auto;
+        margin-top: 5px;
+        margin-bottom: 30px;
+    }
+    & img {
+        width: 24px;
+        height: 24px;
+        vertical-align: middle;
+    }
+}
+
+
+// .link-box {
+//     padding-top: 15px;
+//     text-align: center;
+// }
+
+.psw-rule{
+    display: none;
+}
+.open {
+    display: block;
+}
+
+.active {
+    background-color: blue;
+    color: white;
+    &::after{
+        content: "\25AC";
+    }
+}
