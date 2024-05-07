@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}首頁{% endblock %}
+{% block content %}
+    <header>
+        <h2>歡迎光臨，請註冊登入系統</h2>
+    </header>
+    <main>
+        <section>
+            <h3>註冊系統</h3>
+            <form action="/signup" method="POST" id="signup">
+                <div class="form-group">
+                    <label for="fullname">姓名</label>
+                    <input type="text" name="fullname" id="fullname">
+                </div>
+                <div class="form-group">
+                    <label for="account-up">帳號</label>
+                    <input type="text" name="account-up" id="account-up">
+                </div>
+                <div class="form-group">
+                    <label for="psw-up">密碼</label>
+                    <input type="password" name="psw-up" id="psw-up">
+                    <img src="../static/img/invisible.webp" alt="invisible" id="show-psw-up">
+                </div>
+                <button type="submit">註冊</button>
+            </form>
+        </section>
+        <hr>
+        <section>
+            <h3>登入系統</h3>
+            <form action="/signin" method="POST" id="signin">
+                <div class="form-group">
+                    <label for="account-in">帳號</label>
+                    <input type="text" name="account-in" id="account-in">
+                </div>
+                <div class="form-group">
+                    <label for="psw-in">密碼</label>
+                    <input type="password" name="psw-in" id="psw-in">
+                    <img src="../static/img/invisible.webp" alt="invisible" id="show-psw-in">
+                </div>
+                <button type="submit">登入</button>
+                <input type="button" id="accordion">
+                <div class="psw-rule">
+                    <p>hellohello</p>
+                </div>
+            </form>
+        </section>
+    </main>
+{% endblock %}
