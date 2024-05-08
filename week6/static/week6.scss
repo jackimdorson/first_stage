@@ -6,8 +6,8 @@ $base-color: rgb(40, 30, 90);
 }
 
 body {
-        margin: 0;
-        padding: 0;
+    margin: 0;
+    padding: 0;
     & header {
         height: 60px;
         color: white;
@@ -17,13 +17,51 @@ body {
     & footer {
         text-align: center;
     }
-    & section {
-        max-width: 230px;
-        margin: 0 auto;
-        & h3 {
-            text-align: center;
-            margin-top: 20px;
+}
+
+section {
+    max-width: 230px;
+    margin: 0 auto;
+    margin-bottom: 40px;
+    & h3 {
+        text-align: center;
+        margin-top: 20px;
+    }
+    & .link-box {
+        padding-top: 15px;
+        text-align: center;
+    }
+}
+.accordion-block {
+    height: 200px;
+    & .accordion {
+        background-color: dimgray;
+        color: white;
+        width: 100%;
+        padding: 8px;
+        font-size: 16px;
+        &::after {
+            content: "\25BC";
         }
+    }
+    & .psw-rule {
+        display: none;
+        text-align: center;
+        border: 2px dotted $base-color;
+        padding: 25% 0;
+        & span {
+            color: red;
+            font-weight: bold;
+        }
+    }
+    & .active-accordion {
+        background-color: $base-color;
+        &::after {
+            content: "\25AC";
+        }
+    }
+    & .open-accordion {
+        display: block;
     }
 }
 
@@ -41,7 +79,6 @@ form {
         display: block;
         margin: 0 auto;
         margin-top: 5px;
-        margin-bottom: 30px;
     }
     & img {
         width: 24px;
@@ -50,23 +87,7 @@ form {
     }
 }
 
-
-// .link-box {
-//     padding-top: 15px;
-//     text-align: center;
-// }
-
-.psw-rule{
-    display: none;
-}
-.open {
-    display: block;
-}
-
-.active {
-    background-color: blue;
-    color: white;
-    &::after{
-        content: "\25AC";
-    }
+textarea {
+    width: 80%;
+    height: 200px;
 }
