@@ -6,10 +6,30 @@
     </header>
     <main>
         <section>
-            <h3>{{ fullname }}，歡迎登入系統</h3>
+            <h3>{{ username }}，歡迎登入系統</h3>
             <div class="link-box">
                 <a href="/signout">登出系統</a>
             </div>
+        </section>
+        <section>
+            <h3>快來留言吧</h3>
+            <form action="/createMessage" method="POST" id="create_msg">
+                <label for="leave-msg">內容</label>
+                <textarea name="leave_msg" id="leave_msg"></textarea>
+                <button type="submit">送出</button>
+            </form>
+        </section>
+        <section>
+            {% for each_username, each_id, each_content in members %}
+                <p><strong>{{ each_username }} : </strong>{{ each_content }}</p>
+                {% if each_username == username %}
+                    <form action="/deleteMessage", method="POST" class="delete_form">
+                        <input type="hidden" name="message_id" value="{{ each_id }}">
+                        <button type="submit" class="delete_btn">X</button>
+                    </form>
+                    <!-- <button data-message-id="{{ each_id }}" type="button" id="delete_btn">X</button> -->
+                {% endif %}
+            {% endfor %}
         </section>
     </main>
 {% endblock %}

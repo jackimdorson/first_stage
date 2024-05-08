@@ -14,13 +14,52 @@ body header {
 body footer {
   text-align: center;
 }
-body section {
+
+section {
   max-width: 230px;
   margin: 0 auto;
+  margin-bottom: 40px;
 }
-body section h3 {
+section h3 {
   text-align: center;
   margin-top: 20px;
+}
+section .link-box {
+  padding-top: 15px;
+  text-align: center;
+}
+
+.accordion-block {
+  height: 200px;
+}
+.accordion-block .accordion {
+  background-color: dimgray;
+  color: white;
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+}
+.accordion-block .accordion::after {
+  content: "▼";
+}
+.accordion-block .psw-rule {
+  display: none;
+  text-align: center;
+  border: 2px dotted rgb(40, 30, 90);
+  padding: 25% 0;
+}
+.accordion-block .psw-rule span {
+  color: red;
+  font-weight: bold;
+}
+.accordion-block .active-accordion {
+  background-color: rgb(40, 30, 90);
+}
+.accordion-block .active-accordion::after {
+  content: "▬";
+}
+.accordion-block .open-accordion {
+  display: block;
 }
 
 form .form-group {
@@ -36,7 +75,6 @@ form button {
   display: block;
   margin: 0 auto;
   margin-top: 5px;
-  margin-bottom: 30px;
 }
 form img {
   width: 24px;
@@ -44,18 +82,7 @@ form img {
   vertical-align: middle;
 }
 
-.psw-rule {
-  display: none;
-}
-
-.open {
-  display: block;
-}
-
-.active {
-  background-color: blue;
-  color: white;
-}
-.active::after {
-  content: "▬";
+textarea {
+  width: 80%;
+  height: 200px;
 }/*# sourceMappingURL=week6.css.map */
