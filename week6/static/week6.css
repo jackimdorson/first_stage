@@ -11,6 +11,10 @@ body header {
   justify-content: center;
   align-items: center;
 }
+body header a {
+  color: white;
+  text-decoration: none;
+}
 body footer {
   text-align: center;
 }
