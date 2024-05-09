@@ -76,11 +76,11 @@ def member_page(request:Request):
     mydb = connect_db()
     cursor = mydb.cursor()
     try:
-        if "USERNAME" in request.session:
-            username = request.session.get("USERNAME")
-            cursor.execute("SELECT member.username, message.id, message.content FROM member INNER JOIN message ON member.id = message.member_id")
+        if "NAME" in request.session:
+            sessionName = request.session.get("NAME")
+            cursor.execute("SELECT member.name, message.id, message.content, message.time FROM member INNER JOIN message ON member.id = message.member_id ORDER BY time DESC")
             members = cursor.fetchall()
-            return templates.TemplateResponse("member.html",{"request": request, "username": username, "members": members})
+            return templates.TemplateResponse("member.html",{"request": request, "sessionName": sessionName, "members": members})
         else:
             return RedirectResponse(url="/")
     finally:

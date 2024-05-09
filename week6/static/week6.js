@@ -1,15 +1,20 @@
 document.addEventListener("DOMContentLoaded", function(){
+    const inputs = document.querySelectorAll("#account-up, #psw-up, #account-in, #psw-in");
+    const fullName = document.getElementById("fullname");
 
-    const inputs = document.querySelectorAll("#fullname, #account-up, #psw-up, #account-in, #psw-in");
-    function change2HalfChar(event){
-        event.target.value = event.target.value.replace(/[^A-Za-z0-9~!@#$^*()_]/g, '');                       //上述以外全都不讓User輸入
-        event.target.value = event.target.value.replace(/[Ａ-Ｚａ-ｚ０-９〜！＠＃＄＾＊（）＿]/g, function(str){    //參考國稅局, 特殊符號僅允許!@#$^*()
+    function toHalfWidth(event, regex){
+        event.target.value = event.target.value.replace(/[Ａ-Ｚａ-ｚ０-９〜！＠＃＄＾＊（）＿]/g, function(str){
             return String.fromCharCode(str.charCodeAt(0) - 0xFEE0);         //リアルタイムで 全角→半角
-        })
+        }).replace(regex, '');                                       //參考國稅局, 特殊符號僅允許!@#$^*()
     }
+
+    fullName.addEventListener("input", function(event){            //addEventListenerに第二引数を設定する記述法
+        toHalfWidth(event, /[^A-Za-z0-9~!@#$^*()_\u4E00-\u9FFF\uF900-\uFAFFぁ-んァ-ヶ]/g);   // + 繁簡體 + 注音 + 日文
+    })
     for(let input of inputs){
-        input.addEventListener("input", change2HalfChar);
+        input.addEventListener("input", (event) => toHalfWidth(event, /[^A-Za-z0-9~!@#$^*()_]/g));
     }
+
 
 
     const signs = document.querySelectorAll("#signup, #signin");

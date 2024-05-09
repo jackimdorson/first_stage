@@ -18,6 +18,9 @@ body header a {
 body footer {
   text-align: center;
 }
+body hr {
+  border: 1px solid gainsboro;
+}
 
 section {
   max-width: 230px;
@@ -86,7 +89,20 @@ form img {
   vertical-align: middle;
 }
 
-textarea {
-  width: 80%;
-  height: 200px;
+#create_msg {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.msg_block {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.msg_block button {
+  margin-top: unset;
 }/*# sourceMappingURL=week6.css.map */
