@@ -1,3 +1,4 @@
+// 'use strict'
 document.addEventListener("DOMContentLoaded", function(){
     const inputs = document.querySelectorAll("#account-up, #psw-up, #account-in, #psw-in");
     const fullName = document.getElementById("fullname");
@@ -50,22 +51,12 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
     const accordion = document.querySelector(".accordion");
-    if (accordion){
-        accordion.addEventListener("click", function(){
-            accordion.classList.toggle("active-accordion");
-            accordion.nextElementSibling.classList.toggle("open-accordion");
-        })
-    }
+    // if (accordion){
+    accordion.addEventListener("click", function(event){
+        event.target.classList.toggle("active-accordion");
+        event.target.nextElementSibling.classList.toggle("open-accordion");
+    })
+    // }
 
-
-    const deleteForms = document.querySelectorAll(".delete_form");
-    for(let form of deleteForms){
-        form.addEventListener("submit", function(event){
-            const check = confirm("確定要刪除?");
-            if (!check){
-                event.preventDefault();
-            }
-        })
-    }
 })
 

@@ -96,7 +96,7 @@ def signout(request:Request):
 
 
 @app.post("/createMessage")
-def createMessage(request:Request, leave_msg:str=Form(None)):
+def createmsg(request:Request, leave_msg:str=Form(None)):
     mydb = connect_db()
     cursor = mydb.cursor()
     try:
@@ -109,7 +109,7 @@ def createMessage(request:Request, leave_msg:str=Form(None)):
 
 
 @app.post("/deleteMessage")
-def deleteMessage(request:Request, message_id:str=Form(None)):
+def deletemsg(request:Request, message_id:str=Form(None)):
     mydb = connect_db()
     cursor = mydb.cursor()
     try:
