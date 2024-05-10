@@ -8,11 +8,13 @@ $base-color: rgb(40, 30, 90);
 body {
     margin: 0;
     padding: 0;
+
     & header {
         height: 60px;
         color: white;
         background-color: $base-color;
         @include flex-set;
+
         & a {
             color: white;
             text-decoration: none;
@@ -30,79 +32,82 @@ section {
     max-width: 230px;
     margin: 0 auto;
     margin-bottom: 40px;
+
     & h3 {
         text-align: center;
         margin-top: 20px;
     }
-    & .link-box {
+    & .link-wrapper {
         padding-top: 15px;
         text-align: center;
     }
 }
-.accordion-block {
+
+.toggle {
     height: 200px;
-    & .accordion {
+
+    &__btn {
         background-color: dimgray;
         color: white;
         width: 100%;
         padding: 8px;
-        font-size: 16px;
+        font-size: 1rem;
+
         &::after {
             content: "\25BC";
         }
+        &--clicked {
+            background-color: $base-color;
+
+            &::after {
+                content: "\25B2";
+            }
+        }
     }
-    & .psw-rule {
+    &__content {
         display: none;
         text-align: center;
         border: 2px dotted $base-color;
-        padding: 25% 0;
-        & span {
-            color: red;
-            font-weight: bold;
+
+        &--active {
+            display: block;
         }
     }
-    & .active-accordion {
-        background-color: $base-color;
-        &::after {
-            content: "\25AC";
-        }
-    }
-    & .open-accordion {
-        display: block;
+    &__highlight {
+        color: red;
+        font-weight: bold;
     }
 }
 
-form {
-    & .form-group {
+.form {
+    &__group {
         padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
     }
-    & input {
+    &__input, &__input--name {
         padding-left: 3px;
-        height: 20px;
+        height: 1.5rem;
     }
-    & button {
+    &__show-psw {
+        width: 24px;
+        height: 24px;
+        vertical-align: middle;
+    }
+    &__btn {
         padding: 3px 8px;
         border-radius: 3px;
         display: block;
         margin: 0 auto;
         margin-top: 5px;
     }
-    & img {
-        width: 24px;
-        height: 24px;
-        vertical-align: middle;
-    }
 }
 
-#create_msg {
-    display: flex;
-    align-items: center;
-    justify-items: center;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-}
 
-.msg_block {
+.msg__delete-form {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
