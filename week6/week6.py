@@ -33,28 +33,28 @@ def home_page(request:Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.post("/signup")
-def signup(request:Request, fullname:str=Form(None), account_up:str=Form(None, alias="account-up"), psw_up:str=Form(None, alias="psw-up")):
+def signup(request:Request, name:str=Form(None), username:str=Form(None), psw:str=Form(None)):
     mydb = connect_db()
     cursor = mydb.cursor()                                              #SQL指令する為のcursorObjを作成(db操作が必要な度に呼び出し)
     try:
-        cursor.execute("SELECT * FROM member WHERE BINARY username = %s", (account_up,))       #執行SQL指令
+        cursor.execute("SELECT * FROM member WHERE BINARY username = %s", (username,))       #執行SQL指令
         member = cursor.fetchone()                                                   #取得一筆資料   多筆(tupleを含んだlist).fetchall()  一筆(tuple).fetchone()
         if member:         #能取得data = 已經被註冊
             query_params = urlencode({"message": "帳號已經被註冊"})
             return RedirectResponse(url=f"/error?{query_params}", status_code=303)
         else:
-            cursor.execute("INSERT INTO member(name, username, password) VALUES(%s, %s, %s)", (fullname, account_up, psw_up))
+            cursor.execute("INSERT INTO member(name, username, password) VALUES(%s, %s, %s)", (name, username, psw))
             mydb.commit()    #これがないとデータベースに反映されない。
             return RedirectResponse(url="/member", status_code=303)
     finally:
         close_db(cursor, mydb)
 
 @app.post("/signin")
-def signin(request:Request, account_in:str=Form(None, alias="account-in"), psw_in:str=Form(None, alias="psw-in")):
+def signin(request:Request, username:str=Form(None), psw:str=Form(None)):
     mydb = connect_db()
     cursor = mydb.cursor()
     try:
-        cursor.execute("SELECT * FROM member WHERE BINARY username = %s AND BINARY password = %s", (account_in, psw_in))
+        cursor.execute("SELECT * FROM member WHERE BINARY username = %s AND BINARY password = %s", (username, psw))
         member = cursor.fetchone()
         if member:           #能取得data = 資料是對的
             add_sessions = ["MEMBER_ID", "NAME", "USERNAME"]
@@ -96,12 +96,12 @@ def signout(request:Request):
 
 
 @app.post("/createMessage")
-def createmsg(request:Request, leave_msg:str=Form(None)):
+def createmsg(request:Request, content:str=Form(None)):
     mydb = connect_db()
     cursor = mydb.cursor()
     try:
         member_id = request.session.get("MEMBER_ID")
-        cursor.execute("INSERT INTO message(member_id, content) VALUES(%s, %s)", (member_id, leave_msg))
+        cursor.execute("INSERT INTO message(member_id, content) VALUES(%s, %s)", (member_id, content))
         mydb.commit()
         return RedirectResponse(url="/member", status_code=303)
     finally:
@@ -109,12 +109,12 @@ def createmsg(request:Request, leave_msg:str=Form(None)):
 
 
 @app.post("/deleteMessage")
-def deletemsg(request:Request, message_id:str=Form(None)):
+def deletemsg(request:Request, id_message:str=Form(None)):
     mydb = connect_db()
     cursor = mydb.cursor()
     try:
         member_id = request.session.get("MEMBER_ID")
-        cursor.execute("DELETE FROM message WHERE id = %s AND member_id = %s", (message_id, member_id))    #只讓登入者刪除
+        cursor.execute("DELETE FROM message WHERE id = %s AND member_id = %s", (id_message, member_id))    #只讓登入者刪除
         mydb.commit()
         return RedirectResponse(url="/member", status_code=303)
     finally:

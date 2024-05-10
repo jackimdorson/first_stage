@@ -1,9 +1,9 @@
 'use strict'
 document.addEventListener("DOMContentLoaded", function(){
 
-    const leaveMsg = document.getElementById("create_msg")
-    leaveMsg.addEventListener("submit", function(event){
-        if (event.value.trim() !== ''){
+    const formCreateMsg = document.querySelector(".form--create-msg")
+    formCreateMsg.addEventListener("submit", function(e){
+        if (e.value.trim() !== ''){
             alert("請輸入文字");
         }
     })

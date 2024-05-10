@@ -5,42 +5,53 @@
     <main>
         <section>
             <h3>註冊系統</h3>
-            <form action="{{ request.url_for('signup') }}" method="POST" id="signup">
-                <div class="form-group">
-                    <label for="fullname">姓名</label>
-                    <input type="text" name="fullname" id="fullname" autocomplete="name">
+            <form action="{{ request.url_for('signup') }}" method="POST" class="form form--signup">
+                <div class="form__group">
+                    <label class="form__label">姓名
+                        <input type="text" name="name" autocomplete="name" class="form__input--name">
+                    </label>
                 </div>
-                <div class="form-group">
-                    <label for="account-up">帳號</label>
-                    <input type="text" name="account-up" id="account-up" autocomplete="username">
+                <div class="form__group">
+                    <label class="form__label">帳號
+                        <input type="text" name="username" autocomplete="username" class="form__input">
+                    </label>
                 </div>
-                <div class="form-group">
-                    <label for="psw-up">密碼</label>
-                    <input type="password" name="psw-up" id="psw-up" autocomplete="current-password">
-                    <img src="{{ url_for('static', path='img/invisible.webp') }}" alt="invisible" id="show-psw-up">
+                <div class="form__group">
+                    <label class="form__label">密碼
+                        <input type="password" name="psw" autocomplete="current-password" class="form__input">
+                    </label>
+                    <img src="{{ url_for('static', path='img/hidden.webp') }}" alt="hidden" class="form__show-psw">
                 </div>
-                <button type="submit">註冊</button>
+                <button type="submit" class="form__btn">註冊</button>
             </form>
         </section>
         <hr>
         <section>
             <h3>登入系統</h3>
-            <form action="{{ request.url_for('signin') }}" method="POST" id="signin">
-                <div class="form-group">
-                    <label for="account-in">帳號</label>
-                    <input type="text" name="account-in" id="account-in" autocomplete="username" autofocus>
+            <form action="{{ request.url_for('signin') }}" method="POST" class="form form--signin">
+                <div class="form__group">
+                    <label class="form__label">帳號
+                        <input type="text" name="username" autocomplete="username" autofocus class="form__input">
+                    </label>
                 </div>
-                <div class="form-group">
-                    <label for="psw-in">密碼</label>
-                    <input type="password" name="psw-in" id="psw-in" autocomplete="current-password">
-                    <img src="{{ url_for('static', path='img/invisible.webp') }}" alt="invisible" id="show-psw-in">
+                <div class="form__group">
+                    <label class="form__label">密碼
+                        <input type="password" name="psw" autocomplete="current-password" class="form__input">
+                    </label>
+                    <img src="{{ url_for('static', path='img/hidden.webp') }}" alt="hidden" class="form__show-psw">
                 </div>
-                <button type="submit">登入</button>
+                <button type="submit" class="form__btn">登入</button>
             </form>
         </section>
-        <section class="accordion-block">
-            <button type="button" class="accordion">特殊符號 </button>
-            <div class="psw-rule">特殊符號只開放使用以下10種<br><span>~ ! @ # $ ^ * ( ) _</span><br>密碼建議10字以上</div>
+        <section>
+            <div class="toggle">
+                <button type="button" class="toggle__btn">特殊符號</button>
+                <div class="toggle__content">
+                    <p class="toggle__content-text">特殊符號只開放使用以下10種</p>
+                    <p class="toggle__conetnt-text"><span class="toggle__highlight">~ ! @ # $ ^ * ( ) _</span></p>
+                    <p class="toggle__content-text">密碼建議10字以上</p>
+                </div>
+            </div>
         </section>
     </main>
 {% endblock %}
