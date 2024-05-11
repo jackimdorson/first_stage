@@ -58,12 +58,12 @@ section .link-wrapper {
 .toggle__btn--clicked::after {
   content: "▲";
 }
+.toggle__btn--spread.toggle__content {
+  display: block;
+}
 .toggle__content {
   display: none;
   border: 2px dotted rgb(40, 30, 90);
-}
-.toggle__content--active {
-  display: block;
 }
 .toggle__highlight {
   color: red;
