@@ -66,14 +66,13 @@ section {
                 content: "\25B2";
             }
         }
+        &--spread.toggle__content {    //詳細度を上げる__content display:none;に対処
+            display: block;
+        }
     }
     &__content {
         display: none;
         border: 2px dotted $base-color;
-
-        &--active {
-            display: block;
-        }
     }
     &__highlight {
         color: red;

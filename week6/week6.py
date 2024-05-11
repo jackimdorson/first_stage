@@ -6,7 +6,7 @@ from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
-
+import urllib.parse     #urllib.parseの利用に必要
 
 load_dotenv()
 def connect_db():
@@ -30,20 +30,22 @@ def home_page(request:Request):
 
 @app.post("/signup")
 def signup(request:Request, name:str=Form(None), username:str=Form(None), psw:str=Form(None)):
-    try:
-        with connect_db() as mydb:
-            with mydb.cursor() as cursor:                            #SQL指令する為のcursorObjを作成(db操作が必要な度に呼び出し)
+    with connect_db() as mydb:
+        with mydb.cursor() as cursor:                            #SQL指令する為のcursorObjを作成(db操作が必要な度に呼び出し)
+            try:
                 cursor.execute("SELECT * FROM member WHERE BINARY username = %s", (username,))       #執行SQL指令
                 username_exists = cursor.fetchone()                                                   #取得一筆資料   多筆(tupleを含んだlist).fetchall()  一筆(tuple).fetchone()
                 if username_exists:         #能取得data = 已經被註冊
-                    return RedirectResponse(url=request.url_for("error_page", message="帳號已經被註冊"), status_code=303)
+                    query_params = urllib.parse.urlencode({"message": "帳號已經被註冊"})
+                    return RedirectResponse(url=f"/error?{query_params}", status_code=303)
+
                 else:
                     cursor.execute("INSERT INTO member(name, username, password) VALUES(%s, %s, %s)", (name, username, psw))
                     mydb.commit()     #これがないとデータベースに反映されない。
                     return RedirectResponse(url=request.url_for("member_page"), status_code=303)
-    except Exception as e:
-        mydb.rollback()    #元の状態に戻す
-        print(f"==== 發生Error ====: {e}")
+            except Exception as e:
+                mydb.rollback()    #元の状態に戻す
+                print(f"==== 發生Error ====: {e}")
 
 
 @app.post("/signin")
@@ -59,14 +61,15 @@ def signin(request:Request, username:str=Form(None), psw:str=Form(None)):
                         request.session[value] = signin_exists[index]
                     return RedirectResponse(url=request.url_for("member_page"), status_code=303)
                 else:
-                    return RedirectResponse(url=request.url_for("error_page", message="帳號或密碼輸入錯誤"), status_code=303)
+                    query_params = urllib.parse.urlencode({"message": "帳號或密碼輸入錯誤"})
+                    return RedirectResponse(url=f"/error?{query_params}", status_code=303)
     except Exception as e:
         print(f"==== 發生Error ====: {e}")
 
 
 @app.get("/error")
 def error_page(request:Request, message:str):
-    return templates.TemplateResponse("error.html",{"request": request, "message": message})
+    return templates.TemplateResponse("error.html", {"request":request, "message": message })
 
 
 @app.get("/member")
@@ -95,30 +98,30 @@ def signout(request:Request):
 
 @app.post("/createMessage")
 def createmsg(request:Request, content:str=Form(None)):
-    try:
-        with connect_db() as mydb:
-            with mydb.cursor() as cursor:
+    with connect_db() as mydb:
+        with mydb.cursor() as cursor:
+            try:
                 member_id = request.session.get("MEMBER_ID")
                 cursor.execute("INSERT INTO message(member_id, content) VALUES(%s, %s)", (member_id, content))
                 mydb.commit()
                 return RedirectResponse(url=request.url_for("member_page"), status_code=303)
-    except Exception as e:
-        mydb.rollback()
-        print(f"==== 發生Error ====: {e}")
+            except Exception as e:
+                mydb.rollback()
+                print(f"==== 發生Error ====: {e}")
 
 
 @app.post("/deleteMessage")
 def deletemsg(request:Request, id_message:str=Form(None, alias="id-message")):
-    try:
-        with connect_db() as mydb:
-            with mydb.cursor() as cursor:
+    with connect_db() as mydb:
+        with mydb.cursor() as cursor:
+            try:
                 member_id = request.session.get("MEMBER_ID")
                 cursor.execute("DELETE FROM message WHERE id = %s AND member_id = %s", (id_message, member_id))    #只讓登入者刪除
                 mydb.commit()
                 return RedirectResponse(url=request.url_for("member_page"), status_code=303)
-    except Exception as e:
-        mydb.rollback()
-        print(f"==== 發生Error ====: {e}")
+            except Exception as e:
+                mydb.rollback()
+                print(f"==== 發生Error ====: {e}")
 
 
 @app.get("/api/check-username")
