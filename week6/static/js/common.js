@@ -1,20 +1,23 @@
-// 'use strict'
-// document.addEventListener("DOMContentLoaded", function(){
+'use strict'
 
-//     const leaveMsg = document.getElementById("create_msg")
-//     leaveMsg.addEventListener("submit", function(event){
-//         if (event.value.trim() !== ''){
-//             alert("請輸入文字");
-//         }
-//     })
+export function isEmptyInput(form){
+    form.addEventListener("submit", function(e){
+        const textarea = e.target.elements[0];     // フォーム内の最初の『入力欄』を取得
+        if(textarea.value.trim() === ''){
+            e.preventDefault();
+            alert("請輸入文字");
+        }
+    })
+}
 
-//     const deleteForms = document.querySelectorAll(".delete_form");
-//     for(let form of deleteForms){
-//         form.addEventListener("submit", function(event){
-//             const check = confirm("確定要刪除?");
-//             if (!check){
-//                 event.preventDefault();
-//             }
-//         })
-//     }
-// })
+export function isEmptyInputs(forms){
+    for(let form of forms){
+        form.addEventListener("submit", function(e){
+            const inputsArr = Array.from(e.target.querySelectorAll("input"))   //NodeList -> Array
+            if (inputsArr.some(input => input.value.trim() === '')){
+                e.preventDefault();
+                alert("請輸入帳號、密碼");
+            }
+        })
+    }
+}

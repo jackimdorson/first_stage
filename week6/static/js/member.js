@@ -1,19 +1,17 @@
 'use strict'
+import { isEmptyInput } from './common.js';
+
 document.addEventListener("DOMContentLoaded", function(){
+    const formCreateMsg = document.querySelector(".form--create-msg");
+    isEmptyInput(formCreateMsg);
 
-    const formCreateMsg = document.querySelector(".form--create-msg")
-    formCreateMsg.addEventListener("submit", function(e){
-        if (e.value.trim() !== ''){
-            alert("請輸入文字");
-        }
-    })
 
-    const deleteForms = document.querySelectorAll(".delete_form");
-    for(let form of deleteForms){
-        form.addEventListener("submit", function(event){
+    const deleteForms = document.querySelectorAll(".msg__delete-form");
+    for(let deleteForm of deleteForms){
+        deleteForm.addEventListener("submit", function(e){
             const check = confirm("確定要刪除?");
             if (!check){
-                event.preventDefault();
+                e.preventDefault();
             }
         })
     }

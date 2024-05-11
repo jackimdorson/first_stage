@@ -45,7 +45,7 @@
         </section>
         <section>
             <div class="toggle">
-                <button type="button" class="toggle__btn">特殊符號</button>
+                <div class="toggle__btn">特殊符號</div>
                 <div class="toggle__content">
                     <p class="toggle__content-text">特殊符號只開放使用以下10種</p>
                     <p class="toggle__conetnt-text"><span class="toggle__highlight">~ ! @ # $ ^ * ( ) _</span></p>
@@ -55,7 +55,7 @@
         </section>
     </main>
 {% endblock %}
-{% block js %}<script src="{{ url_for('static', path='js/index.js') }}"></script>{% endblock %}
+{% block js %}<script type="module" src="{{ url_for('static', path='js/index.js') }}"></script>{% endblock %}
 
 
 
