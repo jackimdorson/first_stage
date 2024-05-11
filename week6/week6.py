@@ -1,126 +1,136 @@
-import os                        #環境変数(.env)の読み込みに必要
-from dotenv import load_dotenv   #環境変数(.env)の読み込みに必要
-import mysql.connector           #mysqlとpyを紐付け
+import os                          #環境変数(.env)の読み込みに必要
+from dotenv import load_dotenv     #環境変数(.env)の読み込みに必要
+import mysql.connector             #mysqlとpyを紐付け(MySQL公式が開発。非同期処理に未対応)　import aiomysql(コミュニティが開発。非同期処理に対応)
 from fastapi import FastAPI, Request, Form
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
-from urllib.parse import urlencode
 
 
+load_dotenv()
 def connect_db():
-    load_dotenv()
-    return mysql.connector.connect(                         #mysqlへのアクセス
+    return mysql.connector.connect(       #mysqlへのアクセス
         host = os.getenv("DB_HOST"),
         user = os.getenv("DB_USER"),
         password = os.getenv("DB_PASSWORD"),
         database = os.getenv("DB_NAME")
     )
 
-def close_db(cursor, db):
-    cursor.close()
-    db.close()
-
-
 app = FastAPI()
+app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY"))
 app.mount("/static", StaticFiles(directory="static"), name="static")
-app.add_middleware(SessionMiddleware, secret_key="ohayou")
 templates = Jinja2Templates(directory="templates")
 
-@app.get("/", response_class=HTMLResponse)
+
+@app.get("/")     #returnにTemplateResponse を使用する場合　response_class=HTMLResponseは不要
 def home_page(request:Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse("index.html", {"request":request})
+
 
 @app.post("/signup")
 def signup(request:Request, name:str=Form(None), username:str=Form(None), psw:str=Form(None)):
-    mydb = connect_db()
-    cursor = mydb.cursor()                                              #SQL指令する為のcursorObjを作成(db操作が必要な度に呼び出し)
     try:
-        cursor.execute("SELECT * FROM member WHERE BINARY username = %s", (username,))       #執行SQL指令
-        member = cursor.fetchone()                                                   #取得一筆資料   多筆(tupleを含んだlist).fetchall()  一筆(tuple).fetchone()
-        if member:         #能取得data = 已經被註冊
-            query_params = urlencode({"message": "帳號已經被註冊"})
-            return RedirectResponse(url=f"/error?{query_params}", status_code=303)
-        else:
-            cursor.execute("INSERT INTO member(name, username, password) VALUES(%s, %s, %s)", (name, username, psw))
-            mydb.commit()    #これがないとデータベースに反映されない。
-            return RedirectResponse(url="/member", status_code=303)
-    finally:
-        close_db(cursor, mydb)
+        with connect_db() as mydb:
+            with mydb.cursor() as cursor:                            #SQL指令する為のcursorObjを作成(db操作が必要な度に呼び出し)
+                cursor.execute("SELECT * FROM member WHERE BINARY username = %s", (username,))       #執行SQL指令
+                username_exists = cursor.fetchone()                                                   #取得一筆資料   多筆(tupleを含んだlist).fetchall()  一筆(tuple).fetchone()
+                if username_exists:         #能取得data = 已經被註冊
+                    return RedirectResponse(url=request.url_for("error_page", message="帳號已經被註冊"), status_code=303)
+                else:
+                    cursor.execute("INSERT INTO member(name, username, password) VALUES(%s, %s, %s)", (name, username, psw))
+                    mydb.commit()     #これがないとデータベースに反映されない。
+                    return RedirectResponse(url=request.url_for("member_page"), status_code=303)
+    except Exception as e:
+        mydb.rollback()    #元の状態に戻す
+        print(f"==== 發生Error ====: {e}")
+
 
 @app.post("/signin")
 def signin(request:Request, username:str=Form(None), psw:str=Form(None)):
-    mydb = connect_db()
-    cursor = mydb.cursor()
     try:
-        cursor.execute("SELECT * FROM member WHERE BINARY username = %s AND BINARY password = %s", (username, psw))
-        member = cursor.fetchone()
-        if member:           #能取得data = 資料是對的
-            add_sessions = ["MEMBER_ID", "NAME", "USERNAME"]
-            for index, value in enumerate(add_sessions):
-                request.session[value] = member[index]
-            return RedirectResponse(url="/member", status_code=303)
-        else:
-            query_params = urlencode({"message": "帳號或密碼輸入錯誤"})
-            return RedirectResponse(url=f"/error?{query_params}", status_code=303)
-    finally:
-        close_db(cursor, mydb)
+        with connect_db() as mydb:
+            with mydb.cursor() as cursor:
+                cursor.execute("SELECT * FROM member WHERE BINARY username = %s AND BINARY password = %s", (username, psw))
+                signin_exists = cursor.fetchone()
+                if signin_exists:
+                    add_sessions = ["MEMBER_ID", "NAME", "USERNAME"]
+                    for index, value in enumerate(add_sessions):
+                        request.session[value] = signin_exists[index]
+                    return RedirectResponse(url=request.url_for("member_page"), status_code=303)
+                else:
+                    return RedirectResponse(url=request.url_for("error_page", message="帳號或密碼輸入錯誤"), status_code=303)
+    except Exception as e:
+        print(f"==== 發生Error ====: {e}")
 
-@app.get("/error", response_class=HTMLResponse)
+
+@app.get("/error")
 def error_page(request:Request, message:str):
     return templates.TemplateResponse("error.html",{"request": request, "message": message})
 
-@app.get("/member", response_class=HTMLResponse)
+
+@app.get("/member")
 def member_page(request:Request):
-    mydb = connect_db()
-    cursor = mydb.cursor()
     try:
-        if "NAME" in request.session:
-            sessionName = request.session.get("NAME")
-            cursor.execute("SELECT member.name, message.id, message.content, message.time FROM member INNER JOIN message ON member.id = message.member_id ORDER BY time DESC")
-            members = cursor.fetchall()
-            return templates.TemplateResponse("member.html",{"request": request, "sessionName": sessionName, "members": members})
-        else:
-            return RedirectResponse(url="/")
-    finally:
-        close_db(cursor, mydb)
+        with connect_db() as mydb:
+            with mydb.cursor() as cursor:
+                if "NAME" in request.session:
+                    sessionName = request.session.get("NAME")
+                    cursor.execute("SELECT member.name, message.id, message.content, message.time FROM member INNER JOIN message ON member.id = message.member_id ORDER BY time DESC")
+                    members = cursor.fetchall()
+                    return templates.TemplateResponse("member.html", {"request": request, "sessionName": sessionName, "members": members})
+                else:
+                    return RedirectResponse(url=request.url_for("home_page"))
+    except Exception as e:
+        print(f"==== 發生Error ====: {e}")
 
 
-@app.get("/signout", response_class=HTMLResponse)
+@app.get("/signout")
 def signout(request:Request):
     remove_sessions = ["MEMBER_ID", "NAME", "USERNAME"]
     for remove_session in remove_sessions:
         request.session.pop(remove_session, None)   #popメソッドはsession Keyが存在しない場合エラーを出す。エラーを発生させずに処理する為にNoneを指定
-    return RedirectResponse(url="/")
+    return RedirectResponse(url=request.url_for("home_page"))
 
 
 @app.post("/createMessage")
 def createmsg(request:Request, content:str=Form(None)):
-    mydb = connect_db()
-    cursor = mydb.cursor()
     try:
-        member_id = request.session.get("MEMBER_ID")
-        cursor.execute("INSERT INTO message(member_id, content) VALUES(%s, %s)", (member_id, content))
-        mydb.commit()
-        return RedirectResponse(url="/member", status_code=303)
-    finally:
-        close_db(cursor, mydb)
+        with connect_db() as mydb:
+            with mydb.cursor() as cursor:
+                member_id = request.session.get("MEMBER_ID")
+                cursor.execute("INSERT INTO message(member_id, content) VALUES(%s, %s)", (member_id, content))
+                mydb.commit()
+                return RedirectResponse(url=request.url_for("member_page"), status_code=303)
+    except Exception as e:
+        mydb.rollback()
+        print(f"==== 發生Error ====: {e}")
 
 
 @app.post("/deleteMessage")
-def deletemsg(request:Request, id_message:str=Form(None)):
-    mydb = connect_db()
-    cursor = mydb.cursor()
+def deletemsg(request:Request, id_message:str=Form(None, alias="id-message")):
     try:
-        member_id = request.session.get("MEMBER_ID")
-        cursor.execute("DELETE FROM message WHERE id = %s AND member_id = %s", (id_message, member_id))    #只讓登入者刪除
-        mydb.commit()
-        return RedirectResponse(url="/member", status_code=303)
-    finally:
-        close_db(cursor, mydb)
+        with connect_db() as mydb:
+            with mydb.cursor() as cursor:
+                member_id = request.session.get("MEMBER_ID")
+                cursor.execute("DELETE FROM message WHERE id = %s AND member_id = %s", (id_message, member_id))    #只讓登入者刪除
+                mydb.commit()
+                return RedirectResponse(url=request.url_for("member_page"), status_code=303)
+    except Exception as e:
+        mydb.rollback()
+        print(f"==== 發生Error ====: {e}")
 
 
-    # cursor.execute("CREATE TEMPORARY TABLE temp_join AS SELECT member.username, message.content FROM member INNER JOIN message ON member.id = message.member_id WHERE username = %s", (username,))
-
-
+@app.get("/api/check-username")
+async def check_username(username:str):
+    try:
+        with connect_db() as mydb:
+            with mydb.cursor() as cursor:
+                cursor.execute("SELECT * FROM member WHERE BINARY username = %s", (username,))
+                username_exists = cursor.fetchone()
+                if username_exists:
+                    return {"exists": True}
+                else:
+                    return {"exists": False}
+    except Exception as e:
+        print(f"==== 發生Error ====: {e}")

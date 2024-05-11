@@ -1,20 +1,13 @@
-// 'use strict'
-// document.addEventListener("DOMContentLoaded", function(){
-
-//     const leaveMsg = document.getElementById("create_msg")
-//     leaveMsg.addEventListener("submit", function(event){
-//         if (event.value.trim() !== ''){
-//             alert("請輸入文字");
-//         }
-//     })
-
-//     const deleteForms = document.querySelectorAll(".delete_form");
-//     for(let form of deleteForms){
-//         form.addEventListener("submit", function(event){
-//             const check = confirm("確定要刪除?");
-//             if (!check){
-//                 event.preventDefault();
-//             }
-//         })
-//     }
-// })
+//moduleはデフォルトで usestrict + defer属性の効果＝DOMContentLoaded＝HTMLドキュメントの解析が完了するまで実行されない
+export function submitEmpty(){
+    const forms = document.querySelectorAll(".form");
+    for(let form of forms){
+        form.addEventListener("submit", function(e){
+            const inputsArr = Array.from(e.target.querySelectorAll(".form__input"))   //NodeList -> Array
+            if (inputsArr.some(input => input.value.trim() === '')){
+                e.preventDefault();
+                alert("不得空白");
+            }
+        })
+    }
+}

@@ -15,10 +15,10 @@
             <form action="{{ request.url_for('createmsg') }}" method="POST" class="form form--create-msg">
                 <div class="form__group">
                     <label class="form__label">內容
-                        <textarea name="content" class="form__textarea" autofocus></textarea>
+                        <textarea name="content" class="form__input" autofocus></textarea>
                     </label>
-                    <button type="submit" class="form__btn">送出</button>
                 </div>
+                <button type="submit" class="form__btn">送出</button>
             </form>
         </section>
         <hr>
@@ -28,7 +28,7 @@
                     <p class="msg__text"><strong>{{ name }} : </strong>{{ content }}</p>
                     {% if name == sessionName %}
                         <form action="{{ request.url_for('deletemsg') }}" method="POST" class="msg__delete-form">
-                            <input type="hidden" name="id_message" value="{{ id }}">
+                            <input type="hidden" name="id-message" value="{{ id }}">
                             <button type="submit" class="msg__delete-btn">X</button>
                         </form>
                     {% endif %}
@@ -37,4 +37,4 @@
         </section>
     </main>
 {% endblock %}
-{% block js %}<script src="{{ url_for('static', path='js/member.js') }}"></script>{% endblock %}
+{% block js %}<script type="module" src="{{ url_for('static', path='js/member.js') }}"></script>{% endblock %}

@@ -23,11 +23,12 @@ body hr {
 }
 
 section {
-  max-width: 230px;
+  max-width: 300px;
   margin: 0 auto;
   margin-bottom: 40px;
 }
 section h3 {
+  font-size: 1.5rem;
   text-align: center;
   margin-top: 20px;
 }
@@ -38,11 +39,13 @@ section .link-wrapper {
 
 .toggle {
   height: 200px;
+  width: 75%;
+  margin: 0 auto;
+  text-align: center;
 }
 .toggle__btn {
   background-color: dimgray;
   color: white;
-  width: 100%;
   padding: 8px;
   font-size: 1rem;
 }
@@ -57,7 +60,6 @@ section .link-wrapper {
 }
 .toggle__content {
   display: none;
-  text-align: center;
   border: 2px dotted rgb(40, 30, 90);
 }
 .toggle__content--active {
@@ -69,36 +71,39 @@ section .link-wrapper {
 }
 
 .form__group {
-  padding: 4px;
+  margin: 0 0 15px 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+.form__label {
   display: flex;
   align-items: center;
-  justify-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  gap: 10px;
 }
 .form__input, .form__input--name {
   padding-left: 3px;
   height: 1.5rem;
 }
-.form__show-psw {
+.form__sideimg {
   width: 24px;
   height: 24px;
   vertical-align: middle;
 }
 .form__btn {
-  padding: 3px 8px;
-  border-radius: 3px;
+  padding: 4px 8px;
+  border-radius: 4px;
   display: block;
   margin: 0 auto;
-  margin-top: 5px;
 }
 
-.msg__delete-form {
+.msg {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   gap: 10px;
 }
-.msg__delete-form button {
-  margin-top: unset;
+.msg__delete-btn {
+  border-radius: 4px;
 }/*# sourceMappingURL=week6.css.map */

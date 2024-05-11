@@ -8,19 +8,19 @@
             <form action="{{ request.url_for('signup') }}" method="POST" class="form form--signup">
                 <div class="form__group">
                     <label class="form__label">姓名
-                        <input type="text" name="name" autocomplete="name" class="form__input--name">
+                        <input type="text" name="name" autocomplete="name" class="form__input form__input--name">
                     </label>
                 </div>
                 <div class="form__group">
                     <label class="form__label">帳號
-                        <input type="text" name="username" autocomplete="username" class="form__input">
+                        <input type="text" name="username" autocomplete="username" class="form__input form__input--username">
                     </label>
                 </div>
                 <div class="form__group">
                     <label class="form__label">密碼
-                        <input type="password" name="psw" autocomplete="current-password" class="form__input">
+                        <input type="password" name="psw" autocomplete="current-password" class="form__input form__input--psw">
                     </label>
-                    <img src="{{ url_for('static', path='img/hidden.webp') }}" alt="hidden" class="form__show-psw">
+                    <img src="{{ url_for('static', path='img/hidden.webp') }}" alt="hidden" class="form__sideimg">
                 </div>
                 <button type="submit" class="form__btn">註冊</button>
             </form>
@@ -31,21 +31,21 @@
             <form action="{{ request.url_for('signin') }}" method="POST" class="form form--signin">
                 <div class="form__group">
                     <label class="form__label">帳號
-                        <input type="text" name="username" autocomplete="username" autofocus class="form__input">
+                        <input type="text" name="username" autocomplete="username" autofocus class="form__input form__input--username">
                     </label>
                 </div>
                 <div class="form__group">
                     <label class="form__label">密碼
-                        <input type="password" name="psw" autocomplete="current-password" class="form__input">
+                        <input type="password" name="psw" autocomplete="current-password" class="form__input form__input--psw">
                     </label>
-                    <img src="{{ url_for('static', path='img/hidden.webp') }}" alt="hidden" class="form__show-psw">
+                    <img src="{{ url_for('static', path='img/hidden.webp') }}" alt="hidden" class="form__sideimg">
                 </div>
                 <button type="submit" class="form__btn">登入</button>
             </form>
         </section>
         <section>
             <div class="toggle">
-                <button type="button" class="toggle__btn">特殊符號</button>
+                <div class="toggle__btn">特殊符號</div>
                 <div class="toggle__content">
                     <p class="toggle__content-text">特殊符號只開放使用以下10種</p>
                     <p class="toggle__conetnt-text"><span class="toggle__highlight">~ ! @ # $ ^ * ( ) _</span></p>
@@ -55,7 +55,7 @@
         </section>
     </main>
 {% endblock %}
-{% block js %}<script src="{{ url_for('static', path='js/index.js') }}"></script>{% endblock %}
+{% block js %}<script type="module" src="{{ url_for('static', path='js/index.js') }}"></script>{% endblock %}
 
 
 
