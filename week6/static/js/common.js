@@ -1,22 +1,12 @@
-'use strict'
-
-export function isEmptyInput(form){
-    form.addEventListener("submit", function(e){
-        const textarea = e.target.elements[0];     // フォーム内の最初の『入力欄』を取得
-        if(textarea.value.trim() === ''){
-            e.preventDefault();
-            alert("請輸入文字");
-        }
-    })
-}
-
-export function isEmptyInputs(forms){
+//moduleはデフォルトで usestrict + defer属性の効果＝DOMContentLoaded＝HTMLドキュメントの解析が完了するまで実行されない
+export function submitEmpty(){
+    const forms = document.querySelectorAll(".form");
     for(let form of forms){
         form.addEventListener("submit", function(e){
-            const inputsArr = Array.from(e.target.querySelectorAll("input"))   //NodeList -> Array
+            const inputsArr = Array.from(e.target.querySelectorAll(".form__input"))   //NodeList -> Array
             if (inputsArr.some(input => input.value.trim() === '')){
                 e.preventDefault();
-                alert("請輸入帳號、密碼");
+                alert("不得空白");
             }
         })
     }
