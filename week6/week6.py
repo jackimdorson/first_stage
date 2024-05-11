@@ -36,8 +36,9 @@ def signup(request:Request, name:str=Form(None), username:str=Form(None), psw:st
                 cursor.execute("SELECT * FROM member WHERE BINARY username = %s", (username,))       #執行SQL指令
                 username_exists = cursor.fetchone()                                                   #取得一筆資料   多筆(tupleを含んだlist).fetchall()  一筆(tuple).fetchone()
                 if username_exists:         #能取得data = 已經被註冊
+                    url_for = request.url_for("error_page")
                     query_params = urllib.parse.urlencode({"message": "帳號已經被註冊"})
-                    return RedirectResponse(url=f"/error?{query_params}", status_code=303)
+                    return RedirectResponse(url=f"{url_for}?{query_params}", status_code=303)
 
                 else:
                     cursor.execute("INSERT INTO member(name, username, password) VALUES(%s, %s, %s)", (name, username, psw))
@@ -61,8 +62,9 @@ def signin(request:Request, username:str=Form(None), psw:str=Form(None)):
                         request.session[value] = signin_exists[index]
                     return RedirectResponse(url=request.url_for("member_page"), status_code=303)
                 else:
+                    url_for = request.url_for("error_page")
                     query_params = urllib.parse.urlencode({"message": "帳號或密碼輸入錯誤"})
-                    return RedirectResponse(url=f"/error?{query_params}", status_code=303)
+                    return RedirectResponse(url=f"{url_for}?{query_params}", status_code=303)
     except Exception as e:
         print(f"==== 發生Error ====: {e}")
 
