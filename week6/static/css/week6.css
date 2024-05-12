@@ -100,10 +100,22 @@ section .link-wrapper {
 }
 
 .msg {
-  display: flex;
+  display: grid;
   align-items: center;
-  gap: 10px;
+  grid-template-areas: "A A A B" "C C C C ";
+  margin-bottom: 30px;
+}
+.msg__text {
+  grid-area: A;
+  margin: 0;
+  font-size: 1.25rem;
+}
+.msg__text--time {
+  grid-area: C;
+  justify-self: end;
+  font-size: 1rem;
 }
 .msg__delete-btn {
   border-radius: 4px;
+  grid-area: B;
 }/*# sourceMappingURL=week6.css.map */

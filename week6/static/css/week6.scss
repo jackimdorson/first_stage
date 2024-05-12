@@ -111,11 +111,26 @@ section {
 
 
 .msg {
-    display: flex;
+    display: grid;
     align-items: center;
-    gap: 10px;
+    grid-template-areas:
+        "A A A B"
+        "C C C C ";
+    margin-bottom: 30px;
 
+    &__text {
+        grid-area: A;
+        margin: 0;
+        font-size: 1.25rem;
+
+        &--time {
+            grid-area: C;
+            justify-self: end;
+            font-size: 1rem;
+        }
+    }
     &__delete-btn {
         border-radius: 4px;
+        grid-area: B;
     }
 }
