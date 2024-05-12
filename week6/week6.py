@@ -29,7 +29,7 @@ def home_page(request:Request):
 
 
 @app.post("/signup")
-def signup(request:Request, name:str=Form(None), username:str=Form(None), psw:str=Form(None)):
+def signup(request:Request, name:str=Form(...), username:str=Form(...), psw:str=Form(...)):
     with connect_db() as mydb:
         with mydb.cursor() as cursor:                            #SQL指令する為のcursorObjを作成(db操作が必要な度に呼び出し)
             try:
@@ -50,7 +50,7 @@ def signup(request:Request, name:str=Form(None), username:str=Form(None), psw:st
 
 
 @app.post("/signin")
-def signin(request:Request, username:str=Form(None), psw:str=Form(None)):
+def signin(request:Request, username:str=Form(...), psw:str=Form(...)):
     try:
         with connect_db() as mydb:
             with mydb.cursor() as cursor:
@@ -70,7 +70,7 @@ def signin(request:Request, username:str=Form(None), psw:str=Form(None)):
 
 
 @app.get("/error")
-def error_page(request:Request, message:str):
+def error_page(request:Request, message:str):    #このmessageはsignup,signinエンドポイントで送信(redirect)される.../error?message=queryPを受信, messageをqueryに含めてredirectしている
     return templates.TemplateResponse("error.html", {"request":request, "message": message })
 
 
@@ -99,7 +99,7 @@ def signout(request:Request):
 
 
 @app.post("/createMessage")
-def createmsg(request:Request, content:str=Form(None)):
+def createmsg(request:Request, content:str=Form(...)):
     with connect_db() as mydb:
         with mydb.cursor() as cursor:
             try:
@@ -113,7 +113,7 @@ def createmsg(request:Request, content:str=Form(None)):
 
 
 @app.post("/deleteMessage")
-def deletemsg(request:Request, id_message:str=Form(None, alias="id-message")):
+def deletemsg(request:Request, id_message:str=Form(..., alias="id-message")):
     with connect_db() as mydb:
         with mydb.cursor() as cursor:
             try:
@@ -127,7 +127,7 @@ def deletemsg(request:Request, id_message:str=Form(None, alias="id-message")):
 
 
 @app.get("/api/check-username")
-async def check_username(username:str):
+async def check_username(username:str):    #このusernameはjsのfetchから送信される.../check-username?username=queryPを受信
     try:
         with connect_db() as mydb:
             with mydb.cursor() as cursor:
