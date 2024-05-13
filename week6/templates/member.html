@@ -23,7 +23,7 @@
         </section>
         <hr>
         <section>
-            {% for name, id, content, time in members %}
+            {% for name, id, content, time in members %}   <!-- templateエンジンのfor文での変数宣言は必ずdbの取得数と一致させる(->Error)but宣言は必須だが使わくても良い。dbから4つ取得→4つ記述, 2つ取得→2つ記述。 -->
                 <div class="msg">
                     <p class="msg__text"><strong>{{ name }} : </strong>{{ content }}</p>
                     {% if name == sessionName %}
@@ -32,9 +32,22 @@
                             <button type="submit" class="msg__delete-btn">X</button>
                         </form>
                     {% endif %}
+                    <p class="msg__text msg__text--time">{{ time | format_datetime('%m/%d %H:%M') }}</p>
                 </div>
             {% endfor %}
         </section>
     </main>
 {% endblock %}
 {% block js %}<script type="module" src="{{ url_for('static', path='js/member.js') }}"></script>{% endblock %}
+
+
+
+
+<!--
+    <p>{{ time | format_datetime('%Y/%m/%d %H:%M:%S') }} - 年月日時分秒 - 2024/05/09 23:40:17</p>
+    <p>{{ time | format_datetime('%Y/%m/%d %H:%M') }} - 年月日時分 - 2024/05/09 23:40</p>
+    <p>{{ time | format_datetime('%Y/%m/%d') }} - 年月日 - 2024/05/09</p>
+    <p>{{ time | format_datetime('%m/%d %H:%M') }} - 月日時分 - 05/09 23:40</p>
+    <p>{{ time | format_datetime('%m/%d') }} - 月日 - 05/09</p>
+    <p>{{ time | format_datetime('%H:%M') }} - 時分 - 23:40</p>
+-->

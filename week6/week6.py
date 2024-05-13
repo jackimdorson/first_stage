@@ -7,6 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 import urllib.parse     #urllib.parseの利用に必要
+import datetime      #dbのdatetimeをカスタムしたい場合に必要(秒不要など)
 
 load_dotenv()
 def connect_db():
@@ -22,8 +23,14 @@ app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY"))
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
+# カスタムフィルタの定義  datetime.datetimeは『型ヒント』 -> str:は戻り値の『型ヒント』
+def format_datetime(value: datetime.datetime, fmt: str) -> str:
+    return value.strftime(fmt)
+# カスタムフィルタをテンプレートエンジンに登録
+templates.env.filters["format_datetime"] = format_datetime
 
-@app.get("/")     #returnにTemplateResponse を使用する場合　response_class=HTMLResponseは不要
+
+@app.get("/")     #TemplateResponse, HTMLResponseは自動的に Content-Type を text/html; charset=utf-8 に設定。よってresponse_class=HTMLResponseの記述は不要
 def home_page(request:Request):
     return templates.TemplateResponse("index.html", {"request":request})
 
@@ -139,3 +146,13 @@ async def check_username(username:str):    #このusernameはjsのfetchから送
                     return {"exists": False}
     except Exception as e:
         print(f"==== 發生Error ====: {e}")
+
+
+@app.get("/api/member")
+async def search_username():
+    pass
+
+
+@app.patch("/api/member")
+async def update_username():
+    pass
