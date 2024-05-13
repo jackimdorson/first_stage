@@ -146,3 +146,13 @@ async def check_username(username:str):    #このusernameはjsのfetchから送
                     return {"exists": False}
     except Exception as e:
         print(f"==== 發生Error ====: {e}")
+
+
+@app.get("/api/member")
+async def search_username():
+    pass
+
+
+@app.patch("/api/member")
+async def update_username():
+    pass
