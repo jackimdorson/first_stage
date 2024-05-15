@@ -156,3 +156,85 @@ async def search_username():
 @app.patch("/api/member")
 async def update_username():
     pass
+
+
+
+
+
+
+import random
+key = random.randint(1, 10)
+print(str(key)+"が含まれるかcheck")
+
+def binary_search(arr):
+    left = 0;
+    right = len(arr)
+    while left < right:
+        mid = (left + right) // 2
+        if arr[mid] == key:
+            return mid
+        elif arr[mid] > key:
+            right = mid
+        else:
+            left = mid + 1
+        return None
+
+s_list = [1, 2, 5, 8, 10]
+print(binary_search(s_list))
+
+
+
+
+
+
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+
+class BinarySearchTree:
+    def __init__(self, root):
+        self.root = Node(root)    #rootにインスタンスを作成
+
+    def insert(self, key):
+        node = self.root
+        while True:
+            if node.value > key:
+                if node.left is None:
+                    node.left = Node(key)
+                    return
+                node = node.left
+            elif node.value <= key:
+                if node.right is None:
+                    node.right = Node(key)
+                    return
+                node = node.right
+
+    def inorder(self, node):
+        if node is None:
+            return
+        else:
+            self.inorder(node.left)
+            print(node.value)
+            self.inorder(node.right)
+
+    def search(self, key):
+        node = self.root
+        while True:
+            if node.value == key:
+                print("yes")
+                return
+            elif node.value > key:
+                node = node.left
+            else:
+                node = node.right
+            if node is None:
+                print("no")
+                return
+
+
+t = BinarySearchTree(7)
+t.insert(3)
+t.insert(5)
+t.inorder(t.root)
