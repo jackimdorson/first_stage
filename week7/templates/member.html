@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}會員頁{% endblock %}
+{% block h2 %}<a href="/">歡迎光臨，這是會員頁</a>{% endblock %}
+{% block content %}
+    <main>
+        <section>
+            <h3>{{ sessionName }}，歡迎登入系統</h3>
+            <div class="link-wrapper">
+                <a href="{{ request.url_for('signout') }}" class="link">登出系統</a>
+            </div>
+        </section>
+        <hr>
+        <section>
+            <h3>快來留言吧</h3>
+            <form action="{{ request.url_for('createmsg') }}" method="POST" class="form form--createmsg">
+                <div class="form__row">
+                    <label class="input">內容
+                        <textarea name="content" class="input__field input__field--textarea" autofocus></textarea>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn--block">送出</button>
+            </form>
+        </section>
+        <hr>
+        <section>
+            {% for name, id, content, time in members %}   <!-- templateエンジンのfor文での変数宣言は必ずdbの取得数と一致させる(->Error)but宣言は必須だが使わくても良い。dbから4つ取得→4つ記述, 2つ取得→2つ記述。 -->
+                <div class="msg">
+                    <p class="msg__text"><strong>{{ name }} : </strong>{{ content }}</p>
+                    {% if name == sessionName %}
+                        <form action="{{ request.url_for('deletemsg') }}" method="POST" class="msg__delete-form">
+                            <input type="hidden" name="id-msg" value="{{ id }}">
+                            <button type="submit" class="btn btn--block">X</button>
+                        </form>
+                    {% endif %}
+                    <p class="msg__text msg__text--time">{{ time | format_datetime('%m/%d %H:%M') }}</p>
+                </div>
+            {% endfor %}
+        </section>
+        <section>
+            <div class="form form--search-username">
+                <div class="form-row">
+                    <label class="input">查詢會員姓名
+                        <input type="text" name="username" class="input__field input__field--username">
+                    </label>
+                </div>
+                <button type="submit" class="btn btn--inline">查詢</button>
+            </div>
+        </section>
+        <section>
+            <div class="form form--update-name">
+                <div class="form__row">
+                    <label class="form__label">更新我的姓名
+                        <input type="text" name="name" class="form__input form__input--name">
+                    </label>
+                </div>
+                <button type="submit" class="form__submit--update">更新</button>
+            </div>
+        </section>
+    </main>
+{% endblock %}
+{% block js %}<script type="module" src="{{ url_for('static', path='js/member.js') }}"></script>{% endblock %}
+
+
+
+
+<!--
+    <p>{{ time | format_datetime('%Y/%m/%d %H:%M:%S') }} - 年月日時分秒 - 2024/05/09 23:40:17</p>
+    <p>{{ time | format_datetime('%Y/%m/%d %H:%M') }} - 年月日時分 - 2024/05/09 23:40</p>
+    <p>{{ time | format_datetime('%Y/%m/%d') }} - 年月日 - 2024/05/09</p>
+    <p>{{ time | format_datetime('%m/%d %H:%M') }} - 月日時分 - 05/09 23:40</p>
+    <p>{{ time | format_datetime('%m/%d') }} - 月日 - 05/09</p>
+    <p>{{ time | format_datetime('%H:%M') }} - 時分 - 23:40</p>
+-->
