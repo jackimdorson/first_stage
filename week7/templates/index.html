@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}首頁{% endblock %}
+{% block h2 %}歡迎光臨，請註冊登入系統{% endblock %}
+{% block content %}
+    <main>
+        <section>
+            <h3>註冊系統</h3>
+            <form action="{{ request.url_for('signup') }}" method="POST" class="form form--signup">
+                <div class="form__row">
+                    <label class="input">姓名
+                        <!-- <input type="text" name="name" autocomplete="name" class="form-group form__input--name"> -->
+                        <input type="text" name="name" autocomplete="name" class="input__field input__field--name">
+                    </label>
+                </div>
+                <div class="form__row">
+                    <label class="input">帳號
+                        <input type="text" name="username" autocomplete="username" class="input__field input__field--username">
+                    </label>
+                </div>
+                <div class="form__row">
+                    <label class="input">密碼
+                        <input type="password" name="psw" autocomplete="current-password" class="input__field input__field--psw">
+                    </label>
+                    <img src="{{ url_for('static', path='img/hidden.webp') }}" alt="hidden" class="form__row__img">
+                </div>
+                <button type="submit" class="btn btn--block">註冊</button>
+            </form>
+        </section>
+        <hr>
+        <section>
+            <h3>登入系統</h3>
+            <form action="{{ request.url_for('signin') }}" method="POST" class="form form--signin">
+                <div class="form__row">
+                    <label class="input">帳號
+                        <input type="text" name="username" autocomplete="username" autofocus class="input__field input__field--username">
+                    </label>
+                </div>
+                <div class="form__row">
+                    <label class="input">密碼
+                        <input type="password" name="psw" autocomplete="current-password" class="input__field input__field--psw">
+                    </label>
+                    <img src="{{ url_for('static', path='img/hidden.webp') }}" alt="hidden" class="form__row__img">
+                </div>
+                <button type="submit" class="btn btn--block">登入</button>
+            </form>
+        </section>
+        <section>
+            <div class="toggle">
+                <div class="toggle__btn">特殊符號</div>
+                <div class="toggle__content">
+                    <p class="toggle__text">特殊符號只開放使用以下10種</p>
+                    <p class="toggle__text"><span class="toggle__highlight">~ ! @ # $ ^ * ( ) _</span></p>
+                    <p class="toggle__text">密碼建議10字以上</p>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}
+{% block js %}<script type="module" src="{{ url_for('static', path='js/index.js') }}"></script>{% endblock %}
+
+
+
+
+<!-- url_forと相対pathの使い分け url_forの利点-->
+<!-- 1.ルーティングの変更に強い(ディレクトリを直接指定する為)  2.クエリパラメーターの添付可能-->
+<!-- 静的ファイル(css, js, img)はurl_forを使う。 -->
+
+<!-- {# ルーティング名を指定する場合 #}
+<a href="{{ url_for('route_name') }}">Link Text</a>
+
+{# パスパラメータを渡す場合 #}
+<a href="{{ url_for('route_name', param1='value1', param2='value2') }}">Link Text</a> -->

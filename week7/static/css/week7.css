@@ -1,0 +1,126 @@
+@charset "UTF-8";
+body {
+  margin: 0;
+  padding: 0;
+}
+body header {
+  height: 60px;
+  color: white;
+  background-color: rgb(40, 30, 90);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+body header a {
+  color: white;
+  text-decoration: none;
+}
+body footer {
+  text-align: center;
+}
+body hr {
+  border: 1px solid gainsboro;
+}
+
+section {
+  max-width: 300px;
+  margin: 0 auto;
+  margin-bottom: 40px;
+}
+section h3 {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-top: 20px;
+}
+section .link-wrapper {
+  padding-top: 15px;
+  text-align: center;
+}
+
+.toggle {
+  height: 200px;
+  width: 75%;
+  margin: 0 auto;
+  text-align: center;
+}
+.toggle__btn {
+  background-color: dimgray;
+  color: white;
+  padding: 8px;
+  font-size: 1rem;
+}
+.toggle__btn::after {
+  content: "▼";
+}
+.toggle__btn--clicked {
+  background-color: rgb(40, 30, 90);
+}
+.toggle__btn--clicked::after {
+  content: "▲";
+}
+.toggle__btn--spread.toggle__content {
+  display: block;
+}
+.toggle__content {
+  display: none;
+  border: 2px dotted rgb(40, 30, 90);
+}
+.toggle__highlight {
+  color: red;
+  font-weight: bold;
+}
+
+.form__row {
+  margin: 0 0 15px 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+.form__row__img {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}
+
+.input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.input__field {
+  padding-left: 3px;
+  height: 1.5rem;
+}
+.input__field--textarea {
+  height: 80px;
+}
+
+.btn {
+  border-radius: 4px;
+}
+.btn--block {
+  padding: 4px 8px;
+  display: block;
+  margin: 0 auto;
+}
+
+.msg {
+  display: grid;
+  align-items: center;
+  grid-template-areas: "A A A B" "C C C C ";
+  margin-bottom: 30px;
+}
+.msg__text {
+  grid-area: A;
+  margin: 0;
+}
+.msg__text--time {
+  grid-area: C;
+  justify-self: end;
+  font-size: 1rem;
+}
+.msg btn--block {
+  grid-area: B;
+}/*# sourceMappingURL=week7.css.map */

@@ -1,0 +1,148 @@
+$base-color: rgb(40, 30, 90);
+@mixin flex-set{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+
+    & header {
+        height: 60px;
+        color: white;
+        background-color: $base-color;
+        @include flex-set;
+
+        & a {
+            color: white;
+            text-decoration: none;
+        }
+    }
+    & footer {
+        text-align: center;
+    }
+    & hr {
+        border: 1px solid gainsboro;
+    }
+}
+
+section {
+    max-width: 300px;
+    margin: 0 auto;
+    margin-bottom: 40px;
+
+    & h3 {
+        font-size: 1.5rem;
+        text-align: center;
+        margin-top: 20px;
+    }
+    & .link-wrapper {
+        padding-top: 15px;
+        text-align: center;
+    }
+}
+
+.toggle {
+    height: 200px;
+    width: 75%;
+    margin: 0 auto;
+    text-align: center;
+
+    &__btn {
+        background-color: dimgray;
+        color: white;
+        padding: 8px;
+        font-size: 1rem;
+
+        &::after {
+            content: "\25BC";
+        }
+        &--clicked {
+            background-color: $base-color;
+
+            &::after {
+                content: "\25B2";
+            }
+        }
+        &--spread.toggle__content {    //詳細度を上げる__content display:none;に対処
+            display: block;
+        }
+    }
+    &__content {
+        display: none;
+        border: 2px dotted $base-color;
+    }
+    &__highlight {
+        color: red;
+        font-weight: bold;
+    }
+}
+
+
+// form類
+
+.form__row {
+    margin: 0 0 15px 30px;
+    @include flex-set();
+    justify-content: flex-start;
+    gap: 10px;
+
+    &__img {
+        width: 24px;
+        height: 24px;
+        vertical-align: middle;
+    }
+}
+
+.input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    &__field {
+        padding-left: 3px;
+        height: 1.5rem;
+
+        &--textarea {
+            height: 80px;
+        }
+    }
+
+}
+
+.btn {
+    border-radius: 4px;
+
+    &--block {
+        padding: 4px 8px;
+        display: block;
+        margin: 0 auto;
+    }
+}
+
+
+.msg {
+    display: grid;
+    align-items: center;
+    grid-template-areas:
+        "A A A B"
+        "C C C C ";
+    margin-bottom: 30px;
+
+    &__text {
+        grid-area: A;
+        margin: 0;
+
+        &--time {
+            grid-area: C;
+            justify-self: end;
+            font-size: 1rem;
+        }
+    }
+
+    & btn--block {
+        grid-area: B;
+    }
+}
