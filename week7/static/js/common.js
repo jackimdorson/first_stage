@@ -11,7 +11,7 @@ export function submitEmpty(){
     const formQrySA = document.querySelectorAll(".form");
     for(let formQryS of formQrySA){
         formQryS.addEventListener("submit", function(event){
-            const inputQrySA = Array.from(event.target.querySelectorAll(".form__input"));   //NodeList -> Array
+            const inputQrySA = Array.from(event.target.querySelectorAll(".input__field"));   //NodeList -> Array
             if (inputQrySA.some(inputQryS => inputQryS.value.trim() === '')){
                 event.preventDefault();
                 alert("不得空白");

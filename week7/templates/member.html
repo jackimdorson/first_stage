@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 {% block title %}會員頁{% endblock %}
-{% block h2 %}<a href="/">歡迎光臨，這是會員頁</a>{% endblock %}
+{% block h2 %}<a href="/" class="body__header__a">歡迎光臨，這是會員頁</a>{% endblock %}
 {% block content %}
     <main>
-        <section>
-            <h3>{{ sessionName }}，歡迎登入系統</h3>
-            <div class="link-wrapper">
+        <section class="section">
+            <h3 class="section__h3">{{ sessionName }}，歡迎登入系統</h3>
+            <div class="section__link-wrap">
                 <a href="{{ request.url_for('signout') }}" class="link">登出系統</a>
             </div>
         </section>
-        <hr>
-        <section>
-            <h3>快來留言吧</h3>
+        <hr class="body__hr">
+        <section class="section">
+            <h3 class="section__h3">快來留言吧</h3>
             <form action="{{ request.url_for('createmsg') }}" method="POST" class="form form--createmsg">
                 <div class="form__row">
                     <label class="input">內容
@@ -21,8 +21,8 @@
                 <button type="submit" class="btn btn--block">送出</button>
             </form>
         </section>
-        <hr>
-        <section>
+        <hr class="body__hr">
+        <section class="section">
             {% for name, id, content, time in members %}   <!-- templateエンジンのfor文での変数宣言は必ずdbの取得数と一致させる(->Error)but宣言は必須だが使わくても良い。dbから4つ取得→4つ記述, 2つ取得→2つ記述。 -->
                 <div class="msg">
                     <p class="msg__text"><strong>{{ name }} : </strong>{{ content }}</p>
@@ -36,25 +36,28 @@
                 </div>
             {% endfor %}
         </section>
-        <section>
-            <div class="form form--search-username">
-                <div class="form-row">
-                    <label class="input">查詢會員姓名
+        <hr class="body__hr">
+        <section class="section">
+            <h3 class="section__h3">查詢會員姓名</h3>
+            <form class="form form--search-username form--line">
+                <div class="form__row">
+                    <label class="input">
                         <input type="text" name="username" class="input__field input__field--username">
                     </label>
                 </div>
-                <button type="submit" class="btn btn--inline">查詢</button>
-            </div>
+                <button type="submit" class="btn btn--exist">查詢</button>
+            </form>
         </section>
-        <section>
-            <div class="form form--update-name">
+        <section class="section">
+            <h3 class="section__h3">更新我的姓名</h3>
+            <form class="form form--update-name form--line">
                 <div class="form__row">
-                    <label class="form__label">更新我的姓名
-                        <input type="text" name="name" class="form__input form__input--name">
+                    <label class="input">
+                        <input type="text" name="name" class="input__field input__field--name">
                     </label>
                 </div>
-                <button type="submit" class="form__submit--update">更新</button>
-            </div>
+                <button type="submit" class="btn btn--update">更新</button>
+            </form>
         </section>
     </main>
 {% endblock %}

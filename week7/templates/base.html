@@ -6,12 +6,12 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', path='css/week7.css') }}">
 </head>
-<body>
-    <header>
+<body class="body">
+    <header class="body__header">
         <h2>{% block h2 %}{% endblock %}</h2>
     </header>
     {% block content %}{% endblock %}
-    <footer>
+    <footer class="body__footer">
         <p>&copy; 2024 Jack All rights reserved</p>
     </footer>
     {% block js %}{% endblock %}
