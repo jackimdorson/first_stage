@@ -1,45 +1,47 @@
 $base-color: rgb(40, 30, 90);
-@mixin flex-set{
+
+@mixin flex-set {
     display: flex;
-    justify-content: center;
     align-items: center;
 }
 
-body {
+
+.body {
     margin: 0;
     padding: 0;
 
-    & header {
+    &__header {
+        @include flex-set;
+        justify-content: center;
         height: 60px;
         color: white;
         background-color: $base-color;
-        @include flex-set;
 
-        & a {
+        &__a {
             color: white;
             text-decoration: none;
         }
     }
-    & footer {
+    &__footer {
         text-align: center;
     }
-    & hr {
+    &__hr {
         border: 1px solid gainsboro;
     }
 }
 
-section {
+.section {
     max-width: 300px;
     margin: 0 auto;
-    margin-bottom: 40px;
+    padding-bottom: 40px;
 
-    & h3 {
+    &__h3 {
         font-size: 1.5rem;
         text-align: center;
         margin-top: 20px;
     }
-    & .link-wrapper {
-        padding-top: 15px;
+    &__link-wrap {
+        padding-top: 16px;
         text-align: center;
     }
 }
@@ -80,55 +82,12 @@ section {
     }
 }
 
-
-// form類
-
-.form__row {
-    margin: 0 0 15px 30px;
-    @include flex-set();
-    justify-content: flex-start;
-    gap: 10px;
-
-    &__img {
-        width: 24px;
-        height: 24px;
-        vertical-align: middle;
-    }
-}
-
-.input {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    &__field {
-        padding-left: 3px;
-        height: 1.5rem;
-
-        &--textarea {
-            height: 80px;
-        }
-    }
-
-}
-
-.btn {
-    border-radius: 4px;
-
-    &--block {
-        padding: 4px 8px;
-        display: block;
-        margin: 0 auto;
-    }
-}
-
-
 .msg {
     display: grid;
     align-items: center;
     grid-template-areas:
-        "A A A B"
-        "C C C C ";
+        "A A A A A B"
+        "C C C C C C";
     margin-bottom: 30px;
 
     &__text {
@@ -138,11 +97,77 @@ section {
         &--time {
             grid-area: C;
             justify-self: end;
-            font-size: 1rem;
+        }
+    }
+    &__delete-form {
+        grid-area: B;
+        justify-self: end;
+        & .btn {
+            color: red;
+            padding: 2px 5px;
+        }
+    }
+}
+
+
+// form類
+
+.form {
+    @include flex-set();
+    flex-wrap: wrap;
+    gap: 16px;
+
+    &__row {
+        @include flex-set();
+        justify-content: flex-start;
+        gap: 10px;
+
+        &__img {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+        }
+    }
+    &__newline-div {
+        text-align: center;
+        width: 100%;
+    }
+    &--line {
+        justify-content: center;
+    }
+    &--signup, &--signin{
+        & .form__row {
+            padding-left: 30px;
+        }
+    }
+}
+
+
+.input {
+    @include flex-set();
+    gap: 10px;
+
+    &__field {
+        padding-left: 3px;
+        height: 1.5rem;
+
+        &--textarea {
+            height: 80px;
+            width: 200px;
         }
     }
 
-    & btn--block {
-        grid-area: B;
+}
+
+.btn {
+    border-radius: 4px;
+    padding: 4px 8px;
+
+    &--block {
+        display: block;
+        margin: 0 auto;
     }
 }
+
+
+

@@ -5,13 +5,13 @@ import { submitEmpty } from './common.js';
 document.addEventListener("DOMContentLoaded", function(){
 
     const deleteFormQrySA = document.querySelectorAll(".msg__delete-form");
-    const submitQryS = document.querySelector('.form__submit');
-    const submitUpdateQryS = document.querySelector('.form__submit--update');
+    const submitExistQryS = document.querySelector('.btn--exist');
+    const submitUpdateQryS = document.querySelector('.btn--update');
 
 
-    function confirmDelete(){
-        for(let deleteFormQryS of deleteFormQrySA){
-            deleteFormQryS.addEventListener("submit", function(event){
+    function confirmDelete(qrySA){
+        for(let qryS of qrySA){
+            qryS.addEventListener("submit", function(event){
                 const yesBtn = confirm("確定要刪除?");
                 if (!yesBtn){
                     event.preventDefault();
@@ -20,41 +20,45 @@ document.addEventListener("DOMContentLoaded", function(){
         }
     }
 
+    function createElement(element, qryS) {
+        const elem = document.createElement(element)
+        elem.classList.add(`form__newline-${element}`);
+        qryS.after(elem);
+        return elem;
+    }
 
-    function existsUsername() {        // strで送信
-        const createDiv = document.createElement("div");
-        createDiv.classList.add("form__search-username");
-        submitQryS.after(createDiv);
-        submitQryS.addEventListener("click", async function(){
-            const inputUsernameQryS = document.querySelector('.form__input--username');
+    function existsUsername(qryS) {        // strで送信
+        const createDiv = createElement("div", qryS);
+        qryS.addEventListener("click", async(event)=>{
+            event.preventDefault();
+            const inputUsernameQryS = document.querySelector(".input__field--username");
             const response = await fetch(`/api/member?username=${encodeURIComponent(inputUsernameQryS.value)}`);
-            const data = await response.json();
-            if (data === null) {
+            const jsonData = await response.json();
+            if (!jsonData.data) {
                 createDiv.textContent = "No Date";
             }
             else {
-                const name = data.data.name;
-                const username = data.data.username;
+                const name = jsonData.data.name;
+                const username = jsonData.data.username;
                 createDiv.textContent = `${name} (${username})`;
             }
         })
     }
 
-    function updateName() {            // jsonで送信
-        const createDiv = document.createElement("div");
-        createDiv.classList.add("form__search-name");
-        submitUpdateQryS.after(createDiv);
-        submitUpdateQryS.addEventListener("click", async function(){
-            const inputNameQryS = document.querySelector('.form__input--name');
+    function updateName(qryS) {            // jsonで送信
+        const createDiv = createElement("div", qryS);
+        qryS.addEventListener("click", async(event)=>{
+            event.preventDefault();
+            const inputNameQryS = document.querySelector(".input__field--name")
             const response = await fetch('api/member',{
-                method: 'PATCH',
-                headers: {
+                method: 'PATCH',            //預設是GET, 故GET不需這樣寫
+                headers: {                  //Content-Type是指定request body的形式, GET沒有body故不需這樣寫
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ "name": inputNameQryS.value })  // 送信するデータをJSON形式に変換
             })
-            const data = await response.json();
-            if (Object.keys(data)[0] === "error") {
+            const jsonData = await response.json();
+            if (Object.keys(jsonData)[0] === "error") {
                 createDiv.textContent = "更新失敗";
             }
             else {
@@ -63,8 +67,9 @@ document.addEventListener("DOMContentLoaded", function(){
         })
     }
 
-    confirmDelete(deleteFormQrySA);
+
     submitEmpty();
-    existsUsername()
-    updateName()
+    confirmDelete(deleteFormQrySA);
+    existsUsername(submitExistQryS)
+    updateName(submitUpdateQryS)
 })

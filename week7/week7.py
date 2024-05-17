@@ -10,7 +10,7 @@ import urllib.parse     #urllib.parseの利用に必要
 import datetime      #dbのdatetimeをカスタムしたい場合に必要(秒不要など)
 
 load_dotenv()
-def connect_db():
+def connect_db():   #I/O型の処理 → asyncだが、mysql.connectorは非同期未対応の為 → def
     return mysql.connector.connect(       #mysqlへのアクセス
         host = os.getenv("DB_HOST"),
         user = os.getenv("DB_USER"),
@@ -23,20 +23,20 @@ app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY"))
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-# カスタムフィルタの定義  datetime.datetimeは『型ヒント』 -> str:は戻り値の『型ヒント』
+#CPU型の処理 → def カスタムフィルタの定義  datetime.datetimeは『型ヒント』 -> str:は戻り値の『型ヒント』
 def format_datetime(value: datetime.datetime, fmt: str) -> str:
     return value.strftime(fmt)
 # カスタムフィルタをテンプレートエンジンに登録
 templates.env.filters["format_datetime"] = format_datetime
 
 
-@app.get("/")     #TemplateResponse, HTMLResponseは自動的に Content-Type を text/html; charset=utf-8 に設定。よってresponse_class=HTMLResponseの記述は不要
-def home_page(request:Request):
+@app.get("/")     #template,response生成＝I/O型の処理 → async    TemplateResponse, HTMLResponseは自動的に Content-Type を text/html; charset=utf-8 に設定。よってresponse_class=HTMLResponseの記述は不要
+async def home_page(request:Request):
     return templates.TemplateResponse("index.html", {"request":request})
 
 
 @app.post("/signup")
-def signup(request:Request, name:str=Form(...), username:str=Form(...), psw:str=Form(...)):
+async def signup(request:Request, name:str=Form(...), username:str=Form(...), psw:str=Form(...)):
     with connect_db() as mydb:
         with mydb.cursor() as cursor:                            #SQL指令する為のcursorObjを作成(db操作が必要な度に呼び出し)
             try:
@@ -57,7 +57,7 @@ def signup(request:Request, name:str=Form(...), username:str=Form(...), psw:str=
 
 
 @app.post("/signin")
-def signin(request:Request, username:str=Form(...), psw:str=Form(...)):
+async def signin(request:Request, username:str=Form(...), psw:str=Form(...)):
     try:
         with connect_db() as mydb:
             with mydb.cursor() as cursor:
@@ -77,28 +77,28 @@ def signin(request:Request, username:str=Form(...), psw:str=Form(...)):
 
 
 @app.get("/error")
-def error_page(request:Request, message:str):    #このmessageはsignup,signinエンドポイントで送信(redirect)される.../error?message=queryPを受信, messageをqueryに含めてredirectしている
+async def error_page(request:Request, message:str):    #このmessageはsignup,signinエンドポイントで送信(redirect)される.../error?message=queryPを受信, messageをqueryに含めてredirectしている
     return templates.TemplateResponse("error.html", {"request":request, "message": message })
 
 
 @app.get("/member")
-def member_page(request:Request):
-    try:
-        with connect_db() as mydb:
-            with mydb.cursor() as cursor:
-                if "NAME" in request.session:
+async def member_page(request:Request):
+    if "NAME" not in request.session:
+        return RedirectResponse(url=request.url_for("home_page"))
+    else:
+        try:
+            with connect_db() as mydb:
+                with mydb.cursor() as cursor:
                     sessionName = request.session.get("NAME")
                     cursor.execute("SELECT member.name, message.id, message.content, message.time FROM member INNER JOIN message ON member.id = message.member_id ORDER BY time DESC")
                     members = cursor.fetchall()
                     return templates.TemplateResponse("member.html", {"request": request, "sessionName": sessionName, "members": members})
-                else:
-                    return RedirectResponse(url=request.url_for("home_page"))
-    except Exception as e:
-        print(f"==== 發生Error ====: {e}")
+        except Exception as e:
+            print(f"==== 發生Error ====: {e}")
 
 
-@app.get("/signout")
-def signout(request:Request):
+@app.get("/signout")      #session操作,redirect生成＝I/O型の処理 → async
+async def signout(request:Request):
     remove_sessions = ["MEMBER_ID", "NAME", "USERNAME"]
     for remove_session in remove_sessions:
         request.session.pop(remove_session, None)   #popメソッドはsession Keyが存在しない場合エラーを出す。エラーを発生させずに処理する為にNoneを指定
@@ -106,7 +106,7 @@ def signout(request:Request):
 
 
 @app.post("/createMessage")
-def createmsg(request:Request, content:str=Form(...)):
+async def createmsg(request:Request, content:str=Form(...)):
     with connect_db() as mydb:
         with mydb.cursor() as cursor:
             try:
@@ -120,7 +120,7 @@ def createmsg(request:Request, content:str=Form(...)):
 
 
 @app.post("/deleteMessage")
-def deletemsg(request:Request, id_msg:str=Form(..., alias="id-msg")):
+async def deletemsg(request:Request, id_msg:str=Form(..., alias="id-msg")):
     with connect_db() as mydb:
         with mydb.cursor() as cursor:
             try:
@@ -150,46 +150,49 @@ async def check_username(username:str):    #このusernameはjsのfetchから送
 
 @app.get("/api/member")
 async def search_username(request:Request, username:str):
+    if not request.session:                                 #不存在 → return Non
+        return {"data": None}
     try:
         with connect_db() as mydb:
             with mydb.cursor() as cursor:
                 cursor.execute("SELECT id, name, username FROM member WHERE BINARY username = %s", (username,))
-                username_exists = cursor.fetchone()
-                if "NAME" in request.session:
-                    return {
-                        "data":{
-                            "id": username_exists[0],
-                            "name": username_exists[1],
-                            "username": username_exists[2]
-                        }
-                    }
-                else:
+                username_exists = cursor.fetchone()         #不存在 → return None
+                if not username_exists:
                     return {"data": None}
+                return {
+                    "data":{
+                        "id": username_exists[0],
+                        "name": username_exists[1],
+                        "username": username_exists[2]
+                    }
+                }
     except Exception as e:
         print(f"==== 發生Error ====: {e}")
 
 
 @app.patch("/api/member")
 async def update_username(request:Request):
+    if not request.session:                                 #不存在 → return Non
+        return  { "error": True }
     with connect_db() as mydb:
         with mydb.cursor() as cursor:
             try:
-                data = await request.json()
-                name = data.get("name")
+                jsonData = await request.json()             #jsonに変換
+                name = jsonData["name"]
                 print(name)
                 print("==1==")
                 sessionName = request.session.get("NAME")
                 cursor.execute("UPDATE member SET name = %s WHERE name = %s", (name, sessionName))
+                cursor.execute("SELECT name FROM member WHERE BINARY name = %s", (name,))
+                username = cursor.fetchone()
+                request.session["NAME"] = username[0]
                 mydb.commit()
-                return  {
-                    "ok": True
-                }
+                return  { "ok": True }
             except Exception as e:
                 mydb.rollback()
                 print(f"==== 發生Error ====: {e}")
-                return  {
-                    "error": True
-                }
+                return  { "error": True }
+
 
 
 

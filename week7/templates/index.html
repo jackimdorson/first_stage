@@ -3,8 +3,8 @@
 {% block h2 %}歡迎光臨，請註冊登入系統{% endblock %}
 {% block content %}
     <main>
-        <section>
-            <h3>註冊系統</h3>
+        <section class="section">
+            <h3 class="section__h3">註冊系統</h3>
             <form action="{{ request.url_for('signup') }}" method="POST" class="form form--signup">
                 <div class="form__row">
                     <label class="input">姓名
@@ -26,9 +26,9 @@
                 <button type="submit" class="btn btn--block">註冊</button>
             </form>
         </section>
-        <hr>
-        <section>
-            <h3>登入系統</h3>
+        <hr class="body__hr">
+        <section class="section">
+            <h3 class="section__h3">登入系統</h3>
             <form action="{{ request.url_for('signin') }}" method="POST" class="form form--signin">
                 <div class="form__row">
                     <label class="input">帳號
@@ -44,7 +44,7 @@
                 <button type="submit" class="btn btn--block">登入</button>
             </form>
         </section>
-        <section>
+        <section class="section">
             <div class="toggle">
                 <div class="toggle__btn">特殊符號</div>
                 <div class="toggle__content">

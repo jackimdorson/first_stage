@@ -1,39 +1,39 @@
 @charset "UTF-8";
-body {
+.body {
   margin: 0;
   padding: 0;
 }
-body header {
+.body__header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 60px;
   color: white;
   background-color: rgb(40, 30, 90);
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
-body header a {
+.body__header__a {
   color: white;
   text-decoration: none;
 }
-body footer {
+.body__footer {
   text-align: center;
 }
-body hr {
+.body__hr {
   border: 1px solid gainsboro;
 }
 
-section {
+.section {
   max-width: 300px;
   margin: 0 auto;
-  margin-bottom: 40px;
+  padding-bottom: 40px;
 }
-section h3 {
+.section__h3 {
   font-size: 1.5rem;
   text-align: center;
   margin-top: 20px;
 }
-section .link-wrapper {
-  padding-top: 15px;
+.section__link-wrap {
+  padding-top: 16px;
   text-align: center;
 }
 
@@ -70,10 +70,37 @@ section .link-wrapper {
   font-weight: bold;
 }
 
-.form__row {
-  margin: 0 0 15px 30px;
+.msg {
+  display: grid;
+  align-items: center;
+  grid-template-areas: "A A A A A B" "C C C C C C";
+  margin-bottom: 30px;
+}
+.msg__text {
+  grid-area: A;
+  margin: 0;
+}
+.msg__text--time {
+  grid-area: C;
+  justify-self: end;
+}
+.msg__delete-form {
+  grid-area: B;
+  justify-self: end;
+}
+.msg__delete-form .btn {
+  color: red;
+  padding: 2px 5px;
+}
+
+.form {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.form__row {
+  display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 10px;
@@ -82,6 +109,16 @@ section .link-wrapper {
   width: 24px;
   height: 24px;
   vertical-align: middle;
+}
+.form__newline-div {
+  text-align: center;
+  width: 100%;
+}
+.form--line {
+  justify-content: center;
+}
+.form--signup .form__row, .form--signin .form__row {
+  padding-left: 30px;
 }
 
 .input {
@@ -95,32 +132,14 @@ section .link-wrapper {
 }
 .input__field--textarea {
   height: 80px;
+  width: 200px;
 }
 
 .btn {
   border-radius: 4px;
+  padding: 4px 8px;
 }
 .btn--block {
-  padding: 4px 8px;
   display: block;
   margin: 0 auto;
-}
-
-.msg {
-  display: grid;
-  align-items: center;
-  grid-template-areas: "A A A B" "C C C C ";
-  margin-bottom: 30px;
-}
-.msg__text {
-  grid-area: A;
-  margin: 0;
-}
-.msg__text--time {
-  grid-area: C;
-  justify-self: end;
-  font-size: 1rem;
-}
-.msg btn--block {
-  grid-area: B;
 }/*# sourceMappingURL=week7.css.map */
