@@ -34,12 +34,10 @@ document.addEventListener("DOMContentLoaded", function(){
             const inputUsernameQryS = document.querySelector(".input__field--username");
             const response = await fetch(`/api/member?username=${encodeURIComponent(inputUsernameQryS.value)}`);
             const jsonData = await response.json();
-            if (!jsonData.data) {
+            if (!jsonData.data)
                 createDiv.textContent = "No Date";
-            }
             else {
-                const name = jsonData.data.name;
-                const username = jsonData.data.username;
+                const {name, username} = jsonData.data
                 createDiv.textContent = `${name} (${username})`;
             }
         })

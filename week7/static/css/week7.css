@@ -22,17 +22,17 @@
   border: 1px solid gainsboro;
 }
 
-.section {
+.container {
   max-width: 300px;
   margin: 0 auto;
   padding-bottom: 40px;
 }
-.section__h3 {
+.container__h3 {
   font-size: 1.5rem;
   text-align: center;
   margin-top: 20px;
 }
-.section__link-wrap {
+.container__link-wrap {
   padding-top: 16px;
   text-align: center;
 }
@@ -49,13 +49,13 @@
   padding: 8px;
   font-size: 1rem;
 }
-.toggle__btn::after {
+.toggle__btn--js::after {
   content: "▼";
 }
 .toggle__btn--clicked {
   background-color: rgb(40, 30, 90);
 }
-.toggle__btn--clicked::after {
+.toggle__btn--clicked--js::after {
   content: "▲";
 }
 .toggle__btn--spread.toggle__content {

@@ -3,15 +3,15 @@
 {% block h2 %}<a href="/" class="body__header__a">歡迎光臨，這是會員頁</a>{% endblock %}
 {% block content %}
     <main>
-        <section class="section">
-            <h3 class="section__h3">{{ sessionName }}，歡迎登入系統</h3>
-            <div class="section__link-wrap">
+        <div class="container">
+            <h3 class="container__h3">{{ sessionName }}，歡迎登入系統</h3>
+            <div class="container__link-wrap">
                 <a href="{{ request.url_for('signout') }}" class="link">登出系統</a>
             </div>
-        </section>
+        </div>
         <hr class="body__hr">
-        <section class="section">
-            <h3 class="section__h3">快來留言吧</h3>
+        <div class="container">
+            <h3 class="container__h3">快來留言吧</h3>
             <form action="{{ request.url_for('createmsg') }}" method="POST" class="form form--createmsg">
                 <div class="form__row">
                     <label class="input">內容
@@ -20,11 +20,11 @@
                 </div>
                 <button type="submit" class="btn btn--block">送出</button>
             </form>
-        </section>
+        </div>
         <hr class="body__hr">
-        <section class="section">
+        <div class="container">
             {% for name, id, content, time in members %}   <!-- templateエンジンのfor文での変数宣言は必ずdbの取得数と一致させる(->Error)but宣言は必須だが使わくても良い。dbから4つ取得→4つ記述, 2つ取得→2つ記述。 -->
-                <div class="msg">
+                <article class="msg">
                     <p class="msg__text"><strong>{{ name }} : </strong>{{ content }}</p>
                     {% if name == sessionName %}
                         <form action="{{ request.url_for('deletemsg') }}" method="POST" class="msg__delete-form">
@@ -33,12 +33,12 @@
                         </form>
                     {% endif %}
                     <p class="msg__text msg__text--time">{{ time | format_datetime('%m/%d %H:%M') }}</p>
-                </div>
+                </article>
             {% endfor %}
-        </section>
+        </div>
         <hr class="body__hr">
-        <section class="section">
-            <h3 class="section__h3">查詢會員姓名</h3>
+        <div class="container">
+            <h3 class="container__h3">查詢會員姓名</h3>
             <form class="form form--search-username form--line">
                 <div class="form__row">
                     <label class="input">
@@ -47,9 +47,9 @@
                 </div>
                 <button type="submit" class="btn btn--exist">查詢</button>
             </form>
-        </section>
-        <section class="section">
-            <h3 class="section__h3">更新我的姓名</h3>
+        </div>
+        <div class="container">
+            <h3 class="container__h3">更新我的姓名</h3>
             <form class="form form--update-name form--line">
                 <div class="form__row">
                     <label class="input">
@@ -58,7 +58,7 @@
                 </div>
                 <button type="submit" class="btn btn--update">更新</button>
             </form>
-        </section>
+        </div>
     </main>
 {% endblock %}
 {% block js %}<script type="module" src="{{ url_for('static', path='js/member.js') }}"></script>{% endblock %}

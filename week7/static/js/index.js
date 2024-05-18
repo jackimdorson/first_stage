@@ -1,7 +1,6 @@
 'use strict'
 import { submitEmpty, toggle } from './common.js';
 
-
 document.addEventListener("DOMContentLoaded", function(){
 
     const toggleBtnSelector = ".toggle__btn";
