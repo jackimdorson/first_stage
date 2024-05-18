@@ -3,11 +3,11 @@
 {% block h2 %}失敗頁面{% endblock %}
 {% block content %}
     <main>
-        <section class="section">
-            <h3 class="section__h3">{{ message }}</h3>
-            <div class="section__link-wrap">
+        <div class="container">
+            <h3 class="container__h3">{{ message }}</h3>
+            <div class="container__link-wrap">
                 <a href="{{ request.url_for('home_page') }}">返回首頁</a>
             </div>
-        </section>
+        </div>
     </main>
 {% endblock %}

@@ -30,7 +30,7 @@ $base-color: rgb(40, 30, 90);
     }
 }
 
-.section {
+.container {
     max-width: 300px;
     margin: 0 auto;
     padding-bottom: 40px;
@@ -58,13 +58,13 @@ $base-color: rgb(40, 30, 90);
         padding: 8px;
         font-size: 1rem;
 
-        &::after {
+        &--js::after {
             content: "\25BC";
         }
         &--clicked {
             background-color: $base-color;
 
-            &::after {
+            &--js::after {
                 content: "\25B2";
             }
         }

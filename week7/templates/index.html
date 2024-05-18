@@ -3,8 +3,8 @@
 {% block h2 %}歡迎光臨，請註冊登入系統{% endblock %}
 {% block content %}
     <main>
-        <section class="section">
-            <h3 class="section__h3">註冊系統</h3>
+        <div class="container">
+            <h3 class="container__h3">註冊系統</h3>
             <form action="{{ request.url_for('signup') }}" method="POST" class="form form--signup">
                 <div class="form__row">
                     <label class="input">姓名
@@ -25,10 +25,10 @@
                 </div>
                 <button type="submit" class="btn btn--block">註冊</button>
             </form>
-        </section>
+        </div>
         <hr class="body__hr">
-        <section class="section">
-            <h3 class="section__h3">登入系統</h3>
+        <div class="container">
+            <h3 class="container__h3">登入系統</h3>
             <form action="{{ request.url_for('signin') }}" method="POST" class="form form--signin">
                 <div class="form__row">
                     <label class="input">帳號
@@ -43,17 +43,21 @@
                 </div>
                 <button type="submit" class="btn btn--block">登入</button>
             </form>
-        </section>
-        <section class="section">
+        </div>
+        <div class="container">
             <div class="toggle">
-                <div class="toggle__btn">特殊符號</div>
+                <div class="toggle__btn toggle__btn--js">特殊符號</div>
                 <div class="toggle__content">
                     <p class="toggle__text">特殊符號只開放使用以下10種</p>
                     <p class="toggle__text"><span class="toggle__highlight">~ ! @ # $ ^ * ( ) _</span></p>
                     <p class="toggle__text">密碼建議10字以上</p>
                 </div>
             </div>
-        </section>
+            <details class="toggle">       <!-- details & summary => 不需js就能做出toggle -->
+                <summary class="toggle__btn">密碼建議</summary>
+                <p class="toggle__text">密碼建議10字以上</p>
+            </details>
+        </div>
     </main>
 {% endblock %}
 {% block js %}<script type="module" src="{{ url_for('static', path='js/index.js') }}"></script>{% endblock %}
