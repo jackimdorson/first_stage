@@ -27,9 +27,9 @@
                 <article class="msg">
                     <p class="msg__text"><strong>{{ name }} : </strong>{{ content }}</p>
                     {% if name == sessionName %}
-                        <form action="{{ request.url_for('deletemsg') }}" method="POST" class="msg__delete-form">
+                        <form class="msg__delete-form">
                             <input type="hidden" name="id-msg" value="{{ id }}">
-                            <button type="submit" class="btn btn--block">X</button>
+                            <button type="submit" class="btn btn--block btn--delete">X</button>
                         </form>
                     {% endif %}
                     <p class="msg__text msg__text--time">{{ time | format_datetime('%m/%d %H:%M') }}</p>

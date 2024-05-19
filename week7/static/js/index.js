@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
     function restrictInput(inputSelector) {       //『指定文字』のみ入力を受け付ける関数
         const inputQrySA = document.querySelectorAll(inputSelector);
-        for(let inputQryS of inputQrySA){
+        for(const inputQryS of inputQrySA){
             inputQryS.addEventListener("input", (event) => {
                 let regex;
                 if(inputSelector === pswUsernameSelector){
@@ -46,13 +46,17 @@ document.addEventListener("DOMContentLoaded", function(){
     }
 
     async function checkUsername() {
+        const imgSrcAble = "../static/img/able.webp";
+        const imgSrcDisable = "../static/img/disable.webp";
+        if(inputUsernameQryS.value.trim() === '' ){
+            checkUsernameImg.src = imgSrcDisable;
+        }
         const response = await fetch(`/api/check-username?username=${encodeURIComponent(inputUsernameQryS.value)}`);
-        const data = await response.json();
-        const disableName = data.exists;
-        if(disableName || inputUsernameQryS.value.trim() === '' ) {
-            checkUsernameImg.src = "../static/img/disable.webp";
+        const jsonData = await response.json();
+        if(jsonData.exists) {  //exists...endpointで設定したreturnされるjson
+            checkUsernameImg.src = imgSrcAble;
         } else {
-            checkUsernameImg.src = "../static/img/enable.webp";
+            checkUsernameImg.src = imgSrcDisable;
         }
     }
 
@@ -62,12 +66,12 @@ document.addEventListener("DOMContentLoaded", function(){
     toggle(toggleBtnSelector);
     restrictInput(nameSelector);
     restrictInput(pswUsernameSelector);
-    for(let formSideImgQryS of formSideImgQrySA){
+    for(const formSideImgQryS of formSideImgQrySA){
         formSideImgQryS.addEventListener("click", showPsw);
     }
 
     let timeoutId;
-    inputUsernameQryS.addEventListener('input', function() {
+    inputUsernameQryS.addEventListener('input', () => {
         clearTimeout(timeoutId);                              //既存のタイマーをクリア
         timeoutId = setTimeout(checkUsername, 500);           // 新しいタイマーを設定
     })

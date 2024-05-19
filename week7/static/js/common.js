@@ -9,7 +9,7 @@ export function toggle(selector){
 
 export function submitEmpty(){
     const formQrySA = document.querySelectorAll(".form");
-    for(let formQryS of formQrySA){
+    for(const formQryS of formQrySA){
         formQryS.addEventListener("submit", function(event){
             const inputQrySA = Array.from(event.target.querySelectorAll(".input__field"));   //NodeList -> Array
             if (inputQrySA.some(inputQryS => inputQryS.value.trim() === '')){
