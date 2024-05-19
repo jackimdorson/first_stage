@@ -3,3 +3,11 @@
 2024-05-18 20:50:39,644 - my_logger - WARNING - This is a warning message
 2024-05-18 20:50:39,644 - my_logger - ERROR - This is an error message
 2024-05-18 20:50:39,644 - my_logger - CRITICAL - This is a critical message
+2024-05-19 01:42:45,611 - my_logger - ERROR - ===SQL發生Error===unexpected '='
+2024-05-19 04:45:06,570 - my_logger - ERROR - ===SQL發生Error===Expecting value: line 1 column 1 (char 0)
+2024-05-19 04:46:15,154 - my_logger - ERROR - ===SQL發生Error===Expecting value: line 1 column 1 (char 0)
+2024-05-19 06:49:13,809 - my_logger - ERROR - ===SQL發生Error===Expecting value: line 1 column 1 (char 0)
+2024-05-19 07:46:20,909 - my_logger - ERROR - ===SQL發生Error===1292 (22007): Truncated incorrect DOUBLE value: 'fea'
+2024-05-19 07:46:21,324 - my_logger - ERROR - ===SQL發生Error===1292 (22007): Truncated incorrect DOUBLE value: 'fea'
+2024-05-19 07:46:49,891 - my_logger - ERROR - ===SQL發生Error===1292 (22007): Truncated incorrect DOUBLE value: 'feaea'
+2024-05-19 09:04:40,022 - my_logger - ERROR - ===SQL發生Error===1048 (23000): Column 'member_id' cannot be null
