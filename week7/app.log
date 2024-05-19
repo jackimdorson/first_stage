@@ -11,3 +11,6 @@
 2024-05-19 07:46:21,324 - my_logger - ERROR - ===SQL發生Error===1292 (22007): Truncated incorrect DOUBLE value: 'fea'
 2024-05-19 07:46:49,891 - my_logger - ERROR - ===SQL發生Error===1292 (22007): Truncated incorrect DOUBLE value: 'feaea'
 2024-05-19 09:04:40,022 - my_logger - ERROR - ===SQL發生Error===1048 (23000): Column 'member_id' cannot be null
+2024-05-19 18:31:26,841 - my_logger - ERROR - ===SQL發生Error===Expecting value: line 1 column 1 (char 0)
+2024-05-19 18:31:31,709 - my_logger - ERROR - ===SQL發生Error===Expecting value: line 1 column 1 (char 0)
+2024-05-19 18:54:26,343 - my_logger - ERROR - ===SQL發生Error===Expecting value: line 1 column 1 (char 0)

@@ -1,14 +1,19 @@
 import os                          #環境変数(.env)の読み込みに必要
 from dotenv import load_dotenv     #環境変数(.env)の読み込みに必要
 import mysql.connector             #mysqlとpyを紐付け(MySQL公式が開発。非同期処理に未対応)　import aiomysql(コミュニティが開発。非同期処理に対応)
-from fastapi import FastAPI, Request, Form, HTTPException
-from fastapi.responses import RedirectResponse
+from fastapi import FastAPI, Request, Form, HTTPException        # , Depends, Header    #Depends, headerはapiKeyに使う
+from fastapi.responses import RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.exceptions import RequestValidationError      #fastAPIのdefaultエラーを変更するときに必要
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 import urllib.parse     #urllib.parseの利用に必要
 import datetime      #dbのdatetimeをカスタムしたい場合に必要(秒不要など)
 import logging
+from pydantic import BaseModel     # , BaseSettings    #pydanticの導入
+from typing import Optional, Union       #pydanticのclassで定義した以外にNoneを受け入れる際に必要な記述
+# from fastapi.openapi.utils import get_openapi
+
 
 load_dotenv()   # 環境変数の読み込み
 
@@ -54,6 +59,29 @@ def redirect_error_logger(request, exception):
     logger.error(exception)
     query_params = urllib.parse.urlencode({"message": str("系統出了問題, 請聯絡我們")})
     return RedirectResponse(url=f"{request.url_for("error_page")}?{query_params}", status_code=303)
+
+
+class UserElem(BaseModel):    #実際の形はdictであることに注意 { id:1, name:"test" }
+    id: int
+    name: str
+    username: str
+
+class UserJson(BaseModel):    #実際の形はdictであることに注意 { data: { id:1, name:"test" }}
+    data: Optional[UserElem] = None    #この記述をすることでNoneの取得が可能に。でないとUser定義以外の型は受け付けず、Server Errorに。
+
+class SuccessJson(BaseModel):
+    ok: bool = True
+
+class ErrorJson(BaseModel):
+    error: bool = True
+
+IsBool = Union[SuccessJson, ErrorJson]   #IsBool は response_modelとして利用
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler():
+    return JSONResponse(
+        status_code=400
+    )
 
 
 @app.get("/")     #template,response生成＝I/O型の処理 → async    TemplateResponse, HTMLResponseは自動的に Content-Type を text/html; charset=utf-8 に設定。よってresponse_class=HTMLResponseの記述は不要
@@ -173,10 +201,10 @@ async def deletemsg(request:Request):
         return redirect_error_logger(request, f"===DB或Cursor發生Error==={e}")
 
 
-@app.get("/api/member")
-async def search_username(request:Request, username:str):
+@app.get("/api/member", response_model=UserJson)
+async def search_username(request:Request, username:str):           # = Depends(get_current_user)
     if not request.session:
-        return {"data": None}
+        return UserJson()
     try:
         with connect_db() as mydb:
             with mydb.cursor() as cursor:
@@ -184,24 +212,25 @@ async def search_username(request:Request, username:str):
                     cursor.execute("SELECT id, name, username FROM member WHERE BINARY username = %s", (username,))
                     username_exists = cursor.fetchone()         #不存在 → return None
                     if not username_exists:
-                        return {"data": None}
-                    return {
-                        "data":{
-                            "id": username_exists[0],
-                            "name": username_exists[1],
-                            "username": username_exists[2]
-                        }
-                    }
+                        return UserJson()
+                    user_children = UserElem (
+                        id = username_exists[0],
+                        name = username_exists[1],
+                        username = username_exists[2]
+                    )
+                    return UserJson(data=user_children)
                 except Exception as e:
-                    return redirect_error_logger(request, f"===SQL發生Error==={e}")
+                    logger.error(f"===SQL發生Error==={e}")
+                    return UserJson()
     except Exception as e:
-        return redirect_error_logger(request, f"===DB或Cursor發生Error==={e}")
+        logger.error(f"===DB或Cursor發生Error==={e}")
+        return UserJson()
 
 
-@app.patch("/api/member")
+@app.patch("/api/member", response_model=IsBool)
 async def update_username(request:Request):
     if not request.session:
-        return  { "error": True }
+        return ErrorJson()
     try:
         with connect_db() as mydb:
             with mydb.cursor() as cursor:
@@ -215,14 +244,17 @@ async def update_username(request:Request):
                         name_exists = cursor.fetchone()
                         request.session["NAME"] = name_exists[0]
                         mydb.commit()
-                        return  {"ok": True }
+                        return SuccessJson()
+
                     else:
-                        return {"error": True}
+                        return ErrorJson()
                 except Exception as e:
                     mydb.rollback()
-                    return redirect_error_logger(request, f"===SQL發生Error==={e}")
+                    logger.error(f"===SQL發生Error==={e}")
+                    return ErrorJson()
     except Exception as e:
-        return redirect_error_logger(request, f"===DB或Cursor發生Error==={e}")
+        logger.error(f"===DB或Cursor發生Error==={e}")
+        return ErrorJson()
 
 
 @app.get("/api/check-username")
@@ -240,3 +272,53 @@ async def check_username(request:Request, username:str):    #このusernameはjs
                     return redirect_error_logger(request, f"===SQL發生Error==={e}")
     except Exception as e:
         return redirect_error_logger(request, f"===DB或Cursor發生Error==={e}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+# def get_current_user(x_api_key: str = Header(...)):
+#     # ここでAPIキーを検証し、ユーザーIDを返す
+#     if x_api_key != "test_api_key":
+#         raise HTTPException(status_code=401, detail="沒有權限")
+#     return "test_user_id"
+
+
+# def custom_openapi():
+#     if app.openapi_schema:
+#         return app.openapi_schema
+#     openapi_schema = get_openapi(
+#         title="Your API",
+#         version="1.0.0",
+#         description="API description",
+#         routes=app.routes,
+#     )
+#     openapi_schema["components"]["securitySchemes"] = {
+#         "APIKeyHeader": {
+#             "type": "apiKey",
+#             "name": "x-api-key",
+#             "in": "header"
+#         }
+#     }
+#     openapi_schema["security"] = [{"APIKeyHeader": []}]
+#     app.openapi_schema = openapi_schema
+#     return app.openapi_schema
+
+# app.openapi = custom_openapi
+
+# class Settings(BaseSettings):
+#     api_key: str
+#     database_url: str
+
+#     class Config:
+#         env_file = ".env"
+
+# settings = Settings()
