@@ -245,7 +245,6 @@ async def update_username(request:Request):
                         request.session["NAME"] = name_exists[0]
                         mydb.commit()
                         return SuccessJson()
-
                     else:
                         return ErrorJson()
                 except Exception as e:
@@ -272,15 +271,6 @@ async def check_username(request:Request, username:str):    #このusernameはjs
                     return redirect_error_logger(request, f"===SQL發生Error==={e}")
     except Exception as e:
         return redirect_error_logger(request, f"===DB或Cursor發生Error==={e}")
-
-
-
-
-
-
-
-
-
 
 
 
