@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Example</title>
+</head>
+<body>
+    <form id="myForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <div><a href="https://google.com">hello</a></div>
+        <input type="text" id="name" name="name" required>
+        <button type="submit" id="button">Submit</button>
+    </form>
+    <hr>
+    <form id="myForm2">
+        <input type="text" id="email" name="email" oninput="validateEmail()">
+        <input type="submit" value="Submit">
+    </form>
+    <div id="error"></div>
+
+    <script>
+        document.querySelector("input[type='text']").addEventListener("keypress", function(event) {
+            event.preventDefault();
+            console.log("キーボード入力のデフォルト動作がキャンセルされました");
+        });
+        document.getElementById('myForm')
+        .addEventListener('submit', function(event) {
+            event.preventDefault();
+            console.log(event); // （この場合はフォーム）
+            console.log(event.target);
+            console.log(event.currentTarget);
+            console.log("===========↑form==========")
+        });
+         document.getElementById('username').addEventListener('input', function(event) {
+            event.preventDefault();
+            console.log(event);                       // （この場合はusernameの要素<input type~~~>1つ）
+            console.log(event.target);         // （この場合は id=usernameの『inputElement1つ』）
+            console.log(event.currentTarget);  //  上記と同じ
+            console.log("===========↑username==========")
+        });
+        document.getElementById('name').addEventListener('click', function(event) {
+            event.preventDefault();
+            console.log(event);                       // （この場合はusernameの要素<input type~~~>1つ）
+            console.log(event.target);         // （この場合は id=usernameの『inputElement1つ』）
+            console.log(event.currentTarget);  //  上記と同じ
+            console.log("===========↑username==========")
+        });
+        document.getElementById('button').addEventListener('click', function(event) {   //formはbuttonより優先される。
+            event.preventDefault();
+            console.log(event); // （この場合はフォーム）
+            console.log(event.target);
+            console.log(event.currentTarget);
+            console.log("===========↑button==========")
+        });
+
+
+        // リアルタイムバリデーション:
+        function validateEmail() {
+            var email = document.getElementById("email").value;
+            var errorDiv = document.getElementById("error");
+            if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                errorDiv.innerHTML = "Invalid email format";
+            } else {
+                errorDiv.innerHTML = "";
+            }
+        }
+    </script>
+</body>
+</html>
