@@ -1,0 +1,145 @@
+@charset "UTF-8";
+.body {
+  margin: 0;
+  padding: 0;
+}
+.body__header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  color: white;
+  background-color: rgb(40, 30, 90);
+}
+.body__header__a {
+  color: white;
+  text-decoration: none;
+}
+.body__footer {
+  text-align: center;
+}
+.body__hr {
+  border: 1px solid gainsboro;
+}
+
+.container {
+  max-width: 300px;
+  margin: 0 auto;
+  padding-bottom: 40px;
+}
+.container__h3 {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-top: 20px;
+}
+.container__link-wrap {
+  padding-top: 16px;
+  text-align: center;
+}
+
+.toggle {
+  height: 200px;
+  width: 75%;
+  margin: 0 auto;
+  text-align: center;
+}
+.toggle__btn {
+  background-color: dimgray;
+  color: white;
+  padding: 8px;
+  font-size: 1rem;
+}
+.toggle__btn--js::after {
+  content: "▼";
+}
+.toggle__btn--clicked {
+  background-color: rgb(40, 30, 90);
+}
+.toggle__btn--clicked--js::after {
+  content: "▲";
+}
+.toggle__btn--spread.toggle__content {
+  display: block;
+}
+.toggle__content {
+  display: none;
+  border: 2px dotted rgb(40, 30, 90);
+}
+.toggle__highlight {
+  color: red;
+  font-weight: bold;
+}
+
+.msg {
+  display: grid;
+  align-items: center;
+  grid-template-areas: "A A A A A B" "C C C C C C";
+  margin-bottom: 30px;
+}
+.msg__text {
+  grid-area: A;
+  margin: 0;
+}
+.msg__text--time {
+  grid-area: C;
+  justify-self: end;
+}
+.msg__delete-form {
+  grid-area: B;
+  justify-self: end;
+}
+.msg__delete-form .btn {
+  color: red;
+  padding: 2px 5px;
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.form__row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+.form__row__img {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}
+.form__newline-div {
+  text-align: center;
+  width: 100%;
+}
+.form--line {
+  justify-content: center;
+}
+.form--signup .form__row, .form--signin .form__row {
+  padding-left: 30px;
+}
+
+.input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.input__field {
+  padding-left: 3px;
+  height: 1.5rem;
+}
+.input__field--textarea {
+  height: 80px;
+  width: 200px;
+}
+
+.btn {
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+.btn--block {
+  display: block;
+  margin: 0 auto;
+}/*# sourceMappingURL=week7.css.map */

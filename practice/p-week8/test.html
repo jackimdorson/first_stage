@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Example</title>
+</head>
+<body>
+    <form id="myForm">
+        <div id="bob">
+            <label for="username">user</label>
+            <input type="text" id="username" name="username" required>
+            <div>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <button type="submit" id="button">Submit</button>
+        </div>
+    </form>
+    <hr>
+    <div id="error"></div>
+
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            console.log(event); // （この場合はフォーム）
+            console.log(event.target);
+            console.log(event.currentTarget);
+            console.log("===========↑form==========")
+        });
+        const a = document.getElementById('username')
+        a.addEventListener('input', function(event) {
+            const ab = document.querySelector('#username')
+            console.log(event); 4                      // （この場合はusernameの要素<input type~~~>1つ）
+            console.log(event.target.value);         // （この場合は id=usernameの『inputElement1つ』）
+            console.log(ab.value);
+            console.log(event.currentTarget);  //  上記と同じ
+            console.log("===========↑username==========")
+        }, true);
+        document.getElementById('button').addEventListener('click', function(event) {   //formはbuttonより優先される。
+            // event.preventDefault();
+            console.log(event); // （この場合はフォーム）
+            console.log(event.target);
+            console.log(event.currentTarget);
+            console.log("===========↑button==========")
+        });
+
+
+        // リアルタイムバリデーション:
+        function validateEmail() {
+            var email = document.getElementById("email").value;
+            var errorDiv = document.getElementById("error");
+            if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                errorDiv.innerHTML = "Invalid email format";
+            } else {
+                errorDiv.innerHTML = "";
+            }
+        }
+    </script>
+</body>
+</html>

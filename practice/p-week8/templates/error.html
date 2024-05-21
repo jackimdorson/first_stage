@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}失敗頁{% endblock %}
+{% block h2 %}失敗頁面{% endblock %}
+{% block content %}
+    <main>
+        <div class="container">
+            <h3 class="container__h3">{{ message }}</h3>
+            <div class="container__link-wrap">
+                <a href="{{ request.url_for('home_page') }}">返回首頁</a>
+            </div>
+        </div>
+    </main>
+{% endblock %}
