@@ -13,8 +13,6 @@ import logging
 from pydantic import BaseModel     # , BaseSettings    #pydanticの導入
 from typing import Optional, Union       #pydanticのclassで定義した以外にNoneを受け入れる際に必要な記述
 # from fastapi.openapi.utils import get_openapi
-
-
 load_dotenv()   # 環境変数の読み込み
 
 def connect_db():   #I/O型の処理 → asyncだが、mysql.connectorは非同期未対応の為 → def
