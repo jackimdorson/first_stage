@@ -1,19 +1,20 @@
 import os                          #環境変数(.env)の読み込みに必要
 from dotenv import load_dotenv     #環境変数(.env)の読み込みに必要
 import mysql.connector             #mysqlとpyを紐付け(MySQL公式が開発。非同期処理に未対応)　import aiomysql(コミュニティが開発。非同期処理に対応)
-from fastapi import FastAPI, Request, Form, HTTPException, Response        # , Depends, Header    #Depends, headerはapiKeyに使う
+from fastapi import FastAPI, Request, Form, HTTPException, Response, status, Depends
 from fastapi.responses import RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.exceptions import RequestValidationError      #fastAPIのdefaultエラーを変更するときに必要
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 import urllib.parse     #urllib.parseの利用に必要
-import datetime      #dbのdatetimeをカスタムしたい場合に必要(秒不要など)
+from datetime import datetime, timedelta      #dbのdatetimeをカスタムしたい場合に必要(秒不要など)
 import logging
 from pydantic import BaseModel     # , BaseSettings    #pydanticの導入
 from typing import Optional, Union       #pydanticのclassで定義した以外にNoneを受け入れる際に必要な記述
 # from fastapi.openapi.utils import get_openapi
-
+from html import escape
+import uuid    #sessionIDの更新(リロード毎など)に必要
 
 load_dotenv()   # 環境変数の読み込み
 
@@ -46,11 +47,12 @@ logger = setup_logger()
 
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY"))
+SESSION_TIMEOUT_MINUTES = 60  #sessionの有効期限を1hに設定
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 
-def format_datetime(value: datetime.datetime, fmt: str) -> str:   #CPU型の処理 → def カスタムフィルタの定義  datetime.datetimeは『型ヒント』 -> str:は戻り値の『型ヒント』
+def format_datetime(value: datetime, fmt: str) -> str:   #CPU型の処理 → def カスタムフィルタの定義  datetime.datetimeは『型ヒント』 -> str:は戻り値の『型ヒント』
     return value.strftime(fmt)
 
 templates.env.filters["format_datetime"] = format_datetime  # カスタムフィルタをテンプレートエンジンに登録
@@ -83,6 +85,27 @@ async def validation_exception_handler():
         status_code=400
     )
 
+def get_current_user(request: Request):
+    # セッションデータが存在するかどうかを確認
+    if "USERNAME" in request.session:
+        # セッションの有効期限を確認
+        expires_at = datetime.fromisoformat(request.session["expires_at"])
+        if datetime.utcnow() > expires_at:
+            request.session.clear()
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Session expired")
+        # セッションの有効期限を延長
+        request.session["expires_at"] = (datetime.utcnow() + timedelta(minutes=SESSION_TIMEOUT_MINUTES)).isoformat()
+        print(request.session["expires_at"] )
+        return request.session["USERNAME"]
+    else:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="No session data found")
+
+
+@app.get("/protected")    #単なるチェックのエンドポイント
+async def protected(username: str = Depends(get_current_user)):
+    return {"message": f"Protected content for user: {username}"}
+
+
 
 @app.get("/")     #template,response生成＝I/O型の処理 → async    TemplateResponse, HTMLResponseは自動的に Content-Type を text/html; charset=utf-8 に設定。よってresponse_class=HTMLResponseの記述は不要
 async def home_page(request:Request):
@@ -95,6 +118,11 @@ async def signup(request:Request, name:str=Form(...), username:str=Form(...), ps
         with connect_db() as mydb:   #withの記述法では、エラーハンドリングで例外が生じても、自動でcloseされる。
             with mydb.cursor() as cursor:       #SQL指令する為のcursorObjを作成(db操作が必要な度に呼び出し)
                 try:
+                    name = escape(name)
+                    username = escape(username)
+                    psw = escape(psw)
+                    print(username)
+                    print("---1----")
                     cursor.execute("SELECT username FROM member WHERE BINARY username = %s", (username,))
                     username_exists = cursor.fetchone()
                     if username_exists:         #能取得data = 已經被註冊
@@ -122,6 +150,9 @@ async def signin(request:Request, username:str=Form(...), psw:str=Form(...)):
                     if signin_exists:
                         for index, value in enumerate(["MEMBER_ID", "NAME", "USERNAME"]):
                             request.session[value] = signin_exists[index]
+                            new_session_id = str(uuid.uuid4())          #session_idをリロードする毎に更新
+                            request.session["session_id"] = new_session_id
+                            request.session["expires_at"] = (datetime.utcnow() + timedelta(minutes=SESSION_TIMEOUT_MINUTES)).isoformat()
                         return RedirectResponse(url=request.url_for("member_page"), status_code=303)
                     else:
                         query_params = urllib.parse.urlencode({"message": "帳號或密碼輸入錯誤"})
