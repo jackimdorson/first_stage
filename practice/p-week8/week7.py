@@ -10,11 +10,15 @@ from starlette.middleware.sessions import SessionMiddleware
 import urllib.parse     #urllib.parseの利用に必要
 from datetime import datetime, timedelta      #dbのdatetimeをカスタムしたい場合に必要(秒不要など)
 import logging
-from pydantic import BaseModel     # , BaseSettings    #pydanticの導入
+from pydantic import BaseModel, validator     # , BaseSettings    #pydanticの導入
 from typing import Optional, Union       #pydanticのclassで定義した以外にNoneを受け入れる際に必要な記述
 # from fastapi.openapi.utils import get_openapi
 from html import escape
 import uuid    #sessionIDの更新(リロード毎など)に必要
+import re
+from json import JSONDecodeError
+from fastapi.middleware.cors import CORSMiddleware
+
 
 load_dotenv()   # 環境変数の読み込み
 
@@ -303,6 +307,81 @@ async def check_username(request:Request, username:str):    #このusernameはjs
                     return redirect_error_logger(request, f"===SQL發生Error==={e}")
     except Exception as e:
         return redirect_error_logger(request, f"===DB或Cursor發生Error==={e}")
+
+
+
+
+# @app.post("/api/validate-password")
+# async def validate_password(request: Request):
+#     try:
+#         data = await request.json()
+#         password = data['password']
+#         regex = re.compile(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%])[A-Za-z\d@#$%]{4,8}$')
+#         if not regex.match(password):
+#             raise ValueError('密碼得4-8個字, 並包含最少各1個文字, 數字以及@#$%特殊符號')
+#         return password
+#     except (KeyError, ValueError, JSONDecodeError) as e:
+#         raise HTTPException(status_code=400, detail=str(e))
+
+class PasswordRequest(BaseModel):
+    password: str
+
+    @validator('password')
+    def validate_password(cls, v):
+        regex = re.compile(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%])[A-Za-z\d@#$%]{4,8}$')
+        if not regex.match(v):
+            raise ValueError('密碼得4-8個字, 並包含最少各1個文字, 數字以及@#$%特殊符號')
+        return v
+
+@app.post("/api/validate-password")
+async def validate_password(password: str = Form(...)):
+    try:
+        password_request = PasswordRequest(password=password)
+        return {"message": "Password is valid"}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+# class PasswordRequest(BaseModel):
+#     password: str
+
+#     @validator('password')    #fieldに対して使う組み込みデコレータ。引数はPydanticの名称
+#     def validate_password(cls, v):       #clsはクラス、vは検証対象の値。
+#         regex = re.compile(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%])[A-Za-z\d@#$%]{4,8}$')
+#         if not regex.match(v):
+#             raise ValueError('密碼得4-8個字, 並包含最少各1個文字, 數字以及@#$%特殊符號')
+#         return v
+
+# @app.post("/api/validate-password")
+# async def validate_password(request: PasswordRequest):
+#     return {"message": "Password is valid"}
+
+
+# 許可するオリジンを指定
+origins = [
+    "http://127.0.0.1:8000",
+]
+
+# CORSミドルウェアの設定
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/api/data")
+async def get_data():
+    return {"message": "This is a CORS-enabled response"}
+
+
+
+
+
+
+
+
+
 
 
 
