@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Defer Example</title>
+    <script>
+        console.time('Inline Script');  //console出力しない単なるラベル指定
+        console.log('Inline Script Start');
+        console.timeEnd('Inline Script');  //タイマーの名前と経過時間をconsoleに出力
+    </script>
+</head>
+<body>
+    <h1>Defer Example</h1>
+    <p>このページでは、defer属性を使ったスクリプトと使わないスクリプトの実行時間を計測します。</p>
+    <!-- <script src="week8-defer1.js" defer></script>   // 4
+    <script src="week8-defer2.js" defer></script>   // 5
+    <script src="week8-defer3.js" defer></script>   // 6
+
+    <script src="week8-async1.js" async></script>   // 7
+    <script src="week8-async2.js" async></script>   // 8
+    <script src="week8-async3.js" async></script>   // 9
+
+    <script src="week8-none1.js"></script>   // 1   見つかると即座に実行
+    <script src="week8-none2.js"></script>   // 2
+    <script src="week8-none3.js"></script>   // 3 -->
+
+
+
+
+    <!-- <script src="week8-async1.js" async></script>   // 1
+    <script src="week8-async2.js" async></script>   // 2
+    <script src="week8-async3.js" async></script>   // 3
+
+    <script src="week8-defer1.js" defer></script>   // 7
+    <script src="week8-defer2.js" defer></script>   // 8
+    <script src="week8-defer3.js" defer></script>   // 9
+
+    <script src="week8-none1.js"></script>   // 4
+    <script src="week8-none2.js"></script>   // 5
+    <script src="week8-none3.js"></script>   // 6 -->
+
+
+
+
+    <!-- <script src="week8-none1.js"></script>   // 1
+    <script src="week8-none2.js"></script>   // 2
+    <script src="week8-none3.js"></script>   // 3
+
+    <script src="week8-async1.js" async></script>   // 4
+    <script src="week8-async2.js" async></script>   // 5
+    <script src="week8-async3.js" async></script>   // 6
+
+    <script src="week8-defer1.js" defer></script>   // 7
+    <script src="week8-defer2.js" defer></script>   // 8
+    <script src="week8-defer3.js" defer></script>   // 9 -->
+
+
+
+
+    <!-- <script src="week8-defer1.js" defer></script>   // 5
+    <script src="week8-async1.js" async></script>   // 1
+
+    <script src="week8-defer2.js" defer></script>   // 6
+    <script src="week8-async2.js" async></script>   // 7
+
+    <script src="week8-defer3.js" defer></script>   // 8
+    <script src="week8-async3.js" async></script>   // 9
+
+    <script src="week8-none1.js"></script>   // 2
+    <script src="week8-none2.js"></script>   // 3
+    <script src="week8-none3.js"></script>   // 4 -->
+
+
+    <!-- none1, 2裡面是DOMContentLoaded時候
+    <script src="week8-defer1.js" defer></script>   // 4
+    <script src="week8-async1.js" async></script>   // 1
+
+    <script src="week8-defer2.js" defer></script>   // 5
+    <script src="week8-async2.js" async></script>   // 2
+
+    <script src="week8-defer3.js" defer></script>   // 6
+    <script src="week8-async3.js" async></script>   // 9
+
+    <script src="week8-none1.js"></script>   // 7
+    <script src="week8-none2.js"></script>   // 8
+    <script src="week8-none3.js"></script>   // 3 -->
+</body>
+</html>

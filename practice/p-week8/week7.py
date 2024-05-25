@@ -311,51 +311,6 @@ async def check_username(request:Request, username:str):    #このusernameはjs
 
 
 
-# @app.post("/api/validate-password")
-# async def validate_password(request: Request):
-#     try:
-#         data = await request.json()
-#         password = data['password']
-#         regex = re.compile(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%])[A-Za-z\d@#$%]{4,8}$')
-#         if not regex.match(password):
-#             raise ValueError('密碼得4-8個字, 並包含最少各1個文字, 數字以及@#$%特殊符號')
-#         return password
-#     except (KeyError, ValueError, JSONDecodeError) as e:
-#         raise HTTPException(status_code=400, detail=str(e))
-
-class PasswordRequest(BaseModel):
-    password: str
-
-    @validator('password')
-    def validate_password(cls, v):
-        regex = re.compile(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%])[A-Za-z\d@#$%]{4,8}$')
-        if not regex.match(v):
-            raise ValueError('密碼得4-8個字, 並包含最少各1個文字, 數字以及@#$%特殊符號')
-        return v
-
-@app.post("/api/validate-password")
-async def validate_password(password: str = Form(...)):
-    try:
-        password_request = PasswordRequest(password=password)
-        return {"message": "Password is valid"}
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-
-# class PasswordRequest(BaseModel):
-#     password: str
-
-#     @validator('password')    #fieldに対して使う組み込みデコレータ。引数はPydanticの名称
-#     def validate_password(cls, v):       #clsはクラス、vは検証対象の値。
-#         regex = re.compile(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%])[A-Za-z\d@#$%]{4,8}$')
-#         if not regex.match(v):
-#             raise ValueError('密碼得4-8個字, 並包含最少各1個文字, 數字以及@#$%特殊符號')
-#         return v
-
-# @app.post("/api/validate-password")
-# async def validate_password(request: PasswordRequest):
-#     return {"message": "Password is valid"}
-
-
 # 許可するオリジンを指定
 origins = [
     "http://127.0.0.1:8000",
