@@ -1,9 +1,6 @@
 'use strict'
 import { submitEmpty } from './common.js';
 
-
-document.addEventListener("DOMContentLoaded", function(){
-
     const deleteFormQrySA = document.querySelectorAll(".msg__delete-form");
     const submitExistQryS = document.querySelector('.btn--exist');
     const submitUpdateQryS = document.querySelector('.btn--update');
@@ -36,15 +33,23 @@ document.addEventListener("DOMContentLoaded", function(){
                 alert("不得空白");
                 return;
             }
-            const response = await fetch(`/api/member?username=${encodeURIComponent(inputUsernameQryS.value)}`);
-            const jsonData = await response.json();
-            if (!jsonData.data) {
-                createDiv.textContent = "No Date";
-            } else {
-                const {name, username} = jsonData.data;
-                createDiv.textContent = `${name} (${username})`;
+            try {
+                const response = await fetch(`/api/member?username=${encodeURIComponent(inputUsernameQryS.value)}`);
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`HTTP(Server) error(接受Promise卻false) status: ${response.status}, message: ${errorData.message}, details: ${errorData.details}`);
+                }
+                const jsonData = await response.json();
+                if (!jsonData.data) {
+                    createDiv.textContent = "No Date";
+                } else {
+                    const {name, username} = jsonData.data;
+                    createDiv.textContent = `${name} (${username})`;
+                }
+                inputUsernameQryS.value = '';
+            } catch (error) {
+                console.error("Network error(拒絕Promise):", error);
             }
-            inputUsernameQryS.value = '';
         })
     }
 
@@ -57,20 +62,28 @@ document.addEventListener("DOMContentLoaded", function(){
                 alert("不得空白");
                 return;
             }
-            const response = await fetch('api/member',{
-                method: 'PATCH',            //預設是GET, 故GET不需這樣寫
-                headers: {                  //Content-Type是指定request body的形式, GET沒有body故不需這樣寫
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ "name": inputNameQryS.value })  // 送信するデータをJSON形式に変換
-            })
-            const jsonData = await response.json();
-            if (Object.keys(jsonData)[0] === "ok") {
-                createDiv.textContent = "更新成功";
-            } else {
-                createDiv.textContent = "更新失敗";
+            try {
+                const response = await fetch('api/member',{
+                    method: 'PATCH',            //預設是GET, 故GET不需這樣寫
+                    headers: {                  //Content-Type是指定request body的形式, GET沒有body故不需這樣寫
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ "name": inputNameQryS.value })  // 送信するデータをJSON形式に変換
+                })
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`HTTP(Server) error(接受Promise卻false) status: ${response.status}, message: ${errorData.message}, details: ${errorData.details}`);
+                }
+                const jsonData = await response.json();
+                if (Object.keys(jsonData)[0] === "ok") {
+                    createDiv.textContent = "更新成功";
+                } else {
+                    createDiv.textContent = "更新失敗";
+                }
+                inputNameQryS.value = '';
+            } catch (error) {
+                console.error("Network error(拒絕Promise):", error);
             }
-            inputNameQryS.value = '';
         })
     }
 
@@ -80,13 +93,22 @@ document.addEventListener("DOMContentLoaded", function(){
             deleteBtnQryS.addEventListener("click", async(event)=>{
                 event.preventDefault();
                 const inputIdMsgQsrS = event.target.previousElementSibling;
-                await fetch('/deleteMessage',{
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ "id_msg": inputIdMsgQsrS.value })
-                })
+                try {
+                    const response = await fetch('/deleteMessage',{
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ "id_msg": inputIdMsgQsrS.value })
+                    })
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(`HTTP(Server) error(接受Promise卻false) status: ${response.status}, message: ${errorData.message}, details: ${errorData.details}`);
+                    }
+                    console.log("刪除成功");
+                } catch (error) {
+                    console.error("Network error(拒絕Promise):", error);
+                }
             })
         }
     }
@@ -97,4 +119,3 @@ document.addEventListener("DOMContentLoaded", function(){
     existsUsername(submitExistQryS);
     updateName(submitUpdateQryS);
     deleteMsg();
-})

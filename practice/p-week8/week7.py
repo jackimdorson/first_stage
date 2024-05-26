@@ -6,29 +6,51 @@ from fastapi.responses import RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.exceptions import RequestValidationError      #fastAPIのdefaultエラーを変更するときに必要
 from fastapi.templating import Jinja2Templates
-from starlette.middleware.sessions import SessionMiddleware
+from starlette.middleware.sessions import SessionMiddleware   #セッション管理のために設計されたミドルウェアで、クッキーを使用してセッションデータを管理する
 import urllib.parse     #urllib.parseの利用に必要
 from datetime import datetime, timedelta      #dbのdatetimeをカスタムしたい場合に必要(秒不要など)
 import logging
-from pydantic import BaseModel, validator     # , BaseSettings    #pydanticの導入
+from pydantic import BaseModel, field_validator     # , BaseSettings    #pydanticの導入
 from typing import Optional, Union       #pydanticのclassで定義した以外にNoneを受け入れる際に必要な記述
 # from fastapi.openapi.utils import get_openapi
 from html import escape
 import uuid    #sessionIDの更新(リロード毎など)に必要
 import re
 from json import JSONDecodeError
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware    # CORSの設定
+from mysql.connector import pooling, Error   # Connection Poolの設定
+
 
 
 load_dotenv()   # 環境変数の読み込み
 
-def connect_db():   #I/O型の処理 → asyncだが、mysql.connectorは非同期未対応の為 → def
-    return mysql.connector.connect(       #mysqlへのアクセス
-        host = os.getenv("DB_HOST"),
-        user = os.getenv("DB_USER"),
-        password = os.getenv("DB_PASSWORD"),
-        database = os.getenv("DB_NAME")
+# def connect_db():  #*connection_poolを使用するため削除　* #I/O型の処理 → asyncだが、mysql.connectorは非同期未対応の為 → def
+    # return mysql.connector.connect(       #mysqlへのアクセス
+dbconfig = {
+    "host" : os.getenv("DB_HOST"),
+    "user" : os.getenv("DB_USER"),
+    "password" : os.getenv("DB_PASSWORD"),
+    "database" : os.getenv("DB_NAME")
+}
+
+try:
+    connection_pool = pooling.MySQLConnectionPool(
+        pool_name="mypool",
+        pool_size=3,  # プールの最小接続数
+        pool_reset_session=True, #接続がプールに返却されるたびにセッションがリセットされ、次の利用時にクリーンな状態で使用可能に
+        **dbconfig
     )
+except Error as e:
+    print(f"Error creating connection pool: {e}")
+
+def get_connect_pool():
+    try:
+        connection = connection_pool.get_connection()       # プールから接続を取得
+        return connection
+    except Error as e:
+        print(f"Error getting connection from pool: {e}")
+        return None
+
 
 def setup_logger():
     logger = logging.getLogger('my_logger')   # ロガーの作成
@@ -89,6 +111,20 @@ async def validation_exception_handler():
         status_code=400
     )
 
+origins = [      # CORSの設定、許可するオリジンを指定
+    "http://127.0.0.1:8000",
+]
+
+# CORSミドルウェアの設定 localからlocalの接続は防げない。
+app.add_middleware(   #FastAPIにmiddlewareを追加するためのメソッドを呼出
+    CORSMiddleware,   #使用するミドルウェアのクラスを指定
+    allow_origins=origins,   #CORSリクエストを許可するオリジン（ドメイン）のリストを指定(上で記述したもの)
+    allow_credentials=True,  #（認証情報）を含むリクエストを許可するかどうかを指定します。Trueに設定すると、クッキーや認証ヘッダーを含むリクエストが許可
+    allow_methods=["*"],     #HTTPメソッドのリストを指定します。["*"]を使用すると、全ての標準的なHTTPメソッド（GET、POST、PUT、DELETEなど）が許可
+    allow_headers=["*"],     #HTTPリクエストヘッダーのリストを指定します。["*"]を使用すると、全てのヘッダーが許可されます。
+)
+
+
 def get_current_user(request: Request):
     # セッションデータが存在するかどうかを確認
     if "USERNAME" in request.session:
@@ -119,7 +155,7 @@ async def home_page(request:Request):
 @app.post("/signup")
 async def signup(request:Request, name:str=Form(...), username:str=Form(...), psw:str=Form(...)):
     try:   #重要なリソースを管理する部分(db接続など)、複雑でエラーが出やすい箇所には必ずエラーハンドリングを行う。
-        with connect_db() as mydb:   #withの記述法では、エラーハンドリングで例外が生じても、自動でcloseされる。
+        with get_connect_pool() as mydb:   #withの記述法では、エラーハンドリングで例外が生じても、自動でcloseされる。
             with mydb.cursor() as cursor:       #SQL指令する為のcursorObjを作成(db操作が必要な度に呼び出し)
                 try:
                     name = escape(name)
@@ -146,7 +182,7 @@ async def signup(request:Request, name:str=Form(...), username:str=Form(...), ps
 @app.post("/signin")
 async def signin(request:Request, username:str=Form(...), psw:str=Form(...)):
     try:
-        with connect_db() as mydb:
+        with get_connect_pool() as mydb:
             with mydb.cursor() as cursor:
                 try:
                     cursor.execute("SELECT id, name, username FROM member WHERE BINARY username = %s AND BINARY password = %s", (username, psw))
@@ -177,7 +213,7 @@ async def member_page(request:Request):
     if not request.session:
         return RedirectResponse(url=request.url_for("home_page"))
     try:
-        with connect_db() as mydb:
+        with get_connect_pool() as mydb:
             with mydb.cursor() as cursor:
                 try:
                     sessionName = request.session.get("NAME")
@@ -202,7 +238,7 @@ async def createmsg(request:Request, content:str=Form(...)):
     if not request.session:
         raise HTTPException(status_code=401, detail="沒有權限")
     try:
-        with connect_db() as mydb:
+        with get_connect_pool() as mydb:
             with mydb.cursor() as cursor:
                 try:
                     member_id = request.session.get("MEMBER_ID")
@@ -221,7 +257,7 @@ async def deletemsg(request:Request):
     if not request.session:
         raise HTTPException(status_code=401, detail="沒有權限")
     try:
-        with connect_db() as mydb:
+        with get_connect_pool() as mydb:
             with mydb.cursor() as cursor:
                 try:
                     jsonData = await request.json()      #json.loads(request.body())と同じ意味でjsonを取得
@@ -242,7 +278,7 @@ async def search_username(request:Request, username:str):           # = Depends(
     if not request.session:
         return UserJson()
     try:
-        with connect_db() as mydb:
+        with get_connect_pool() as mydb:
             with mydb.cursor() as cursor:
                 try:
                     cursor.execute("SELECT id, name, username FROM member WHERE BINARY username = %s", (username,))
@@ -268,7 +304,7 @@ async def update_username(request:Request):
     if not request.session:
         return ErrorJson()
     try:
-        with connect_db() as mydb:
+        with get_connect_pool() as mydb:
             with mydb.cursor() as cursor:
                 try:
                     jsonData = await request.json()      #json.loads(request.body())と同じ意味でjsonを取得
@@ -295,7 +331,7 @@ async def update_username(request:Request):
 @app.get("/api/check-username")
 async def check_username(request:Request, username:str):    #このusernameはjsのfetchから送信される.../check-username?username=queryPを受信
     try:
-        with connect_db() as mydb:
+        with get_connect_pool() as mydb:
             with mydb.cursor() as cursor:
                 try:
                     cursor.execute("SELECT username FROM member WHERE BINARY username = %s", (username,))
@@ -307,28 +343,6 @@ async def check_username(request:Request, username:str):    #このusernameはjs
                     return redirect_error_logger(request, f"===SQL發生Error==={e}")
     except Exception as e:
         return redirect_error_logger(request, f"===DB或Cursor發生Error==={e}")
-
-
-
-
-# 許可するオリジンを指定
-origins = [
-    "http://127.0.0.1:8000",
-]
-
-# CORSミドルウェアの設定
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
-
-
-
 
 
 
