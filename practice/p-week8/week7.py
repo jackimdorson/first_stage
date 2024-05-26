@@ -325,9 +325,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/api/data")
-async def get_data():
-    return {"message": "This is a CORS-enabled response"}
+
 
 
 
