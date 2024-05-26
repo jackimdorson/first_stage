@@ -1,8 +1,6 @@
 'use strict'
 import { submitEmpty, toggle } from './common.js';
 
-document.addEventListener("DOMContentLoaded", function(){
-
     const toggleBtnSelector = ".toggle__btn";
     const nameSelector = ".input__field--name";
     const pswUsernameSelector = ".input__field--username, .input__field--psw";
@@ -51,12 +49,20 @@ document.addEventListener("DOMContentLoaded", function(){
         if(inputUsernameQryS.value.trim() === '' ){
             checkUsernameImg.src = imgSrcDisable;
         }
-        const response = await fetch(`/api/check-username?username=${encodeURIComponent(inputUsernameQryS.value)}`);
-        const jsonData = await response.json();
-        if(jsonData.exists) {  //exists...endpointで設定したreturnされるjson
-            checkUsernameImg.src = imgSrcAble;
-        } else {
-            checkUsernameImg.src = imgSrcDisable;
+        try {
+            const response = await fetch(`/api/check-username?username=${encodeURIComponent(inputUsernameQryS.value)}`);  //エンコード関数を使い、URI内で安全に使用できる形式に変換
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`HTTP(Server) error(接受Promise卻false) status: ${response.status}, message: ${errorData.message}, details: ${errorData.details}`);
+            }
+            const jsonData = await response.json();
+            if(!jsonData.exists) {  //exists...endpointで設定したreturnされるjson
+                checkUsernameImg.src = imgSrcAble;
+            } else {
+                checkUsernameImg.src = imgSrcDisable;
+            }
+        } catch (error) {
+            console.error("Network error(拒絕Promise):", error);
         }
     }
 
@@ -75,6 +81,3 @@ document.addEventListener("DOMContentLoaded", function(){
         clearTimeout(timeoutId);                              //既存のタイマーをクリア
         timeoutId = setTimeout(checkUsername, 500);           // 新しいタイマーを設定
     })
-
-
-})

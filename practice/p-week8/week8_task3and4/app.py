@@ -64,7 +64,6 @@ async def get_data():
 
 
 
-
 @app.get("/")
 async def home_page():
     return FileResponse("static/index.html")
@@ -109,7 +108,6 @@ async def validate_password(request: ValidationRequest):
 @app.get("/api/data")
 async def get_data():
     return {"message": "This is a CORS-enabled response"}
-
 
 
 
