@@ -25,6 +25,18 @@
         <button id="fetch-button3">Fetch Data</button>
         <div id="response3"></div>
     </div>
+
+
+
+    <h1>XSS Example</h1>
+    <form id="xssform">
+        <label for="name">名前を入力してください:</label>
+        <input type="text" id="name" name="name">
+        <input type="submit" value="送信">
+    </form>
+    <p>こんにちは、<span id="greeting"></span>さん！</p>
+
+
     <script src="/static/app.js"></script>  <!-- fastAPIでStaticFilesを使うと、ルードディレクトリが設定されるため、これは相対パスでなく、絶対パスの記述となる故./app.jsだと呼び出せない、-->
 </body>
 </html>
